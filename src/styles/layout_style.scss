@@ -1,0 +1,211 @@
+/* Global */
+
+* {
+    // font-family: "Lato", sans-serif;
+    // font-family: "Michroma", sans-serif;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    z-index: 0;
+    color: #EBECFA;
+}
+body {
+    background: linear-gradient(90deg, #000000, #070D27 40%, #070D27 50%, #000000);
+}
+#body{
+    z-index: 0;
+    max-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-gutter: stable both-edges;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+/* Pour les navigateurs qui prennent en charge les propriétés `scrollbar-*` */
+
+@supports (scrollbar-color: auto) {
+    *{
+        scrollbar-width: 15px;
+        scrollbar-color: #EBECFA transparent;
+        
+    }
+}
+
+/* Sinon, utilisez les pseudo-éléments `::-webkit-scrollbar-*` */
+
+@supports selector(::-webkit-scrollbar) {
+    *::-webkit-scrollbar {
+        width: 13px;
+        height: 30px;
+    }
+    *::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+        background-color: #EBECFA;
+        border-radius: 100vh;
+        border: 2px solid #000000;
+    }
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Particles */
+
+#filter {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #000000,#ff000000 10%,#ff000000 90%,#000000);
+}
+
+#tsparticles{
+    position: relative;
+    z-index: -2;
+}
+
+.section-separator {
+    opacity: 0.5;
+    border: none;
+    width: 75vw;
+    height: 2px;
+    background: linear-gradient(90deg, #ebecfa00,#EBECFA,#ebecfa00);
+}
+
+/* Utilitise Styles */
+
+.logo{
+    max-height: 75px;
+    max-width: 75px;
+    height: 75px;
+    width: 75px;
+    background-color: #EBECFA;
+    border-radius: 50%;
+    overflow: hidden;
+    img{
+        transform: scale(1.6);
+    }
+}
+
+.name-logo {
+    a {
+        text-decoration: none;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+.glow{
+    text-shadow: 0 0 7px #ebecfad3;
+}
+
+.push-action{
+    transition: transform 0.2s ease-in-out;
+}
+.push-action:active {
+    transform: scale(0.9);
+}
+
+.spacing-letter-small{
+    letter-spacing: 1px;
+}
+.spacing-letter-big{
+    letter-spacing: 5px;
+}
+
+
+h1{
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+}
+.button-big{
+    width: 200px;
+    height: 70px;
+    font-size: 24px;
+}
+.button-normal{
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+}
+.button-cta, .button-cta-reverse{
+    border-radius: 20px;
+    display: inline-block;
+    position: relative;
+    border: 2px solid #FBA059;;
+    font-family: "Michroma", sans-serif;
+    text-align: center;
+    text-decoration: underline;
+    transition: color 0.2s, background-color 0.2s, transform 0.1s;
+    overflow: hidden;
+}
+.button-cta{
+    color: #070D27;
+    background-color: #FBA059;
+}
+.button-cta-reverse{
+    color: #FBA059;
+    background-color: #070D27;
+}
+
+// Button CTA Hover Animation
+
+.button-cta:hover{
+    color: #FBA059;
+    // background-color: #070D27;
+}
+.button-cta-reverse:hover{
+    color: #070D27;
+    // background-color: #FBA059;
+}
+
+.button-cta::after, .button-cta-reverse::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    transform: scaleX(0);
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: transform 0.2s ease-out;
+    transform-origin: bottom right;
+}
+
+.button-cta::after {
+    background-color: #070D27;
+}
+
+.button-cta-reverse::after {
+    background-color: #FBA059;
+}
+
+.button-cta:hover::after, .button-cta-reverse:hover::after {
+    transform-origin: bottom left;
+    transform: scaleX(1);
+}
+
+// Tags Hover Animation
+
+.tag-logo {
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.1s;
+}
+.tag-logo:hover {
+    opacity: 1;
+}

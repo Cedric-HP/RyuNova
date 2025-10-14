@@ -1,0 +1,50 @@
+import { JSX, useEffect, useState, type FC } from "react";
+import "../../styles/article_preview.scss"
+import { ArticleList } from "../types/contenteType";
+import LabelLogo from "./LabelLogo";
+import Link from "next/link";
+/* eslint-disable @next/next/no-img-element */
+type Iprops = {
+    elementList: ArticleList[]
+}
+
+const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
+
+    const [articleListElement, setArticleistElement] = useState<JSX.Element[]>([])
+
+    useEffect(()=>{
+        setArticleistElement(
+            elementList.map((item, index)=>{
+                return (
+                    <li className="article-item-list push-action" key={`${item.title}_${index}`}>
+                        <img className="article-image" src={item.url} alt={`${item.title}_by_${item.author}`} height={100}/>
+                        <div className="article-content">
+                            <div className="article-logo">
+                                <LabelLogo title="Article" url="/image/icons/noun-article-7370563.svg" />
+                            </div>
+                            <div className="article-text">
+                                <div className="article-info">
+                                    <h3>{item.title}</h3>
+                                    <p>{item.teaser}</p>
+                                    <span>{item.author}</span>
+                                </div>
+                                <div className="article-link-container" >
+                                    <Link className="article-link" href={"/"}>Read More...</Link>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="article-filter"></div>
+                    </li>
+                )
+            })
+        )
+    },[elementList])
+
+    return (
+        <ul className="article-list">
+          {articleListElement}
+        </ul>
+    )
+}
+
+export default ArticlePreview

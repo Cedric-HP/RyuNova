@@ -1,0 +1,13 @@
+$slide-selected: 500px;
+$slide-size-unselected: 350px;
+$carousel-width: 75vw;
+$slide-spacing: 30px;
+$carousel-button-size: 75px;
+
+:root{
+    --slide-selected: #{$slide-selected};
+    --slide-size-unselected: #{$slide-size-unselected};
+    --carousel-width: #{$carousel-width};
+    --slide-spacing: #{$slide-spacing};
+    --carousel-button-size: #{$carousel-button-size};
+}

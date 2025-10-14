@@ -1,0 +1,159 @@
+nav {
+    height: 160px;
+    width: 75vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    section {
+    display: flex;
+    flex-flow: row wrap; 
+    width: 100%;
+    }
+    #top-nav{
+        height: 95px;
+        justify-content: space-between;
+        align-items: center;
+        
+        h1{
+            font-family: "Michroma", sans-serif;
+            font-size: 24px;
+        }
+        div{
+            display: flex;
+            height: 100%;
+            align-items: center;
+        }
+        #nav-part{
+            display: flex;
+            gap:30px;
+        }
+        .name-logo {
+            a {
+                text-decoration: none;
+                display: flex;
+                height: 100%;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+        #link-list{
+            display: flex;
+            list-style: none;
+            padding: 0;
+            justify-content: center;
+            gap: 30px;
+            .link{  
+                min-height: 40px;
+                min-width: 100px;
+                display: flex;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                transition:  transform 0.1s;
+                a{
+                    text-decoration: none;
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 600;
+                    font-family: "Montserrat", sans-serif;
+                }
+            }
+        }
+        #user{
+            width: fit-content;
+            display: flex;
+            gap: 10px;
+        }
+        #notification-container{
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+        }
+        #notification-moon {
+            max-height: 15px;
+            max-width: 15px;
+            height: 15px;
+            width: 15px;
+            background-color: #EBECFA;
+            border-radius: 50%;
+        }
+        #notification-count{
+            color: #FBA059;
+        }
+        #avatar{
+            border-radius: 50%;
+        }
+        #avatar-icon {
+            max-height: 55px;
+            max-width: 55px;
+            height: 55px;
+            width: 55px;
+            background-color: #EBECFA;
+            border-radius: 50%;
+        }
+    }
+    #search-nav{
+        height: 65px;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+}
+
+// Search Bar
+
+.search-bar{
+    height: 38px;
+    width: 300px;
+    background-color: rgba(7, 13, 39, 0.5);
+    border: 1px solid #0A2A59;
+    border-radius: 10px;
+    display: flex;
+    overflow: hidden;
+    input, button{
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+    }
+    button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        position: relative;
+        svg {
+            position: absolute;
+            top:-40px;
+            left: 5px;
+        }
+    }
+    input{
+        font-family: "Michroma", sans-serif;
+        max-width: calc(100% - 40px);
+        margin-left: 5px;
+    }
+    input:focus, button:focus{
+        outline: none;
+    }
+}
+
+/* link Hover Animation */
+
+.link::after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    width: 75%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 8px;
+    left: calc(0% + 12.5%);
+    background-color: #EBECFA;
+    transition: transform 0.2s ease-out;
+    transform-origin: bottom center;
+}
+
+.link:hover::after {
+    transform: scaleX(1);
+}
+
