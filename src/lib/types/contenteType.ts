@@ -3,12 +3,23 @@ type ContentData = {
   id: number,
   title: string,
   author: string,
+  authorId: number,
   description: string,
   url: string,
   views: number,
   likes: number,
   createdAt: string,
   tags: string[]
+}
+
+type UserData = {
+  id: number,
+  name: string,
+  url: string,
+  views: number,
+  likes: number,
+  followers: number,
+  description: string,
 }
 
 type EventList = {
@@ -21,4 +32,4 @@ type SorterImput = "view" | "like" | "date"
 
 type TypeImput = "image" | "article" | "user"
 
-export type {ContentData, EventList, SorterImput, TypeImput}
+export type {ContentData, EventList, SorterImput, TypeImput, UserData}

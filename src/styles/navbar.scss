@@ -81,10 +81,15 @@ nav {
         display: flex;
         height: 65px;
         flex-flow: row nowrap;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: flex-end;
         input{
             background-color: transparent;
+        }
+        button{
+           margin: 0;
+           background: transparent;
+           border: none;
         }
     }
 }

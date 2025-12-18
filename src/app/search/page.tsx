@@ -38,7 +38,7 @@ const Search: FC = () => {
         if (pathname === "/search") {
             const input = searchParams.get('type')
             if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}`)
+                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
                 return "image"
             } 
             return input
@@ -51,7 +51,7 @@ const Search: FC = () => {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
             if ( (input !== "view" && input !== "like" && input !== "date" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}`)
+                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
                 return "view"
             }   
             return input
@@ -59,15 +59,21 @@ const Search: FC = () => {
         return "view"
     }, [pathname, router, search, searchParams, tag, type])
 
-
-
+    const [lastType, setLastType] = useState<TypeImput>(type)
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
     const [currentType, setCurrentType] = useState<TypeImput>(type)
     const [currentSort, setCurrentSort] = useState<SorterImput>(sort)
     const [currentTag, setCurrentTag] = useState<string>(tag || "")
-    const [searchInput, setSearchInput] = useState<string>("")
+    const [searchInput, setSearchInput] = useState<string>(search || "")
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
     const [resultList, setResultList] = useState<ContentData[]>([])
+
+    useEffect(()=>{
+        if(lastType !== type) {
+            setCurrentType(type)
+            setLastType(type)
+        }
+    },[lastType, type])
 
     const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setSearchInput(String(e.currentTarget.value).trim())
@@ -82,12 +88,16 @@ const Search: FC = () => {
     },[currentSearch, currentSort, currentTag, currentType, pathname, router, searchInput])
 
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
-        setTagInput(String(e.currentTarget.value).trim().replaceAll(" ", "_"))
+        setTagInput(String(e.currentTarget.value))
     }
+
+    useEffect(()=>{
+        console.log(type)
+    },[type])
 
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const trimedImput = tagInput.replaceAll("_", " ").replaceAll("&", " ").replaceAll("=", " ").trim().replace(/\s\s+/g, ' ')
+        const trimedImput = tagInput.replaceAll("_", " ").replaceAll("&", " ").replaceAll("=", " ").replaceAll("#", " ").trim().replace(/\s\s+/g, ' ')
         const rawTagList = trimedImput.split(" ")
         const filteredTagList: string[] = []
         rawTagList.forEach((item)=>{
@@ -99,17 +109,14 @@ const Search: FC = () => {
             newTags += item + "_"
         })
         setCurrentTag(newTags.slice(0, -1))
+        setTagInput(newTags.slice(0, -1).replaceAll("_", " "))
     }, [tagInput])
 
     useEffect(()=>{
-        console.log(tag)
-    },[tag])
-
-    useEffect(()=>{
-        if (pathname === "/search" && (currentSearch !== search || currentSort !== sort || currentTag !== tag || currentType !== type)) {
+        if (pathname === "/search" && (currentSearch !== search || currentSort !== sort || currentTag !== tag || (currentType !== type && lastType === type) )) {
             router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
         }
-    },[currentSearch, currentSort, currentTag, currentType, pathname, router, search, sort, tag, type])
+    },[currentSearch, currentSort, currentTag, currentType, lastType, pathname, router, search, sort, tag, type])
 
     useEffect(()=>{
         switch(currentType) {
@@ -135,6 +142,7 @@ const Search: FC = () => {
                             placeholder="Tags (Separe tags with space)"
                             onChange={handleTagInput}
                             defaultValue={String(currentTag).replaceAll("_", " ")}
+                            value={tagInput}
                         />
                         <button className="push-action" type="submit">
                             Apply

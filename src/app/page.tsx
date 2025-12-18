@@ -70,19 +70,19 @@ export default function Home() {
 
       {/* Tag Section */}
       <section id="tags-list">
-        <Link href={"/search?search=&type=image&sort=view&tag=stars"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=stars#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-stars-7127150.svg" alt="Stars" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=gallaxy"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=gallaxy#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-galaxy-3544621.svg" alt="Gallaxy" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=planet"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=planet#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-planet-792.svg" alt="Planet" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=nebula"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=nebula#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-nebula-1578521.svg" alt="Nebula" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=iss"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=iss#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-space-station-1219999.svg" alt="ISS" height={iconSize} width={iconSize} />
         </Link>
       </section>
@@ -94,7 +94,7 @@ export default function Home() {
         <BentoGallery elementList={contentSorter(imageBentoList, "like" )}/>
         <button 
           className="button-cta-reverse button-normal push-action" 
-          onClick={()=>router.push(`search?search=&type=image&sort=view&tag=`)}
+          onClick={()=>router.push(`search?search=&type=image&sort=view&tag=#nav`)}
         >See More...</button>
       </section>
       <hr className="section-separator"/>
@@ -105,7 +105,7 @@ export default function Home() {
         <ArticlePreview elementList={contentSorter(articleList, "date")}/>
         <button 
         className="button-cta-reverse button-normal push-action"
-        onClick={()=>router.push(`search?search=&type=article&sort=view&tag=`)}
+        onClick={()=>router.push(`search?search=&type=article&sort=view&tag=#nav`)}
         >See More...</button>
       </section>
       <hr className="section-separator"/>

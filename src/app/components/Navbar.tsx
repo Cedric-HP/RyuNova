@@ -4,7 +4,7 @@ import { FormEvent, type FC, type ReactNode } from "react";
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
 
 type IProps = {
@@ -73,9 +73,15 @@ const Navbar: FC<IProps> = ({ children }) => {
                             </div>
                         </div>
                     </section>
-                    
-                        {pathname !== "/search" ? 
-                        <section id="search-nav">
+                    {pathname !== "/search" ? 
+                    <section id="search-nav">
+                        {(pathname.includes("/image") || pathname.includes("/article") || pathname.includes("/profile")) ?
+                        <>
+                            <button className="push-action link" onClick={()=>router.back()}><FontAwesomeIcon icon={faArrowLeft} />{`Previous`}</button>
+                        </> : <>
+                            <div></div>
+                        </>
+                        }
                         <form className="search-bar" onSubmit={handleSearch}>
                             <input
                                 name="search"
@@ -86,10 +92,10 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </form>
-                        </section> :
-                        <>
-                        </>
-                        }
+                    </section> :
+                    <>
+                    </>
+                    }
                 </nav>
             </header>
             <main>

@@ -17,7 +17,7 @@ const Footer: FC = () => {
                 <div id="footer-section-container">
                     <section>
                         <div className="name-logo">
-                            <Link href={pathname === "/" ? "#nav" : "/"}>
+                            <Link href={pathname === "/" ? "#nav" : "/#nav"}>
                                 <div className="logo">
                                     <img src="/image/logo.webp" alt="Logo" height={75}/>
                                 </div>
@@ -29,17 +29,17 @@ const Footer: FC = () => {
                         <h3 className="spacing-letter-big">CONTENT</h3>
                         <ul  className="footer-link-list">
                             <li>
-                                <Link className="link push-action" href={"/search"}>
+                                <Link className="link push-action" href={pathname === "/" ? "#image" : "/search?search=&type=image&sort=view&tag=#nav"}>
                                     Gallery
                                 </Link>
                             </li>
                             <li>
-                                <Link className="link push-action" href={"/search"}>
+                                <Link className="link push-action" href={pathname === "/" ? "#article" : "/search?search=&type=article&sort=view&tag=#nav"}>
                                     Articles
                                 </Link>
                             </li>
                             <li>
-                                <Link className="link push-action" href={"/"}>
+                                <Link className="link push-action" href={"/#nav"}>
                                     Events
                                 </Link>
                             </li>

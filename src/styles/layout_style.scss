@@ -177,6 +177,30 @@ h1{
     color: #FBA059;
     background-color: #070D27;
 }
+.button-like{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: transparent;
+    border: 1px solid #EBECFA;
+    border-radius: 12px;
+    height: fit-content;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.1s;
+    svg{
+        height: 25px;
+        width: 25px;
+        polygon{
+            transition: color 0.2s;
+        }
+    }
+    span{
+        font-size: 18px;
+        transition: color 0.2s;
+    }
+}
 
 // Button CTA Hover Animation
 
@@ -187,6 +211,43 @@ h1{
 .button-cta-reverse:hover{
     color: #070D27;
     // background-color: #FBA059;
+}
+.button-like:hover{
+    border-color: #FBA059;
+    svg{
+        polygon{
+            color:#FBA059;
+        }
+    }
+    span{
+        color:#FBA059;
+    }
+}
+.liked{
+    background-color: #EBECFA;
+    svg{
+        height: 25px;
+        width: 25px;
+        polygon{
+            color: #070D27;
+        }
+    }
+    span{
+        color: #070D27;
+    }
+}
+.liked:hover{
+    background-color: #FBA059;
+    svg{
+        height: 25px;
+        width: 25px;
+        polygon{
+            color: #070D27;
+        }
+    }
+    span{
+        color: #070D27;
+    }
 }
 
 .button-cta::after, .button-cta-reverse::after {
