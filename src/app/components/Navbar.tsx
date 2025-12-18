@@ -1,72 +1,95 @@
+"use client"
 /* eslint-disable @next/next/no-img-element */
-import { type FC, type ReactNode } from "react";
+import { FormEvent, type FC, type ReactNode } from "react";
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import {  usePathname, useRouter } from 'next/navigation'
 
 type IProps = {
   children: ReactNode[] | ReactNode;
 };
+
 const Navbar: FC<IProps> = ({ children }) => {
+
+    const router = useRouter()
+
+    // Search Params and Pathname set
+    const pathname = usePathname()
     
+    const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        router.push(`search?search=${formData.get("search")}&type=image&sort=view&tag=`)
+    }
+
     return (
         <>
             <header>
-                <nav>
+                <nav id="nav">
                     <section id="top-nav">
                         <div className="name-logo">
                             <Link href={"/"}>
                                 <div className="logo">
-                                    <img src="/image/logo.png" alt="Logo" height={75}/>
+                                    <img src="/image/logo.webp" alt="Logo" height={75}/>
                                 </div>
                                 <h1 className="glow">RyuNova</h1>
                             </Link>
                         </div>
                         <div id="nav-part">
                             <ul id="link-list">
-                                <li className="link hover-link push-action">
-                                    <Link href={"/"}>
+                                <li>
+                                    <Link className="link push-action" href={"/"}>
                                         Home
                                     </Link>
                                 </li>
-                                <li className="link hover-link push-action">
-                                    <Link href={"/search"}>
+                                <li>
+                                    <Link className="link push-action" href={pathname === "/" ? "#gallery" : "/search?search=&type=image&sort=view&tag="}>
                                         Gallery
-                                    </Link>-
+                                    </Link>
                                 </li>
-                                <li className="link hover-link push-action">
-                                    <Link href={"/search"}>
+                                <li>
+                                    <Link className="link push-action" href={pathname === "/" ? "#article" : "/search?search=&type=article&sort=view&tag="}>
                                         Articles
                                     </Link>
                                 </li>
-                                <li className="link hover-link push-action">
-                                    <Link href={"/"}>
+                                <li>
+                                    <Link className="link push-action" href={pathname === "/" ? "#event" : "/search?search=&type=image&sort=view&tag="}>
                                         Events
                                     </Link>
                                 </li>
                             </ul>
                             <div id="user">
                                 <div id="notification-container">
-                                    <div id="notification-moon"></div>
+                                    <div id="notification-moon">
+                                        <img className="push-action" src="/image/icons/moon-notif.png" alt="Bell Notification" height={15}/>
+                                    </div>
                                     <span id="notification-count" >99+</span>
                                 </div>
                                 <Link id="avatar" href={"/"}>
                                     <div id="avatar-icon"></div>
-                                    {/* <Image src={"../../image/icons/noun-galaxy-3544621.svg"} alt="Logo" width={55} height={55}/> */}
                                 </Link>
                             </div>
                         </div>
                     </section>
-                    <section id="search-nav">
-                        <form className="search-bar">
-                            <input type="search" placeholder="Search" />
-                            
+                    
+                        {pathname !== "/search" ? 
+                        <section id="search-nav">
+                        <form className="search-bar" onSubmit={handleSearch}>
+                            <input
+                                name="search"
+                                type="search" 
+                                placeholder="Search"
+                            />
                             <button className="push-action" type="submit">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </form>
-                    </section>
+                        </section> :
+                        <>
+                        </>
+                        }
                 </nav>
             </header>
             <main>

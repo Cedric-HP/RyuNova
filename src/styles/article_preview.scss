@@ -75,9 +75,13 @@
                 .article-link-container{
                     display: flex;
                     justify-content: flex-end;
+                    align-items: center;
                     width: 100%;
                     a{
+                        padding-top: 10px;
+                        height: 40px;
                         position: relative;
+                        text-align: center;
                         text-decoration: none;
                         transition:  transform 0.1s;
                         font-size: 24px;
@@ -108,7 +112,7 @@
     width: 100%;
     transform: scaleX(0);
     height: 2px;
-    bottom: 0;
+    bottom: 12px;
     left: 0;
     background-color: #EBECFA;
     transition: transform 0.2s ease-out;

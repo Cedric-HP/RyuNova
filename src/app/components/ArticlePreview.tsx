@@ -1,11 +1,11 @@
 import { JSX, useEffect, useState, type FC } from "react";
 import "../../styles/article_preview.scss"
-import { ArticleList } from "../types/contenteType";
+import { ContentData } from "../../lib/types/contenteType";
 import LabelLogo from "./LabelLogo";
 import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
 type Iprops = {
-    elementList: ArticleList[]
+    elementList: ContentData[]
 }
 
 const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
@@ -25,7 +25,7 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
                             <div className="article-text">
                                 <div className="article-info">
                                     <h3>{item.title}</h3>
-                                    <p>{item.teaser}</p>
+                                    <p>{item.description}</p>
                                     <span>{item.author}</span>
                                 </div>
                                 <div className="article-link-container" >

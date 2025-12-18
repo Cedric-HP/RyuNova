@@ -30,7 +30,8 @@ footer {
                 list-style: none;
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
+                align-items: center;
+                gap: 5px;
                 li{
                     margin: 0;
                     padding: 0;
@@ -48,7 +49,7 @@ footer {
         #social-media{
             #social-media-list{
                 display: flex;
-                gap: 10px;
+                gap: 15px;
                 flex-flow: row wrap;
                 list-style: none;
                 width: 100%;
@@ -56,8 +57,13 @@ footer {
                 li{
                     a{
                         font-size: 35px;
+                        height: 55px;
+                        width: 30px;
                     }
                 }
+            }
+            button{
+                margin-top: 40px;
             }
         }
     }

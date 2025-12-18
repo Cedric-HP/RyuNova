@@ -1,12 +1,14 @@
+"use client"
 /* eslint-disable @next/next/no-img-element */
 import { type FC } from "react";
 import "../../styles/footer.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import { usePathname } from 'next/navigation'
 
 const Footer: FC = () => {
-    
+    const pathname = usePathname()
     return (
         <>  
             <footer>
@@ -15,9 +17,9 @@ const Footer: FC = () => {
                 <div id="footer-section-container">
                     <section>
                         <div className="name-logo">
-                            <Link href={"/"}>
+                            <Link href={pathname === "/" ? "#nav" : "/"}>
                                 <div className="logo">
-                                    <img src="/image/logo.png" alt="Logo" height={75}/>
+                                    <img src="/image/logo.webp" alt="Logo" height={75}/>
                                 </div>
                                 <h1 className="glow">RyuNova</h1>
                             </Link>
@@ -26,18 +28,18 @@ const Footer: FC = () => {
                     <section className="footer-link">
                         <h3 className="spacing-letter-big">CONTENT</h3>
                         <ul  className="footer-link-list">
-                            <li className="push-action">
-                                <Link href={"/search"}>
+                            <li>
+                                <Link className="link push-action" href={"/search"}>
                                     Gallery
                                 </Link>
                             </li>
-                            <li className="push-action">
-                                <Link href={"/search"}>
+                            <li>
+                                <Link className="link push-action" href={"/search"}>
                                     Articles
                                 </Link>
                             </li>
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                     Events
                                 </Link>
                             </li>
@@ -46,23 +48,23 @@ const Footer: FC = () => {
                     <section className="footer-link">
                         <h3 className="spacing-letter-big">INFORMATION</h3>
                         <ul className="footer-link-list">
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                     Terms Of Service
                                 </Link>
                             </li>
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                     Privacy Policy
                                 </Link>
                             </li>
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                     Copyright Notification
                                 </Link>
                             </li>
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                     Intellectual Property Rights
                                 </Link>
                             </li>
@@ -70,13 +72,13 @@ const Footer: FC = () => {
                     </section>
                     <section id="social-media">
                         <ul id="social-media-list">
-                            <li className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                    <FontAwesomeIcon icon={faSquareGithub} />
                                 </Link>
                             </li>
-                            <li  className="push-action">
-                                <Link href={"/"}>
+                            <li>
+                                <Link className="link push-action" href={"/"}>
                                    <FontAwesomeIcon icon={faLinkedin} />
                                 </Link>
                             </li>

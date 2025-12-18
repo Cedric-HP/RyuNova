@@ -6,7 +6,7 @@ const LogingRegister: FC = () => {
     
     return (
         <>  
-            <h1>CONNECTION</h1>
+            <h1>INFORMATION</h1>
         </>
     )
 }

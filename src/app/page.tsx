@@ -3,84 +3,14 @@ import Link from "next/link";
 import "../styles/home.scss"
 import Image from "next/image";
 // import { JSX, useEffect, useState } from "react";
-import { ArticleList, EventList, ImageBento } from "./types/contenteType";
+
 import BentoGallery from "./components/BentoGallery";
 import ArticlePreview from "./components/ArticlePreview";
 import CarouselEvent from "./components/CarouselEvent";
-
-const imageBentoList: ImageBento[] = [
-  {
-    name: "Jupiter",
-    author: "NASA",
-    url: "/image/pictures/bento/jupiter.jpg"
-  },
-  {
-    name: "Andromeda",
-    author: "Pete Lawrence",
-    url: "/image/pictures/bento/Andromeda-Galaxy.webp"
-  },
-  {
-    name: "Mars",
-    author: "NASA, Hubble",
-    url: "/image/pictures/bento/Mars.jpg"
-  },
-  {
-    name: "Crab Nebula",
-    author: "NASA, Hubble",
-    url: "/image/pictures/bento/Crab_Nebula.jpg"
-  },
-  {
-    name: "Large Magellanic Cloud",
-    author: "ESO, VISTA",
-    url: "/image/pictures/bento/Large_Magellanic_Clound.jpg"
-  },
-  {
-    name: "ISS Transit",
-    author: "Andrew McCarthy",
-    url: "/image/pictures/bento/ISS_Transit_Moon.webp"
-  },
-  {
-    name: "The Pillars of Creation",
-    author: "NASA",
-    url: "/image/pictures/bento/pillars-of-creation.jpg"
-  },
-  {
-    name: "Low Earth Orbit",
-    author: "NASA",
-    url: "/image/pictures/bento/earth_from_iss.jpg"
-  },
-  {
-    name: "The Moon",
-    author: "Zane Landers",
-    url: "/image/pictures/bento/Moon.webp"
-  }
-  ,
-  {
-    name: "Uranus",
-    author: "NASA, ESA",
-    url: "/image/pictures/bento/Uranus.jpg"
-  }
-]
-const articleList: ArticleList[] = [
-  {
-    title: `The James-Webb telescope captures a new image of the deep Universe`,
-    author: "Le Monde avec AFP",
-    teaser: `The James-Webb Space Telescope (JWST) has achieved "the deepest view to date" of the Universe on a single target, revealing galaxies forming in a distant past, said Tuesday, May 27, the National Center for Scientific Research (CNRS) and the European Space Agency (ESA).`,
-    url: "/image/pictures/article/gravitational_lensing.jpg"
-  },
-  {
-    title: `Comet Lemmon and the Little Pinwheel.`,
-    author: "Cédric de Decker/Louis Leroux-Géré/Vincent Martin/Thibault Rouillée",
-    teaser: `Comet Lemmon (C/2025 A6) is still just outside the edge of naked-eye visibility, according to reports, but it is showing fine, rapidly changing detail in images. These astroimagers caught Lemmon as it was passing the Little Pinwheel Galaxy (NGC 3184) on Oct. 5 with 45 minutes of LRGB exposure at a focal length of 400mm.`,
-    url: "/image/pictures/article/comet_lemmon.jpg"
-  },
-  {
-    title: `The Vera Rubin Observatory is ready to revolutionize astronomy`,
-    author: "Lisa Grossman",
-    teaser: `At 3 a.m. on a crisp May night in Chile, all seemed well with the world’s largest digital camera. Until it didn’t. Inside the newly built Vera C. Rubin Observatory, site project scientist Sandrine Thomas was running tests when a flat line representing the camera’s temperature started to spike. “That looks bad,” she thought. She was right. Worried scientists quickly shut down the telescope.`,
-    url: "/image/pictures/article/lg_camera-ready_feat.webp"
-  }
-]
+import { EventList } from "@/lib/types/contenteType";
+import { articleList, imageBentoList } from "@/lib/testContent";
+import { contentSorter } from "@/lib/tools/FilterSorter";
+import { useRouter } from 'next/navigation'
 
 const eventListPast: EventList[] = [
   {
@@ -123,6 +53,8 @@ const iconSize = 75;
 
 export default function Home() {
 
+  const router = useRouter()
+
   return (
     <>
       {/* Hero Section */}
@@ -138,20 +70,20 @@ export default function Home() {
 
       {/* Tag Section */}
       <section id="tags-list">
-        <Link href={"/"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=stars"} className="tag-logo push-action">
           <Image src="/image/icons/noun-stars-7127150.svg" alt="Stars" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/"} className="tag-logo push-action">
-          <Image src="/image/icons/noun-galaxy-3544621.svg" alt="Stars" height={iconSize} width={iconSize} />
+        <Link href={"/search?search=&type=image&sort=view&tag=gallaxy"} className="tag-logo push-action">
+          <Image src="/image/icons/noun-galaxy-3544621.svg" alt="Gallaxy" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/"} className="tag-logo push-action">
-          <Image src="/image/icons/noun-planet-792.svg" alt="Stars" height={iconSize} width={iconSize} />
+        <Link href={"/search?search=&type=image&sort=view&tag=planet"} className="tag-logo push-action">
+          <Image src="/image/icons/noun-planet-792.svg" alt="Planet" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/"} className="tag-logo push-action">
-          <Image src="/image/icons/noun-nebula-1578521.svg" alt="Stars" height={iconSize} width={iconSize} />
+        <Link href={"/search?search=&type=image&sort=view&tag=nebula"} className="tag-logo push-action">
+          <Image src="/image/icons/noun-nebula-1578521.svg" alt="Nebula" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/"} className="tag-logo push-action">
-          <Image src="/image/icons/noun-space-station-1219999.svg" alt="Stars" height={iconSize} width={iconSize} />
+        <Link href={"/search?search=&type=image&sort=view&tag=iss"} className="tag-logo push-action">
+          <Image src="/image/icons/noun-space-station-1219999.svg" alt="ISS" height={iconSize} width={iconSize} />
         </Link>
       </section>
       <hr className="section-separator"/>
@@ -159,16 +91,22 @@ export default function Home() {
       {/* Gallery Section */}
       <section id="gallery">
         <h2 className="glow spacing-letter-big">Featured Pictures Gallery</h2>
-        <BentoGallery elementList={imageBentoList}/>
-        <button className="button-cta-reverse button-normal push-action">See More...</button>
+        <BentoGallery elementList={contentSorter(imageBentoList, "like" )}/>
+        <button 
+          className="button-cta-reverse button-normal push-action" 
+          onClick={()=>router.push(`search?search=&type=image&sort=view&tag=`)}
+        >See More...</button>
       </section>
       <hr className="section-separator"/>
 
       {/* Article Section */}
       <section id="article">
         <h2 className="glow spacing-letter-big">Articles</h2>
-        <ArticlePreview elementList={articleList}/>
-        <button className="button-cta-reverse button-normal push-action">See More...</button>
+        <ArticlePreview elementList={contentSorter(articleList, "date")}/>
+        <button 
+        className="button-cta-reverse button-normal push-action"
+        onClick={()=>router.push(`search?search=&type=article&sort=view&tag=`)}
+        >See More...</button>
       </section>
       <hr className="section-separator"/>
 

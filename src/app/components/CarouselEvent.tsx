@@ -1,7 +1,7 @@
 
 import { useEffect, useState, type FC } from "react";
 import "../../styles/carousel_event.scss"
-import { EventList } from "../types/contenteType";
+import { EventList } from "../../lib/types/contenteType";
 import CarouselElement from "./CarouselElement";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faChevronLeft} from '@fortawesome/free-solid-svg-icons'
@@ -20,7 +20,7 @@ const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
     const slides = slidesPast.concat(slidesFutur)
     const [currentSelected, setCurrentSelected] = useState<number>(0)
     const [translateContainer, setTranslateContainer] = useState<number>(0)
-    const [classSelected, setClassSelected] = useState<ClassSelected>("carousel-slide slide-selected")
+    const [classSelected, setClassSelected] = useState<ClassSelected>("carousel-slide slide-selected slide-selected-transition")
     const changeCurrentSelected = (id: number) => {
         if((currentSelected + id) < 0) return
         if((currentSelected + id) > ((slides.length - 1))) return
