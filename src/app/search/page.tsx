@@ -141,7 +141,6 @@ const Search: FC = () => {
                             type="search" 
                             placeholder="Tags (Separe tags with space)"
                             onChange={handleTagInput}
-                            defaultValue={String(currentTag).replaceAll("_", " ")}
                             value={tagInput}
                         />
                         <button className="push-action" type="submit">

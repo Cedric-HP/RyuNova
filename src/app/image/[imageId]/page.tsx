@@ -7,6 +7,9 @@ import { fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
 import "../../../styles/image.scss"
 import { UserData } from "@/lib/types/contenteType";
 import UserTile from "@/app/components/UserTile";
+import ImageDescription from "@/app/components/ImageDescription";
+import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const defaultUser: UserData = {
     id: -1,
@@ -25,6 +28,8 @@ const LogingRegister: FC = () => {
     const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)
     const [testLike, setTestLike] = useState<boolean>(false)
+    const [fullScreen, setFullScreen] = useState<boolean>(false)
+    const [fullScreenLimit, setFullScreenLimit] = useState<boolean>(false)
 
     useEffect(()=>{
         if(content !== undefined) {
@@ -36,14 +41,13 @@ const LogingRegister: FC = () => {
     
     return (
         <>  
-            <hr id="top-separtaor" className="section-separator"/>
             {
             content !== undefined ? <>
                 <section className="image-section">
-                    <img src={content.url} alt={`${content.title}_by_${content.author}`}/>
+                    <img className="image-normal" src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>{setFullScreen(true); setFullScreenLimit(true)}}/>
                 </section>
                 <hr className="section-separator"/>
-                <section className="description-section">
+                <section className="description">
                     <h1>{content.title}</h1>
                     <div className="author-section">
                         <UserTile 
@@ -58,23 +62,30 @@ const LogingRegister: FC = () => {
                                 viewBox="0 0 24 24"
                                 fill={testLike ? "currentColor" : "none"}
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             >
                                 <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/>
                             </svg>
                             <span>{content.likes}</span>
                         </button>
                     </div>
-                    <div><span><strong>{content.views}</strong> views  </span>
-                    <span>{content.createdAt}</span>
-                    </div>
-                    <p>{content.description}</p>
+                    <ImageDescription views={content.views} date={content.createdAt} description={content.description} tags={content.tags}/>
                 </section>
+                {fullScreen ? <>
+                    <div className="full-screen">
+                        <img className={fullScreenLimit ? "image-full image-full-limit" : "image-full"} src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>setFullScreenLimit((prevState)=>!prevState)}/>
+                        <button onClick={()=>setFullScreen(false)}>
+                            LAAAL
+                        </button>
+                    </div>
+                    </> : <></>}
             </> : <>
-                <p>Image Not Found</p>
-                
+                <section className="no-image-found">
+                    <h1>Image Not Found</h1>
+                    <p>Image id : {imageId}</p>
+                </section>
             </>
             } 
         </>
