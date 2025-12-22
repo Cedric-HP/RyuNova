@@ -8,8 +8,11 @@ import "../../../styles/image.scss"
 import { UserData } from "@/lib/types/contenteType";
 import UserTile from "@/app/components/UserTile";
 import ImageDescription from "@/app/components/ImageDescription";
-import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CommentInfo from "@/app/components/CommentInfo";
+import ReplyLike from "@/app/components/ReplyLike";
+import CommentList from "@/app/components/CommentList";
 
 const defaultUser: UserData = {
     id: -1,
@@ -68,16 +71,20 @@ const LogingRegister: FC = () => {
                             >
                                 <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/>
                             </svg>
-                            <span>{content.likes}</span>
+                            <span>{testLike ? `${content.likes +1}` : `${content.likes}` }</span>
                         </button>
                     </div>
                     <ImageDescription views={content.views} date={content.createdAt} description={content.description} tags={content.tags}/>
                 </section>
+                <div id="test-comment">
+                    <ReplyLike id={authorData.id} type="image" url="/image/pictures/avatar/GBX_LOGO_Head_PNG.png" like={content.likes} displayLike={false} allowToggleReplyDisplay={false}/>
+                    <CommentList idList={content.commentList} size={50}/>
+                </div>
                 {fullScreen ? <>
                     <div className="full-screen">
                         <img className={fullScreenLimit ? "image-full image-full-limit" : "image-full"} src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>setFullScreenLimit((prevState)=>!prevState)}/>
                         <button onClick={()=>setFullScreen(false)}>
-                            LAAAL
+                            <FontAwesomeIcon icon={faXmark} />
                         </button>
                     </div>
                     </> : <></>}

@@ -1,7 +1,7 @@
-import { stringCuter, stringReducer } from "@/lib/tools/stringTools";
 import "../../styles/image_description.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
+import LongTextDisplay from "./LongTextDisplay";
 type Iprops = {
     views: number,
     date: string,
@@ -11,8 +11,7 @@ type Iprops = {
 
 const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", description = "No description", tags = []} ) => {
     const [displayFull, setTDisplayFull] = useState<boolean>(false)
-    const descriptionList = stringCuter(description, "\n")
-    const descriptionListShort = stringCuter(stringReducer(description, 300), "\n")
+    
     return (
         <>  
             <div className="description-image">
@@ -20,13 +19,7 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     <span>{views} views </span>
                     <p>{date}</p>
                 </div>
-                <div className="description-section">
-                    {displayFull ? descriptionList.map((item, index)=>{
-                        return <p key={index}>{item}</p>
-                    }) : descriptionListShort.map((item, index)=>{
-                        return <p key={index}>{item}</p>
-                    }) }
-                </div>
+                <LongTextDisplay text={description} sizeCute={300} displayFull={displayFull}/>
                 { displayFull ? <>
                 <hr className="section-separator"/>
                 <div className="tags-list-section">

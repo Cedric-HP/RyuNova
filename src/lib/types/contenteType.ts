@@ -9,6 +9,7 @@ type ContentData = {
   views: number,
   likes: number,
   createdAt: string,
+  commentList: number[],
   tags: string[]
 }
 
@@ -27,9 +28,19 @@ type EventList = {
   date: string,
   url: string
 }
+type CommentData = {
+  id: number,
+  userId: number,
+  userName: string,
+  url: string,
+  comment: string,
+  likes: number,
+  createdAt: string,
+  replyList: number[]
+}
 
 type SorterImput = "view" | "like" | "date"
 
-type TypeImput = "image" | "article" | "user"
+type TypeImput = "image" | "article" | "user" | "comment"
 
-export type {ContentData, EventList, SorterImput, TypeImput, UserData}
+export type {ContentData, EventList, SorterImput, TypeImput, UserData, CommentData}

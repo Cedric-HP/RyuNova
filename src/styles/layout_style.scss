@@ -319,3 +319,15 @@ h1{
 .link:hover::after {
     transform: scaleX(1);
 }
+
+/* Long Text Style */
+
+.text-section{
+    line-height: 25px;
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    p{
+        min-height: 25px;
+    }
+}

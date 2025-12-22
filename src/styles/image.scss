@@ -26,11 +26,13 @@
         flex-direction: column;
     .image-full{
         z-index: 2;
+        cursor: zoom-out;
     }
     .image-full-limit{
         object-fit: contain;
         height: 100vh;
         width: auto;
+        cursor: zoom-in;
     }
     button{
         position: absolute;
@@ -39,6 +41,17 @@
         left: calc(100vw - 100px);
         background: none;
         border: none;
+        font-size: 20px;
+        padding: 10px;
+        cursor: pointer;
+        svg{
+            polygon{
+                color: #EBECFA;
+                &:hover{
+                    color: #FBA059;
+                }
+            }
+        }
     }
 }
 .description{
@@ -60,4 +73,10 @@
     align-items: center;
     gap: 20px;
     flex-direction: column;
+}
+
+#test-comment{
+    margin: 50px 0;
+    width: 75vw;
+    max-width: 75vw;
 }

@@ -1,4 +1,4 @@
-import { ContentData, UserData } from "./types/contenteType"
+import { CommentData, ContentData, UserData } from "./types/contenteType"
 
 
 const imageBentoList: ContentData[] = [
@@ -12,7 +12,8 @@ const imageBentoList: ContentData[] = [
     views: 500,
     likes: 50,
     createdAt: "2012-08-24",
-    tags: ["planet"]
+    tags: ["planet"],
+    commentList: []
   },
   {
     id: 2,
@@ -24,7 +25,8 @@ const imageBentoList: ContentData[] = [
     views: 124,
     likes: 34,
     createdAt: "2015-02-16",
-    tags: ["gallaxy", "stars"]
+    tags: ["gallaxy", "stars"],
+    commentList: []
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ const imageBentoList: ContentData[] = [
     views: 465,
     likes: 40,
     createdAt: "2016-07-22",
-    tags: ["planet"]
+    tags: ["planet"],
+    commentList: []
   },
   {
     id: 4,
@@ -48,7 +51,8 @@ const imageBentoList: ContentData[] = [
     views: 24837108,
     likes: 1824298,
     createdAt: "2011-10-15",
-    tags: ["nebula"]
+    tags: ["nebula"],
+    commentList: [1,3]
   },
   {
     id: 5,
@@ -60,7 +64,8 @@ const imageBentoList: ContentData[] = [
     views: 201,
     likes: 21,
     createdAt: "2021-02-21",
-    tags: ["gallaxy"]
+    tags: ["gallaxy"],
+    commentList: []
   },
   {
     id: 6,
@@ -72,7 +77,8 @@ const imageBentoList: ContentData[] = [
     views: 78,
     likes: 8,
     createdAt: "2020-04-30",
-    tags: ["iss", "moon", "planet"]
+    tags: ["iss", "moon", "planet"],
+    commentList: []
   },
   {
     id: 7,
@@ -84,7 +90,8 @@ const imageBentoList: ContentData[] = [
     views: 36456795,
     likes: 1557294,
     createdAt: "2013-03-13",
-    tags: ["nebula"]
+    tags: ["nebula"],
+    commentList: []
   },
   {
     id: 8,
@@ -96,7 +103,8 @@ const imageBentoList: ContentData[] = [
     views: 254,
     likes: 35,
     createdAt: "2024-06-12",
-    tags: ["planet", "iss"]
+    tags: ["planet", "iss"],
+    commentList: []
   },
   {
     id: 9,
@@ -108,7 +116,8 @@ const imageBentoList: ContentData[] = [
     views: 524,
     likes: 66,
     createdAt: "2019-07-05",
-    tags: ["planet", "moon"]
+    tags: ["planet", "moon"],
+    commentList: []
   }
   ,
   {
@@ -121,7 +130,8 @@ const imageBentoList: ContentData[] = [
     views: 156,
     likes: 48,
     createdAt: "2012-09-24",
-    tags: ["planet"]
+    tags: ["planet"],
+    commentList: []
   }
 ]
 const articleList: ContentData[] = [
@@ -134,8 +144,9 @@ const articleList: ContentData[] = [
     url: "/image/pictures/article/gravitational_lensing.jpg",
     views: 1500,
     likes: 200,
-    createdAt: "2023-07-28",
-    tags: ["nebula", "telescope"]
+    createdAt: "7/28/2023, 8:00:14 PM",
+    tags: ["nebula", "telescope"],
+    commentList: []
   },
   {
     id: 3,
@@ -146,8 +157,9 @@ const articleList: ContentData[] = [
     url: "/image/pictures/article/comet_lemmon.jpg",
     views: 460,
     likes: 54,
-    createdAt: "2014-05-01",
-    tags: ["comet"]
+    createdAt: "5/1/2025, 7:05:35 PM",
+    tags: ["comet"],
+    commentList: []
   },
   {
     id: 3,
@@ -158,8 +170,9 @@ const articleList: ContentData[] = [
     url: "/image/pictures/article/lg_camera-ready_feat.webp",
     views: 50,
     likes: 50,
-    createdAt: "2012-08-24",
-    tags: ["obsevatory", "telescope"]
+    createdAt: "8/24/2012, 8:00:12 AM",
+    tags: ["obsevatory", "telescope"],
+    commentList: []
   }
 ]
 
@@ -172,6 +185,87 @@ const userList: UserData[] = [
     views: 1500,
     likes: 200,
     followers: 34625694,
+  },
+  {
+    id: 2,
+    name: `HYPERNOVA GBX`,
+    description: `The Gooner Lord`,
+    url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png",
+    views: 999999999,
+    likes: 999999999,
+    followers: 999999999,
+  },
+  {
+    id: 3,
+    name: `The Otaku`,
+    description: `Otaku for life!`,
+    url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png",
+    views: 3469,
+    likes: 675,
+    followers: 246,
   }
 ]
-export {articleList, imageBentoList, userList}
+
+const commentList: CommentData[] = [
+  {
+    id: 1,
+    userId: 2,
+    userName: "HYPERNOVA GBX",
+    url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png", 
+    comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti \n\nnulla hic error quo aliquid quis reprehenderit illum provident perspiciatis labore exercitationem dolor itaque consequatur eos excepturi enim. Molestias dolor autem saepe itaque omnis voluptatibus fugit ex reiciendis aliquid tempore assumenda aperiam veritatis repudiandae ab \ntenetur nihil quam perferendis accusantium ducimus eligendi, quae nemo? Dolor aut culpa error quae suscipit \nipsam eaque ipsa voluptate alias \ndignissimos. Nisi fuga illo, aliquid nostrum sapiente esse cum autem pariatur neque tempore nulla odio laborum ex voluptates \neligendi itaque similique laboriosam quo maiores! Deleniti perferendis accusamus quos eaque voluptatum maiores et culpa, similique quisquam nostrum ipsam, tempore, illo exercitationem veniam incidunt \nperspiciatis sed laborum aperiam nulla quis unde quas ex tempora! Accusamus, nulla consequuntur? Est numquam quas corporis maiores, ut ipsam aut accusamus odio unde ab eligendi. Aspernatur vitae atque in quisquam nulla necessitatibus sit quia a, rem dicta, \nconsectetur repellendus! Odit, vel! Magni mollitia delectus architecto aspernatur deserunt, dignissimos cumque rem sunt, nisi ullam non ab quaerat facilis quo quos rerum nemo distinctio voluptatum quod saepe \nperferendis tempora est porro. Mollitia cum molestiae, nobis distinctio a sunt eligendi voluptate id at optio quos itaque enim facilis explicabo saepe assumenda quibusdam ratione, impedit nemo eum excepturi nulla ab quod aliquid? Dolor repellat aliquam repudiandae earum explicabo quasi adipisci, corporis ipsa iusto ullam error sed possimus dolorum nulla iure sapiente odit itaque, tenetur, voluptas saepe accusamus obcaecati alias officia necessitatibus! Neque expedita earum odit omnis rem impedit ad quos molestiae et? Adipisci totam et possimus laudantium, delectus consectetur quos excepturi beatae doloribus enim quis rem laboriosam sapiente recusandae sequi tempore optio odio itaque iste rerum dignissimos corrupti tempora placeat! Aliquid expedita odit, eius molestias aliquam alias labore fugiat illo rem accusamus fugit eveniet voluptate nemo laborum, maxime repellat impedit voluptas assumenda necessitatibus mollitia iusto doloribus eos eligendi. Corrupti dicta pariatur dolorum, labore saepe reprehenderit quo accusamus ea id asperiores praesentium est dolor. Autem maiores esse expedita ex. Illum laboriosam dignissimos ipsam corrupti optio nulla in, et necessitatibus repellat enim ipsum tempore cumque, doloremque temporibus accusantium sapiente, quam aliquid incidunt. Voluptatem aspernatur iusto illo voluptatibus, voluptates quidem, laboriosam fugit recusandae rem dolorum eveniet odio hic iure unde quisquam reiciendis ullam mollitia possimus, provident quo labore cum libero eum? Nihil praesentium cum, laborum dolorem id velit enim mollitia libero recusandae veniam reprehenderit animi asperiores incidunt. Et voluptatem magnam, itaque fuga cupiditate placeat officiis aspernatur maiores harum. Qui, deleniti, quam architecto adipisci alias, laborum placeat exercitationem autem minus ipsa aliquid? Ad, qui laboriosam saepe in eos laborum mollitia necessitatibus nemo. Ad quos, exercitationem voluptatum distinctio excepturi inventore. Facilis, tempora exercitationem! Quas provident, vel aperiam aspernatur exercitationem est pariatur ullam!",
+    likes: 45,
+    createdAt: "11/12/2025, 2:05:35 PM",
+    replyList: [2, 6]
+  },
+  {
+    id: 2,
+    userId: 1,
+    userName: "NASA",
+    url: "/image/pictures/avatar/nasa-logo-png_seeklogo-97034.png", 
+    comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti ",
+    likes: 4,
+    createdAt: "11/12/2025, 2:35:35 PM",
+    replyList: [4]
+  },
+  {
+    id: 3,
+    userId: 3,
+    userName: "The Otaku",
+    url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
+    comment: "Good Picture",
+    likes: 150,
+    createdAt: "11/12/2025, 11:45:26 AM",
+    replyList: []
+  },
+  {
+    id: 4,
+    userId: 2,
+    userName: "HYPERNOVA GBX",
+    url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png", 
+    comment: "I'm COOMING!!!",
+    likes: 2,
+    createdAt: "11/13/2025, 10:30:26 AM",
+    replyList: [5]
+  },
+  {
+    id: 5,
+    userId: 3,
+    userName: "The Otaku",
+    url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
+    comment: "The Fuck was that XD?!",
+    likes: 2,
+    createdAt: "11/13/2025, 10:45:26 AM",
+    replyList: []
+  },
+  {
+    id: 6,
+    userId: 3,
+    userName: "The Otaku",
+    url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
+    comment: "Lorem ???",
+    likes: 3,
+    createdAt: "11/13/2025, 11:04:05 AM",
+    replyList: []
+  }
+]
+export {articleList, imageBentoList, userList, commentList}

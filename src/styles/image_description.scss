@@ -4,27 +4,28 @@
     border-radius: 20px;
     border: 1px solid #EBECFA;
     overflow: hidden;
-    padding: 20px;
+    // padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     .views-date-section{
         display: flex;
         flex-flow: row nowrap;
+        margin: 20px 20px 0 20px;
         gap: 15px;
         font-size: 16px;
         span{
             font-weight: 600;
         }
-    }
-    .description-section{
-        line-height: 25px;
-        font-size: 0.95rem;
-        display: flex;
-        flex-direction: column;
         p{
-            min-height: 25px;
+            color: #9f9fa7;
         }
+    }
+    .text-section, .tags-list-section{
+        margin: 0 20px 0 20px;
+    }
+    hr{
+        width: 100%;
     }
     .tags-list-section{
         h4{
@@ -37,6 +38,7 @@
         gap: 20px;
     }
     button{
+        margin: 0 20px 20px 20px;
         background-color: transparent;
         width: fit-content;
         border: 1px solid #EBECFA;

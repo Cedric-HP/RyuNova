@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import "../../styles/usertile.scss"
+import "../../styles/user_interface.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
 type Iprops = {
