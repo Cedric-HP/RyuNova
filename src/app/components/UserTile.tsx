@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import "../../styles/user_interface.scss"
+import "../../styles/comment_style.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
 type Iprops = {
@@ -15,9 +15,11 @@ const UserTile: FC<Iprops>  = ( {id= -1, name = "title", followers = 0, url = "u
     return (
         <>  
             <div className="user-tile">
-                <Link className="push-action" href={`/profile/${id}`}>
-                    <img src={url} alt={`${name}`} height={size}/>
-                </Link>
+                 <div className="avatar-image" style={{width: size, height: size, maxHeight: size, maxWidth: size}}>
+                    <Link className="push-action" href={`/profile/${id}`}>
+                        <img src={url} alt={`${name}`}/>
+                    </Link>
+                </div>
                 <div className="user-info">
                     <h3>{name}</h3>
                     <p><span>{followers}</span> Followers</p>

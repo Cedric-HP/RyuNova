@@ -1,0 +1,297 @@
+// Author / User MiniProfil-section Style
+.user-tile{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    .user-info{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        h3{
+            font-weight: 500;
+        }
+        p, span{
+            color: #9f9fa7;
+        }
+    }
+    button{
+        margin: 0;
+    }
+}
+
+// Avatar Link Style
+
+.avatar-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    a{
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img{
+            height: 100%; 
+        }
+    }
+}
+
+// Comment Section
+
+.comment-section{
+    margin: 50px 0;
+    width: 75vw;
+    max-width: 75vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .info-sort-button{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: 20px;
+        h3{
+            display: flex;
+            flex-flow: row nowrap;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        .comment-sort-button{
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            button{
+                margin: 0;
+            }
+        }
+    } 
+}
+
+// Reply / Comment and Comment's Like Section
+
+.like-reply-section{
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .like-reply{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;    
+        gap: 15px;
+        width: 100%;
+        .comment-like{
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            svg{
+                width: 25px;
+                path{
+                    color: #EBECFA;
+                    
+                }
+            }
+            &:hover{
+                svg{
+                    path{
+                        color: #FBA059;
+                    }
+                }
+            }
+            span{
+                color: #9f9fa7;
+            }
+        }
+    }
+    .reply{
+        display: flex;
+        width: 100%;
+        gap: 10px;
+        flex-flow: row nowrap;
+        .avatar-image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            overflow: hidden;
+            img{
+                height: 100%;
+            }
+        }
+        .reply-main{
+            hr{
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            .textarea{
+                background-color: transparent;
+                border: none;
+                resize: none;
+                line-height: 25px;
+                width: calc(100% - 20px);
+                font-size: 1rem;
+                padding: 5px 10px;
+                border-radius: 12px;
+                max-height: 375px;
+                min-height: 25px;
+                field-sizing: content;
+                overflow-y: auto;
+                transition: backdrop-filter 0.2s;
+                &:focus{
+                    backdrop-filter: blur(5px) brightness(0.8);
+                }
+            }
+            .textarea.placeholder {
+                color: #9f9fa7;
+            }
+            .button-reply{
+                button{
+                    background-color: transparent;
+                    border: 0;
+                    font-size: 1rem;
+                    margin: 0;
+                }
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: flex-end;
+                gap: 20px;
+            }
+        }
+    }
+}
+
+// Comment Section
+
+.comment-list{
+     display: flex;
+     flex-direction: column;
+     gap: 30px;
+     width: 100%;
+}
+
+.comment{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .comment-top-part{
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 10px;
+        width: 100%;
+        .comment-avatar{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .comment-main{
+            margin-top: 10px;
+            width: 100%;
+        }
+    }
+}
+
+.comment-user{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    button{
+        background-color: transparent;
+        border: 0;
+        font-size: 1rem;
+    }
+}
+
+.user-info-row{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    h3{
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    span{
+        font-size: 0.95rem;
+        color: #9f9fa7;
+    }
+}
+
+// Reply Display Section
+
+//  Arian Line Section
+
+.reply-segment-container{
+    height: 100%;
+    position: relative;
+    .reply-segment-top{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 25px;
+        border-bottom: 1px solid #9f9fa7;
+        border-left: 1px solid #9f9fa7;
+        border-radius: 0 0 0 100%;
+    }
+    .reply-segment-main{
+        margin-left: calc(50% - 1px);
+        height: 100%;
+        width: 1px;
+        background-color: #9f9fa7;
+    }
+}
+
+// Reply Button Section
+
+.reply-show-section{
+    width: 100%;
+    display: flex;
+    .reply-segment-container{
+        width: 50px;
+        height: 25px;
+    }
+    .reply-show-button{
+        margin: 10px 0 20px 0;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 7px;
+        align-items: center;
+        span, p, svg>path{
+            transition: color 0.2s;
+        }
+        &:hover{
+            span, p, svg>path{
+                color: #FBA059;
+            }
+        }
+    }
+}
+
+// Reply Comment
+
+.reply-comment{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 7px;
+    height: fit-content;
+    .reply-aria-line{
+        min-width: 50px;
+    }
+}

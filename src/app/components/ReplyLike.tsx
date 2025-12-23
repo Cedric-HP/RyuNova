@@ -1,7 +1,8 @@
+"use client"
 /* eslint-disable @next/next/no-img-element */
 import { TypeImput } from "@/lib/types/contenteType";
-import "../../styles/user_interface.scss"
-import { useCallback, useState, type FC } from "react";
+import "../../styles/comment_style.scss"
+import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 type Iprops = {
     id: number,
     type: TypeImput,
@@ -12,11 +13,17 @@ type Iprops = {
 }
 
 const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLike= false, like= 0, allowToggleReplyDisplay= false} ) => {
-    const textareaElement = document.getElementById(`textarea_${id}_${type}`)
+    const textareaElement = useRef<HTMLSpanElement | null>(null)
     const [displayReply, setTDisplayReply] = useState<boolean>(type === "user" ? false : true)
     const [displayButton, setTDisplayButton] = useState<boolean>(type === "user" ? true : false)
     const [commentInput, setCommentInput] = useState<string>("")
+    const [isPlaceholder, setIsPlaceholder] = useState(true)
     const [testLike, setTestLike] = useState<boolean>(false)
+    const PLACEHOLDER = "Add Comment..."
+
+    const imageSize = useMemo(()=> { 
+        return type === "user" ? 30 : displayButton ? 50 : 30
+    },[displayButton, type])
 
     const handleToggleDisplayReply = useCallback((set: boolean)=>{
         if(!allowToggleReplyDisplay)
@@ -30,26 +37,29 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
             setTDisplayButton(true)
         else {
             if (set)
-                if (textareaElement !== undefined && textareaElement !== null)
-                    if (textareaElement.innerHTML === `<p>Ajoutez un commentaire…</p>`)
-                        textareaElement.innerHTML = ``
+                if (textareaElement.current) 
+                    if (textareaElement.current.textContent === PLACEHOLDER) 
+                        setIsPlaceholder(false) 
             setTDisplayButton(set)
         }
     },[allowToggleReplyDisplay, textareaElement])
 
     const removeSpanContent = useCallback(() => {
-        if (textareaElement !== undefined && textareaElement !== null)
-            if (displayButton && type !== "user")
-                textareaElement.innerHTML = `<p>Ajoutez un commentaire…</p>`
-            else
-                textareaElement.innerHTML = ``
-    },[displayButton, textareaElement, type])
+        if (displayButton && type !== "user") {
+            setIsPlaceholder(true)
+        }    
+        else {
+            setIsPlaceholder(false)
+        }
+        setCommentInput("")         
+    },[displayButton, type])
 
     const handleSend = useCallback(()=>{
         console.log({input: commentInput})
         handleToggleDisplayReply(false)
+        handleToggleDisplayButton(false)
         removeSpanContent()
-    },[commentInput, handleToggleDisplayReply, removeSpanContent])
+    },[commentInput, handleToggleDisplayButton, handleToggleDisplayReply, removeSpanContent])
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement >)=>{
         const input = String(e.target.innerHTML).replaceAll("<br>", "\n")
@@ -62,6 +72,22 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
         removeSpanContent()
     },[handleToggleDisplayButton, handleToggleDisplayReply, removeSpanContent])
 
+    useEffect(()=>{
+        if (isPlaceholder) {
+            if (textareaElement.current)
+                textareaElement.current.textContent = PLACEHOLDER
+        }    
+        else {
+            if (textareaElement.current) {
+                textareaElement.current.textContent = ""
+            }
+        }       
+    },[isPlaceholder])
+
+    useEffect(()=>{
+        if (displayButton && type === "user")
+            setIsPlaceholder(false)
+    },[displayButton, type])
     return (
         <>
         <div className="like-reply-section">
@@ -103,14 +129,18 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
             {/* Reply / Add Comment Section*/}
             {displayReply ? <>
             <div className="reply">
-                <img src={url} alt={`User Avatar`} height={type === "user" ? 30 : displayButton ? 50 : 30}/>
+                <div className="avatar-image" style={{width: imageSize, height: imageSize, maxHeight: imageSize, maxWidth: imageSize}}>
+                    <img src={url} alt={`User Avatar`}/>
+                </div>
                 <div className="reply-main">
                     <span 
+                        ref={textareaElement}
                         id={`textarea_${id}_${type}`} 
-                        className="textarea" 
+                        className={`textarea ${isPlaceholder ? "placeholder" : ""}`}
                         role="textbox" 
                         onFocus={()=>handleToggleDisplayButton(true)} 
-                        contentEditable onInput={handleInput}
+                        contentEditable
+                        onInput={handleInput}
                     >
                     </span>
                     <hr className="section-separator"/>
@@ -140,3 +170,4 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
 }
 
 export default ReplyLike
+

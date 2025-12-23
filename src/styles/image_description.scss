@@ -39,17 +39,5 @@
     }
     button{
         margin: 0 20px 20px 20px;
-        background-color: transparent;
-        width: fit-content;
-        border: 1px solid #EBECFA;
-        border-radius: 12px;
-        padding: 5px 10px;
-        transition: border-color 0.2s, color 0.2s;
-        cursor: pointer;
-        font-size: 15px;
-        &:hover{
-            border-color: #FBA059;
-            color: #FBA059;
-        }
     }
 }

@@ -1,5 +1,5 @@
 import { articleList, commentList, imageBentoList, userList } from "../testContent";
-import { ContentData, TypeImput } from "../types/contenteType";
+import { CommentData, ContentData, TypeImput } from "../types/contenteType";
 
 const useFetch = (id: number, type: TypeImput) => {
     switch(type){
@@ -18,8 +18,14 @@ const fecthFinderUser = (id: number) => {
     return userList.find((item)=> item.id === id)
 }
 
-const fecthFinderComment = (id: number) => {
-    return commentList.find((item)=> item.id === id)
+const fecthFinderComment = (idList: number[]) => {
+    const newCommentList: CommentData[] = []
+    idList.forEach((item)=> {
+        const find = commentList.find((element)=> element.id === item )
+        if (find !== undefined)
+            newCommentList.push(find) 
+    })
+    return newCommentList
 }
 
 export {useFetch, fecthFinderUser, fecthFinderComment}

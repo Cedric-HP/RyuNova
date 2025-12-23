@@ -36,7 +36,8 @@ type CommentData = {
   comment: string,
   likes: number,
   createdAt: string,
-  replyList: number[]
+  replyList: number[],
+  isReply: boolean,
 }
 
 type SorterImput = "view" | "like" | "date"

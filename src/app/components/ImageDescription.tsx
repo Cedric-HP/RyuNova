@@ -33,7 +33,7 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     })}
                 </div>
                 </> : <></>}
-                <button onClick={()=>setTDisplayFull((prevState)=> !prevState)}>
+                <button className="button-simple" onClick={()=>setTDisplayFull((prevState)=> !prevState)}>
                     {displayFull ? "See less" : "See more"}
                 </button>
             </div>

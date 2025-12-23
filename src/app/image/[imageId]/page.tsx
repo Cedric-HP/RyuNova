@@ -3,26 +3,17 @@ import { useEffect, useState, type FC } from "react";
 // import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
 import { useParams } from "next/navigation";
-import { fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
+import { fecthFinderComment, fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
 import "../../../styles/image.scss"
 import { UserData } from "@/lib/types/contenteType";
 import UserTile from "@/app/components/UserTile";
 import ImageDescription from "@/app/components/ImageDescription";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import CommentInfo from "@/app/components/CommentInfo";
-import ReplyLike from "@/app/components/ReplyLike";
-import CommentList from "@/app/components/CommentList";
+import CommentModule from "@/app/components/CommentModule";
+import { defaultUser } from "@/lib/tools/DefaultValues";
 
-const defaultUser: UserData = {
-    id: -1,
-    name: "deleted_user",
-    url:"url",
-    description: "",
-    views: 0,
-    likes: 0,
-    followers: 0
-}
+const userAvatar: string = "/image/pictures/avatar/GBX_LOGO_Head_PNG.png"
 
 const LogingRegister: FC = () => {
 
@@ -33,6 +24,7 @@ const LogingRegister: FC = () => {
     const [testLike, setTestLike] = useState<boolean>(false)
     const [fullScreen, setFullScreen] = useState<boolean>(false)
     const [fullScreenLimit, setFullScreenLimit] = useState<boolean>(false)
+    const conmmentList = fecthFinderComment(content?.commentList || [])
 
     useEffect(()=>{
         if(content !== undefined) {
@@ -76,10 +68,7 @@ const LogingRegister: FC = () => {
                     </div>
                     <ImageDescription views={content.views} date={content.createdAt} description={content.description} tags={content.tags}/>
                 </section>
-                <div id="test-comment">
-                    <ReplyLike id={authorData.id} type="image" url="/image/pictures/avatar/GBX_LOGO_Head_PNG.png" like={content.likes} displayLike={false} allowToggleReplyDisplay={false}/>
-                    <CommentList idList={content.commentList} size={50}/>
-                </div>
+                <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userAvatar}/>
                 {fullScreen ? <>
                     <div className="full-screen">
                         <img className={fullScreenLimit ? "image-full image-full-limit" : "image-full"} src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>setFullScreenLimit((prevState)=>!prevState)}/>

@@ -52,7 +52,7 @@ const imageBentoList: ContentData[] = [
     likes: 1824298,
     createdAt: "2011-10-15",
     tags: ["nebula"],
-    commentList: [1,3]
+    commentList: [1, 2, 3, 4, 5, 6]
   },
   {
     id: 5,
@@ -110,7 +110,7 @@ const imageBentoList: ContentData[] = [
     id: 9,
     title: "The Moon",
     author: "Zane Landers",
-    authorId: 1,
+    authorId: 3,
     description: "",
     url: "/image/pictures/bento/Moon.webp",
     views: 524,
@@ -215,7 +215,8 @@ const commentList: CommentData[] = [
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti \n\nnulla hic error quo aliquid quis reprehenderit illum provident perspiciatis labore exercitationem dolor itaque consequatur eos excepturi enim. Molestias dolor autem saepe itaque omnis voluptatibus fugit ex reiciendis aliquid tempore assumenda aperiam veritatis repudiandae ab \ntenetur nihil quam perferendis accusantium ducimus eligendi, quae nemo? Dolor aut culpa error quae suscipit \nipsam eaque ipsa voluptate alias \ndignissimos. Nisi fuga illo, aliquid nostrum sapiente esse cum autem pariatur neque tempore nulla odio laborum ex voluptates \neligendi itaque similique laboriosam quo maiores! Deleniti perferendis accusamus quos eaque voluptatum maiores et culpa, similique quisquam nostrum ipsam, tempore, illo exercitationem veniam incidunt \nperspiciatis sed laborum aperiam nulla quis unde quas ex tempora! Accusamus, nulla consequuntur? Est numquam quas corporis maiores, ut ipsam aut accusamus odio unde ab eligendi. Aspernatur vitae atque in quisquam nulla necessitatibus sit quia a, rem dicta, \nconsectetur repellendus! Odit, vel! Magni mollitia delectus architecto aspernatur deserunt, dignissimos cumque rem sunt, nisi ullam non ab quaerat facilis quo quos rerum nemo distinctio voluptatum quod saepe \nperferendis tempora est porro. Mollitia cum molestiae, nobis distinctio a sunt eligendi voluptate id at optio quos itaque enim facilis explicabo saepe assumenda quibusdam ratione, impedit nemo eum excepturi nulla ab quod aliquid? Dolor repellat aliquam repudiandae earum explicabo quasi adipisci, corporis ipsa iusto ullam error sed possimus dolorum nulla iure sapiente odit itaque, tenetur, voluptas saepe accusamus obcaecati alias officia necessitatibus! Neque expedita earum odit omnis rem impedit ad quos molestiae et? Adipisci totam et possimus laudantium, delectus consectetur quos excepturi beatae doloribus enim quis rem laboriosam sapiente recusandae sequi tempore optio odio itaque iste rerum dignissimos corrupti tempora placeat! Aliquid expedita odit, eius molestias aliquam alias labore fugiat illo rem accusamus fugit eveniet voluptate nemo laborum, maxime repellat impedit voluptas assumenda necessitatibus mollitia iusto doloribus eos eligendi. Corrupti dicta pariatur dolorum, labore saepe reprehenderit quo accusamus ea id asperiores praesentium est dolor. Autem maiores esse expedita ex. Illum laboriosam dignissimos ipsam corrupti optio nulla in, et necessitatibus repellat enim ipsum tempore cumque, doloremque temporibus accusantium sapiente, quam aliquid incidunt. Voluptatem aspernatur iusto illo voluptatibus, voluptates quidem, laboriosam fugit recusandae rem dolorum eveniet odio hic iure unde quisquam reiciendis ullam mollitia possimus, provident quo labore cum libero eum? Nihil praesentium cum, laborum dolorem id velit enim mollitia libero recusandae veniam reprehenderit animi asperiores incidunt. Et voluptatem magnam, itaque fuga cupiditate placeat officiis aspernatur maiores harum. Qui, deleniti, quam architecto adipisci alias, laborum placeat exercitationem autem minus ipsa aliquid? Ad, qui laboriosam saepe in eos laborum mollitia necessitatibus nemo. Ad quos, exercitationem voluptatum distinctio excepturi inventore. Facilis, tempora exercitationem! Quas provident, vel aperiam aspernatur exercitationem est pariatur ullam!",
     likes: 45,
     createdAt: "11/12/2025, 2:05:35 PM",
-    replyList: [2, 6]
+    replyList: [2, 6],
+    isReply: false
   },
   {
     id: 2,
@@ -225,7 +226,8 @@ const commentList: CommentData[] = [
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti ",
     likes: 4,
     createdAt: "11/12/2025, 2:35:35 PM",
-    replyList: [4]
+    replyList: [4],
+    isReply: true
   },
   {
     id: 3,
@@ -235,7 +237,8 @@ const commentList: CommentData[] = [
     comment: "Good Picture",
     likes: 150,
     createdAt: "11/12/2025, 11:45:26 AM",
-    replyList: []
+    replyList: [],
+    isReply: false
   },
   {
     id: 4,
@@ -245,7 +248,8 @@ const commentList: CommentData[] = [
     comment: "I'm COOMING!!!",
     likes: 2,
     createdAt: "11/13/2025, 10:30:26 AM",
-    replyList: [5]
+    replyList: [5],
+    isReply: true
   },
   {
     id: 5,
@@ -255,7 +259,8 @@ const commentList: CommentData[] = [
     comment: "The Fuck was that XD?!",
     likes: 2,
     createdAt: "11/13/2025, 10:45:26 AM",
-    replyList: []
+    replyList: [],
+    isReply: true
   },
   {
     id: 6,
@@ -265,7 +270,8 @@ const commentList: CommentData[] = [
     comment: "Lorem ???",
     likes: 3,
     createdAt: "11/13/2025, 11:04:05 AM",
-    replyList: []
+    replyList: [],
+    isReply: true
   }
 ]
 export {articleList, imageBentoList, userList, commentList}
