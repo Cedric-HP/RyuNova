@@ -146,6 +146,13 @@ h1{
     letter-spacing: 5px;
 }
 
+.sort-selected{
+    color: #FBA059;
+    &::after{
+        background-color: #FBA059!important;
+    }
+}
+
 // Button Cta Styles
 
 .button-big{
@@ -178,6 +185,7 @@ h1{
     background-color: #070D27;
 }
 .button-like{
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;

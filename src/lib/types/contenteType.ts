@@ -16,11 +16,12 @@ type ContentData = {
 type UserData = {
   id: number,
   name: string,
+  description: string,
   url: string,
   views: number,
   likes: number,
   followers: number,
-  description: string,
+  createdAt: string,
 }
 
 type EventList = {
@@ -40,7 +41,7 @@ type CommentData = {
   isReply: boolean,
 }
 
-type SorterImput = "view" | "like" | "date"
+type SorterImput = "view" | "like" | "date" | "follower"
 
 type TypeImput = "image" | "article" | "user" | "comment"
 

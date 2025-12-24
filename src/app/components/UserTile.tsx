@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 import "../../styles/comment_style.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
@@ -22,7 +23,7 @@ const UserTile: FC<Iprops>  = ( {id= -1, name = "title", followers = 0, url = "u
                 </div>
                 <div className="user-info">
                     <h3>{name}</h3>
-                    <p><span>{followers}</span> Followers</p>
+                    <p><span>{numberReducerFormat(followers)}</span> Followers</p>
                 </div>
                 <button className={`button-normal push-action ${testFollow ? "button-cta-reverse" : "button-cta"}`} onClick={()=>setTestFollow((prestate)=> !prestate)}>
                     {testFollow ? "Unfollow" : "Follow"}

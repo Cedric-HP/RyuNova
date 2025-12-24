@@ -5,13 +5,15 @@
 import "../../styles/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
-import { ContentData, SorterImput, TypeImput } from "@/lib/types/contenteType";
+import { ContentData, SorterImput, TypeImput, UserData } from "@/lib/types/contenteType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
-import { articleList, imageBentoList } from "@/lib/testContent";
+import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
 import BentoGallery from "../components/BentoGallery";
 import ArticlePreview from "../components/ArticlePreview";
-import { contentSorter, filterHandler } from "@/lib/tools/FilterSorter";
+import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
+import UserList from "../components/UserList";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 
 const Search: FC = () => {
 
@@ -67,6 +69,8 @@ const Search: FC = () => {
     const [searchInput, setSearchInput] = useState<string>(search || "")
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
     const [resultList, setResultList] = useState<ContentData[]>([])
+    const [userResultList, setUserResultList] = useState<UserData[]>([])
+    const [testNumber, setTestNumber] = useState<number>(0)
 
     useEffect(()=>{
         if(lastType !== type) {
@@ -91,9 +95,9 @@ const Search: FC = () => {
         setTagInput(String(e.currentTarget.value))
     }
 
-    useEffect(()=>{
-        console.log(type)
-    },[type])
+    const handleTest = (e: React.ChangeEvent<HTMLInputElement >) => {
+        setTestNumber(Number(e.currentTarget.value))
+    }
 
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -127,6 +131,7 @@ const Search: FC = () => {
                 setResultList( filterHandler( articleList, currentSearch, currentTag) )
                 break
             case "user":
+                setUserResultList( filterUserHandler(userListTest, currentSearch))
                 break
         }
     },[currentSearch, currentTag, currentType])
@@ -162,6 +167,7 @@ const Search: FC = () => {
                 </div>
                 <div id="sorter-type">
                     <div id="sorter">
+                        <p>Sort By :</p>
                         <button 
                         className={`link push-action ${currentSort === "view" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("view")}
@@ -182,6 +188,7 @@ const Search: FC = () => {
                         </button>
                     </div>
                     <div id="type">
+                        <p>Type :</p>
                         <button 
                         className={`link push-action ${currentType === "image" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("image")}
@@ -204,11 +211,13 @@ const Search: FC = () => {
                 </div>
             </section>
             <hr className="section-separator"/>
-            <div id="result-info">
-                <span>Tags : {String(currentTag).replaceAll("_", " ")}</span>
-                <span>Result : {resultList.length}</span>
-            </div>
             <section id="result-section">
+                <div id="result-info">
+                    <input type="number" className="button-simple" onChange={handleTest}/>
+                    <p>{numberReducerFormat(testNumber)}</p>
+                    <span>Result : {currentType === "user" ? userResultList.length : resultList.length}</span>
+                    <span>Tags : {String(currentTag).replaceAll("_", " ")}</span>
+                </div>
                 {currentType === "image" ? <>
                     <BentoGallery elementList={contentSorter( resultList, currentSort )}/>
                 </> : <></>}
@@ -216,12 +225,10 @@ const Search: FC = () => {
                     <ArticlePreview elementList={contentSorter( resultList, currentSort )}/>
                 </> : <></>}
                 {currentType === "user" ? <>
-
+                        <UserList userList={userSorter(userResultList, currentSort)}/>
                 </> : <></>}
-                {resultList.length === 0 ? <>
-                    <div>
-                        <h3>No Result found</h3>
-                    </div>
+                { ( (resultList.length === 0 && currentType !== "user") || (userResultList.length === 0 && currentType === "user") )  ? <>
+                    <h3 id="no-result" className="spacing-letter-big glow">No Result found</h3>
                 </> : <></>}
             </section>
         </>

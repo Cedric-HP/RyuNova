@@ -1,4 +1,4 @@
-import { articleList, commentList, imageBentoList, userList } from "../testContent";
+import { articleList, commentList, imageBentoList, userListTest } from "../testContent";
 import { CommentData, ContentData, TypeImput } from "../types/contenteType";
 
 const useFetch = (id: number, type: TypeImput) => {
@@ -15,7 +15,7 @@ const fecthFinder = (contentList: ContentData[], id: number) => {
 }
 
 const fecthFinderUser = (id: number) => {
-    return userList.find((item)=> item.id === id)
+    return userListTest.find((item)=> item.id === id)
 }
 
 const fecthFinderComment = (idList: number[]) => {

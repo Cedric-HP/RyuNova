@@ -3,6 +3,7 @@
 import { TypeImput } from "@/lib/types/contenteType";
 import "../../styles/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 type Iprops = {
     id: number,
     type: TypeImput,
@@ -120,7 +121,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                     </svg>
                     </>}
                     <span>
-                        {testLike ? `${like + 1}` : `${like}`}
+                        {testLike ? `${numberReducerFormat(like + 1)}` : `${numberReducerFormat(like)}`}
                     </span>
                 </button>
                 <button className="link push-action" onClick={()=> handleToggleDisplayReply(true)}>Reply</button>

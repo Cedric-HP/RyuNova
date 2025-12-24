@@ -50,7 +50,6 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                 <div className="comment-bottom-part">
                     {displayReplies ? <>
                     {commenData.replyList.map((item, index)=>{
-                        console.log(commenData.replyList)
                         return (
                             <div className="reply-comment" key={`reply_id:${item}_${index}`}>
                                 <div className="reply-aria-line">

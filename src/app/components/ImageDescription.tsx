@@ -2,6 +2,7 @@ import "../../styles/image_description.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
 import LongTextDisplay from "./LongTextDisplay";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 type Iprops = {
     views: number,
     date: string,
@@ -16,7 +17,7 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
         <>  
             <div className="description-image">
                 <div className="views-date-section">
-                    <span>{views} views </span>
+                    <span>{displayFull ? views : numberReducerFormat(views)} views </span>
                     <p>{date}</p>
                 </div>
                 <LongTextDisplay text={description} sizeCute={300} displayFull={displayFull}/>

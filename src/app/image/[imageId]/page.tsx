@@ -12,6 +12,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CommentModule from "@/app/components/CommentModule";
 import { defaultUser } from "@/lib/tools/DefaultValues";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 
 const userAvatar: string = "/image/pictures/avatar/GBX_LOGO_Head_PNG.png"
 
@@ -63,7 +64,7 @@ const LogingRegister: FC = () => {
                             >
                                 <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/>
                             </svg>
-                            <span>{testLike ? `${content.likes +1}` : `${content.likes}` }</span>
+                            <span>{testLike ? `${numberReducerFormat(content.likes +1)}` : `${numberReducerFormat(content.likes)}` }</span>
                         </button>
                     </div>
                     <ImageDescription views={content.views} date={content.createdAt} description={content.description} tags={content.tags}/>
