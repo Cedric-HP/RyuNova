@@ -17,9 +17,9 @@ const BentoGallery: FC<Iprops>  = ({elementList = []}) => {
         setImageBentoListElement(
             elementList.map((item, index)=>{
                 return (
-                    <li className="bento-box push-action" key={`${item.title}_${index}`} onClick={()=>router.push(`/image/${item.id}/#nav`)}>
+                    <li className="bento-box push-action apear" style={{animationDelay: `${(1*index)/25}s`}} key={`${item.title}_${index}`} onClick={()=>router.push(`/image/${item.id}/#nav`)}>
                         <div className="bento-image">
-                            <img src={item.url} alt={`${item.title}_by_${item.author}`} height={100}/>
+                            <img src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
                         </div>
                         <div className="bento-text-and-filter">
                             <h3>{item.title}</h3>

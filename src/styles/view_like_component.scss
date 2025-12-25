@@ -1,0 +1,11 @@
+.view-like-container{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 16px;
+    gap: 10px;
+    svg{
+        height: 20px;
+        width: 20px;
+    }
+}

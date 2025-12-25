@@ -1,5 +1,5 @@
 
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import "../../styles/carousel_event.scss"
 import { EventList } from "../../lib/types/contenteType";
 import CarouselElement from "./CarouselElement";
@@ -16,7 +16,7 @@ const slideSpacing = 30;
 const slideShift = slideBaseSize + slideSpacing
 const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
 
-    const container = document.querySelector(".carousel-slide-container") as HTMLElement
+    const container = useRef<HTMLDivElement | null>(null)
     const slides = slidesPast.concat(slidesFutur)
     const [currentSelected, setCurrentSelected] = useState<number>(0)
     const [translateContainer, setTranslateContainer] = useState<number>(0)
@@ -37,8 +37,8 @@ const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
     }
 
     useEffect(()=>{
-        if (container) {
-            container.style.transform = `translateX(${translateContainer}px)`
+        if (container.current) {
+            container.current.style.transform = `translateX(${translateContainer}px)`
         }
     },[container, translateContainer])
 
@@ -60,7 +60,7 @@ const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
     return (
         <div className="carousel">
             <div className="carousel-viewport">
-                <div className="carousel-slide-container">
+                <div className="carousel-slide-container" ref={container}>
                     {
                         slides.map((item, index)=>{
                             return (

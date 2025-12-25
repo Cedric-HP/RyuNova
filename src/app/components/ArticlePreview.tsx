@@ -16,8 +16,8 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
         setArticleistElement(
             elementList.map((item, index)=>{
                 return (
-                    <li className="article-item-list push-action" key={`${item.title}_${index}`}>
-                        <img className="article-image" src={item.url} alt={`${item.title}_by_${item.author}`} height={100}/>
+                    <li className="article-item-list push-action apear" style={{animationDelay: `${(1*index)/25}s`}} key={`${item.title}_${index}`}>
+                        <img className="article-image" src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
                         <div className="article-content">
                             <div className="article-logo">
                                 <LabelLogo title="Article" url="/image/icons/noun-article-7370563.svg" />

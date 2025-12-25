@@ -226,8 +226,8 @@ const commentList: CommentData[] = [
     userName: "HYPERNOVA GBX",
     url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png", 
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti \n\nnulla hic error quo aliquid quis reprehenderit illum provident perspiciatis labore exercitationem dolor itaque consequatur eos excepturi enim. Molestias dolor autem saepe itaque omnis voluptatibus fugit ex reiciendis aliquid tempore assumenda aperiam veritatis repudiandae ab \ntenetur nihil quam perferendis accusantium ducimus eligendi, quae nemo? Dolor aut culpa error quae suscipit \nipsam eaque ipsa voluptate alias \ndignissimos. Nisi fuga illo, aliquid nostrum sapiente esse cum autem pariatur neque tempore nulla odio laborum ex voluptates \neligendi itaque similique laboriosam quo maiores! Deleniti perferendis accusamus quos eaque voluptatum maiores et culpa, similique quisquam nostrum ipsam, tempore, illo exercitationem veniam incidunt \nperspiciatis sed laborum aperiam nulla quis unde quas ex tempora! Accusamus, nulla consequuntur? Est numquam quas corporis maiores, ut ipsam aut accusamus odio unde ab eligendi. Aspernatur vitae atque in quisquam nulla necessitatibus sit quia a, rem dicta, \nconsectetur repellendus! Odit, vel! Magni mollitia delectus architecto aspernatur deserunt, dignissimos cumque rem sunt, nisi ullam non ab quaerat facilis quo quos rerum nemo distinctio voluptatum quod saepe \nperferendis tempora est porro. Mollitia cum molestiae, nobis distinctio a sunt eligendi voluptate id at optio quos itaque enim facilis explicabo saepe assumenda quibusdam ratione, impedit nemo eum excepturi nulla ab quod aliquid? Dolor repellat aliquam repudiandae earum explicabo quasi adipisci, corporis ipsa iusto ullam error sed possimus dolorum nulla iure sapiente odit itaque, tenetur, voluptas saepe accusamus obcaecati alias officia necessitatibus! Neque expedita earum odit omnis rem impedit ad quos molestiae et? Adipisci totam et possimus laudantium, delectus consectetur quos excepturi beatae doloribus enim quis rem laboriosam sapiente recusandae sequi tempore optio odio itaque iste rerum dignissimos corrupti tempora placeat! Aliquid expedita odit, eius molestias aliquam alias labore fugiat illo rem accusamus fugit eveniet voluptate nemo laborum, maxime repellat impedit voluptas assumenda necessitatibus mollitia iusto doloribus eos eligendi. Corrupti dicta pariatur dolorum, labore saepe reprehenderit quo accusamus ea id asperiores praesentium est dolor. Autem maiores esse expedita ex. Illum laboriosam dignissimos ipsam corrupti optio nulla in, et necessitatibus repellat enim ipsum tempore cumque, doloremque temporibus accusantium sapiente, quam aliquid incidunt. Voluptatem aspernatur iusto illo voluptatibus, voluptates quidem, laboriosam fugit recusandae rem dolorum eveniet odio hic iure unde quisquam reiciendis ullam mollitia possimus, provident quo labore cum libero eum? Nihil praesentium cum, laborum dolorem id velit enim mollitia libero recusandae veniam reprehenderit animi asperiores incidunt. Et voluptatem magnam, itaque fuga cupiditate placeat officiis aspernatur maiores harum. Qui, deleniti, quam architecto adipisci alias, laborum placeat exercitationem autem minus ipsa aliquid? Ad, qui laboriosam saepe in eos laborum mollitia necessitatibus nemo. Ad quos, exercitationem voluptatum distinctio excepturi inventore. Facilis, tempora exercitationem! Quas provident, vel aperiam aspernatur exercitationem est pariatur ullam!",
-    likes: 45,
-    createdAt: "11/12/2025, 13:05:35",
+    likes: 4546574,
+    createdAt: "12/11/2025, 13:05:35",
     replyList: [2, 6],
     isReply: false
   },
@@ -238,7 +238,7 @@ const commentList: CommentData[] = [
     url: "/image/pictures/avatar/nasa-logo-png_seeklogo-97034.png", 
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti ",
     likes: 4,
-    createdAt: "11/12/2025, 13:35:35",
+    createdAt: "12/11/2025, 13:35:35",
     replyList: [4],
     isReply: true
   },
@@ -248,8 +248,8 @@ const commentList: CommentData[] = [
     userName: "The Otaku",
     url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
     comment: "Good Picture",
-    likes: 16487925,
-    createdAt: "11/12/2025, 11:45:26",
+    likes: 16,
+    createdAt: "12/25/2025, 17:58:30",
     replyList: [],
     isReply: false
   },
@@ -260,7 +260,7 @@ const commentList: CommentData[] = [
     url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png", 
     comment: "I'm COOMING!!!",
     likes: 2,
-    createdAt: "11/13/2025, 10:30:26",
+    createdAt: "12/13/2025, 10:30:26",
     replyList: [5],
     isReply: true
   },
@@ -271,7 +271,7 @@ const commentList: CommentData[] = [
     url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
     comment: "The Fuck was that XD?!",
     likes: 2,
-    createdAt: "11/13/2025, 10:45:26",
+    createdAt: "12/13/2025, 10:45:26",
     replyList: [],
     isReply: true
   },
@@ -282,7 +282,7 @@ const commentList: CommentData[] = [
     url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png", 
     comment: "Lorem ???",
     likes: 3,
-    createdAt: "11/13/2025, 11:04:05",
+    createdAt: "12/13/2025, 11:04:05",
     replyList: [],
     isReply: true
   }

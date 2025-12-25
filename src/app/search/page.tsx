@@ -70,7 +70,6 @@ const Search: FC = () => {
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
     const [resultList, setResultList] = useState<ContentData[]>([])
     const [userResultList, setUserResultList] = useState<UserData[]>([])
-    const [testNumber, setTestNumber] = useState<number>(0)
 
     useEffect(()=>{
         if(lastType !== type) {
@@ -93,10 +92,6 @@ const Search: FC = () => {
 
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setTagInput(String(e.currentTarget.value))
-    }
-
-    const handleTest = (e: React.ChangeEvent<HTMLInputElement >) => {
-        setTestNumber(Number(e.currentTarget.value))
     }
 
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
@@ -213,9 +208,7 @@ const Search: FC = () => {
             <hr className="section-separator"/>
             <section id="result-section">
                 <div id="result-info">
-                    <input type="number" className="button-simple" onChange={handleTest}/>
-                    <p>{numberReducerFormat(testNumber)}</p>
-                    <span>Result : {currentType === "user" ? userResultList.length : resultList.length}</span>
+                    <span>Result : {currentType === "user" ? numberReducerFormat(userResultList.length) : numberReducerFormat(resultList.length)}</span>
                     <span>Tags : {String(currentTag).replaceAll("_", " ")}</span>
                 </div>
                 {currentType === "image" ? <>

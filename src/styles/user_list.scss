@@ -8,22 +8,33 @@
         flex-flow: row nowrap;
         gap: 30px;
         align-items: center;
-        height: 75px;
+        max-height: 75px;
         overflow: hidden;
         gap: 30px;
         align-items: center;
         width: 100%;
         .user-tile{
-            width: 50%;
+            width: 75%;
+            min-width: fit-content;
+            justify-content: space-between;
         }
-        .text-section{
-            width: 38%;
-            max-height: 100%;
-        }
-        .user-stats{
-            width: 12%;
+        .user-list-info{
+            width: 100%;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            .text-section{
+                width: 100%;
+                max-height: 100%;
+            }
+            .user-stats{
+                width: fit-content;
+                min-width: 75px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 7px;
+            }
         }
     }
 }

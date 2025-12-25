@@ -2,6 +2,7 @@ import "../../styles/comment_style.scss"
 import { useState, type FC } from "react";
 import LongTextDisplay from "./LongTextDisplay";
 import ReplyLike from "./ReplyLike";
+import { timeAgo } from "@/lib/tools/stringTools";
 type Iprops = {
     id: number,
     userAvatar: string,
@@ -19,7 +20,7 @@ const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:
             <div className="user-tile comment-user">
                 <div className="user-info-row">
                     <h3>{name}</h3>
-                    <span>{date}</span>
+                    <span>{timeAgo(date)}</span>
                 </div>
                 {commentLenght > 200 ? <>
                 <LongTextDisplay text={comment} sizeCute={200} displayFull={displayFull}/>

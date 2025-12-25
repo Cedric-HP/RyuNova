@@ -3,20 +3,27 @@
     display: flex;
     gap: 20px;
     align-items: center;
-    .user-info{
-        height: 100%;
+    .user-tile-main{
         display: flex;
-        flex-direction: column;
-        gap: 8px;
-        h3{
-            font-weight: 500;
-        }
-        p, span{
-            color: #9f9fa7;
+        flex-flow: row nowrap;
+        gap: 20px;
+        align-items: center;
+        .user-info{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            h3{
+                font-weight: 500;
+            }
+            p, span{
+                color: #9f9fa7;
+            }
         }
     }
     button{
         margin: 0;
+        min-width: fit-content;
     }
 }
 

@@ -1,3 +1,5 @@
+// STring Tool Section
+
 const stringReducer = (rawString: string, maxLenght: number) => {
     if (rawString.length > maxLenght) {
         return rawString.slice(0, (maxLenght-3)) + "..."
@@ -9,6 +11,8 @@ const stringReducer = (rawString: string, maxLenght: number) => {
 const stringCuter = (rawString: string, pattern: string) => {
     return rawString.split(pattern)
 }
+
+// Number Format Section
 
 const numberReducerFormat = (rawNumber: number) => {
     if(rawNumber < 1000)
@@ -44,4 +48,51 @@ const numberReducerFormat = (rawNumber: number) => {
     if (rawNumber >= 1000000000000000)
         return  `${String(rawNumber).slice(0,-12)} T`
 }
-export {stringReducer, stringCuter, numberReducerFormat}
+
+const formattedValue = (value: number) => Intl.NumberFormat("no").format(value);
+
+// DATE Format Section
+
+const timeAgo = (date: Date | string | number): string => {
+  const now = new Date().getTime();
+  const past = new Date(date).getTime();
+
+  const diffInSeconds = Math.floor((now - past) / 1000);
+
+  if (diffInSeconds < 0) {
+    return "à l'instant";
+  }
+
+  const units = [
+    { label: "an", seconds: 31536000 },
+    { label: "mois", seconds: 2592000 },
+    { label: "semaine", seconds: 604800 },
+    { label: "jour", seconds: 86400 },
+    { label: "heure", seconds: 3600 },
+    { label: "min", seconds: 60 },
+    { label: "seconde", seconds: 1 }
+  ];
+
+  for (const unit of units) {
+    const value = Math.floor(diffInSeconds / unit.seconds);
+
+    if (value >= 1) {
+      const plural =
+        value > 1 && unit.label !== "mois" ? "s" : "";
+
+      return `il y a ${value} ${unit.label}${plural}`;
+    }
+  }
+
+  return "à l'instant";
+}
+
+const formatDate = (date: Date | string | number): string =>{
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  }).format(new Date(date));
+}
+
+export {stringReducer, stringCuter, numberReducerFormat, timeAgo, formatDate, formattedValue}

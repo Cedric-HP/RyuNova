@@ -45,4 +45,21 @@ type SorterImput = "view" | "like" | "date" | "follower"
 
 type TypeImput = "image" | "article" | "user" | "comment"
 
+// Server Side Table Format
+
+type ImageServerData = {
+  id: number,
+  title: string,
+  authorId: number,
+  imageType: string,
+  imageName: string,
+  imageData: string,
+  description: string,
+  views: number,
+  likes: number,
+  commentList: number[],
+  tags: string[],
+  createdAt: Date,
+}
+
 export type {ContentData, EventList, SorterImput, TypeImput, UserData, CommentData}
