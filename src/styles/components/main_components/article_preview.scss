@@ -32,6 +32,15 @@
             max-width: 66%;
             transition: 0.5s;
         }
+        .view-like-bundle{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-shadow: 0 0 7px black;
+            svg{
+                filter: drop-shadow(0 0 7px black);
+            }
+        }
         .article-content{
             display: flex;
             gap: 10px;

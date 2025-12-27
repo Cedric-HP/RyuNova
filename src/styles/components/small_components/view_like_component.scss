@@ -1,7 +1,12 @@
-.view-like-container{
+.view-like-bundle, .view-like-container{
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+}
+.view-like-bundle{
+    gap: 20px;
+}
+.view-like-container{
     font-size: 16px;
     gap: 10px;
     svg{

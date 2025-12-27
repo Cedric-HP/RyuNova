@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { type FC } from "react";
-import LabelLogo from "./LabelLogo";
+import LabelLogo from "../small_components/LabelLogo";
 type Iprops = {
     title: string,
     date: string,

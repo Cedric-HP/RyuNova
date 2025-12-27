@@ -52,7 +52,7 @@ const imageBentoList: ContentData[] = [
     likes: 1824298,
     createdAt: "2011-10-15",
     tags: ["nebula"],
-    commentList: [1, 2, 3, 4, 5, 6]
+    commentList: [1, 2, 3, 4, 5, 6, 7, 8]
   },
   {
     id: 5,
@@ -181,9 +181,10 @@ const userListTest: UserData[] = [
     id: 1,
     name: `NASA`,
     description: `National Aeronautics and Space Administration`,
-    url: "/image/pictures/avatar/nasa-logo-png_seeklogo-97034.png",
-    views: 15000,
-    likes: 200,
+    avatarUrl: "/image/pictures/avatar/nasa-logo-png_seeklogo-97034.png",
+    bannerUrl: "/image/pictures/banner/ascans-2-003.jpg",
+    views: 17863459550,
+    likes: 35468182,
     followers: 34625694,
     createdAt: "8/24/2012, 8:00:12"
   },
@@ -191,7 +192,8 @@ const userListTest: UserData[] = [
     id: 2,
     name: `HYPERNOVA GBX`,
     description: `The Gooner Lord At 3 a.m. on a crisp May night in Chile, all seemed well with the world’s largest digital camera. Until it didn’t. Inside the newly built Vera C. Rubin Observatory, site project scientist Sandrine Thomas was running tests when a flat line`,
-    url: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png",
+    avatarUrl: "/image/pictures/avatar/GBX_LOGO_Head_PNG.png",
+    bannerUrl: "/image/pictures/banner/hypernova-banner.jpg",
     views: 999999999999999,
     likes: 999999999999999,
     followers: 999999999999999,
@@ -201,7 +203,8 @@ const userListTest: UserData[] = [
     id: 3,
     name: `The Otaku`,
     description: `Otaku for life!`,
-    url: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png",
+    avatarUrl: "/image/pictures/avatar/Capture_decran_2023-12-17_204729.png",
+    bannerUrl: "",
     views: 3469,
     likes: 675,
     followers: 246,
@@ -211,11 +214,34 @@ const userListTest: UserData[] = [
     id: 4,
     name: `THE DEATH STAR 2020`,
     description: `THE EMPIRE WILL WIPE OUT ALL REPUBLICS ACROSS THE GALLAXY AND WILL ALL BATTLE WITH IT ULTIMATE WEAPON!`,
-    url: "/image/pictures/avatar/The_Death_Star.webp",
-    views: 1851,
-    likes: 183,
+    avatarUrl: "/image/pictures/avatar/The_Death_Star.webp",
+    bannerUrl: "/image/pictures/banner/death-star-banner.png",
+    views: 4168245,
+    likes: 183648,
     followers: 8226415,
     createdAt: "8/15/1045, 23:59:59"
+  },
+  {
+    id: 5,
+    name: `Pandora`,
+    description: `Pandora will only make a bite of you at the first opportunity!`,
+    avatarUrl: "/image/pictures/avatar/Pandora.jpg",
+    bannerUrl: "/image/pictures/banner/isv-ventury.png",
+    views: 24856,
+    likes: 98979,
+    followers: 542365,
+    createdAt: "9/30/2072, 12:30:00"
+  },
+  {
+    id: 6,
+    name: `Random astronomer`,
+    description: `A random astronomer.`,
+    avatarUrl: "",
+    bannerUrl: "",
+    views: 7358,
+    likes: 495,
+    followers: 658,
+    createdAt: "10/8/2019, 8:47:06"
   }
 ]
 
@@ -285,6 +311,28 @@ const commentList: CommentData[] = [
     createdAt: "12/13/2025, 11:04:05",
     replyList: [],
     isReply: true
+  },
+  {
+    id: 7,
+    userId: 6,
+    userName: "Random astronomer",
+    url: "", 
+    comment: "The famous one!",
+    likes: 496,
+    createdAt: "12/26/2025, 18:09:56",
+    replyList: [],
+    isReply: false
+  },
+  {
+    id: 8,
+    userId: 4,
+    userName: "THE DEATH STAR 2020",
+    url: "/image/pictures/avatar/The_Death_Star.webp", 
+    comment: "These are the remains of Tatwin! It was destroyed by DS-1.",
+    likes: 49825,
+    createdAt: "12/11/2025, 13:38:47",
+    replyList: [],
+    isReply: false
   }
 ]
 export {articleList, imageBentoList, userListTest, commentList}

@@ -98,6 +98,22 @@ h1{
     background: linear-gradient(90deg, #ebecfa00,#EBECFA,#ebecfa00);
 }
 
+// Avatar
+
+.avatar{
+    object-fit: cover;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p{
+        font-family: "Michroma", sans-serif;
+        text-align: center;
+        text-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+        text-decoration: none !important;
+    }
+}
+
 // Logo Styles
 
 .logo{
@@ -113,6 +129,7 @@ h1{
     align-items: center;
     img{
         transform: scale(1.05);
+        text-shadow: 0 0 7px black;
     }
 }
 

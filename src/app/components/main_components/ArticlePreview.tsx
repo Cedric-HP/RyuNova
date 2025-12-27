@@ -1,8 +1,10 @@
 import { JSX, useEffect, useState, type FC } from "react";
-import "../../styles/article_preview.scss"
-import { ContentData } from "../../lib/types/contenteType";
-import LabelLogo from "./LabelLogo";
+import "../../../styles/components/main_components/article_preview.scss"
+import { ContentData } from "../../../lib/types/contenteType";
+import LabelLogo from "../small_components/LabelLogo";
 import Link from "next/link";
+import ViewLikeBundle from "../small_components/ViewLikeBundle";
+import { useRouter } from 'next/navigation'
 /* eslint-disable @next/next/no-img-element */
 type Iprops = {
     elementList: ContentData[]
@@ -10,13 +12,21 @@ type Iprops = {
 
 const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
 
+    const router = useRouter()
+
     const [articleListElement, setArticleistElement] = useState<JSX.Element[]>([])
 
     useEffect(()=>{
         setArticleistElement(
             elementList.map((item, index)=>{
                 return (
-                    <li className="article-item-list push-action apear" style={{animationDelay: `${(1*index)/25}s`}} key={`${item.title}_${index}`}>
+                    <li 
+                        className="article-item-list push-action apear" 
+                        style={{animationDelay: `${(1*index)/25}s`}} 
+                        key={`${item.title}_${index}`}
+                        onClick={()=>router.replace(`/article/${item.id}/#nav`)}
+                    >
+                        <ViewLikeBundle view={item.views} like={item.likes}/>
                         <img className="article-image" src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
                         <div className="article-content">
                             <div className="article-logo">
@@ -29,7 +39,7 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
                                     <span>{item.author}</span>
                                 </div>
                                 <div className="article-link-container" >
-                                    <Link className="article-link" href={"/"}>Read More...</Link>
+                                    <Link className="article-link" href={`/article/${item.id}/#nav`}>Read More...</Link>
                                 </div>
                             </div>
                         </div>
@@ -38,7 +48,7 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
                 )
             })
         )
-    },[elementList])
+    },[elementList, router])
 
     return (
         <ul className="article-list">

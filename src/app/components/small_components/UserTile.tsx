@@ -1,8 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 import { numberReducerFormat } from "@/lib/tools/stringTools";
-import "../../styles/comment_style.scss"
+import "../../../styles/components/main_components/comment_style.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
+import Avatar from "./Avatar";
 type Iprops = {
     id: number,
     name: string,
@@ -19,7 +19,7 @@ const UserTile: FC<Iprops>  = ( {id= -1, name = "title", followers = 0, url = "u
                 <div className="user-tile-main">
                     <div className="avatar-image" style={{width: size, height: size, maxHeight: size, maxWidth: size}}>
                         <Link className="push-action" href={`/profile/${id}`}>
-                            <img src={url} alt={`${name}`}/>
+                            <Avatar url={url} name={name} size={size}/>
                         </Link>
                     </div>
                     <div className="user-info">

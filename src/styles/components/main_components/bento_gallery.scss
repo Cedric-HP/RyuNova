@@ -63,6 +63,15 @@
             text-shadow: 0 0 7px black;
         }
     }
+    .view-like-bundle{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        text-shadow: 0 0 7px black;
+        svg{
+            filter: drop-shadow(0 0 7px black);
+        }
+    }
     &:hover {
         opacity: 1;
         img {

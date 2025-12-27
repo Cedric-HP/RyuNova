@@ -1,4 +1,4 @@
-import "../../styles/comment_style.scss"
+import "../../../styles/components/main_components/comment_style.scss"
 import { useEffect, useState, type FC } from "react";
 import Comment from "./Comment";
 import { CommentData } from "@/lib/types/contenteType";

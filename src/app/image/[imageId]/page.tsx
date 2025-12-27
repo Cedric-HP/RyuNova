@@ -4,13 +4,13 @@ import { useEffect, useState, type FC } from "react";
 /* eslint-disable @next/next/no-img-element */
 import { useParams } from "next/navigation";
 import { fecthFinderComment, fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
-import "../../../styles/image.scss"
+import "../../../styles/pages/image.scss"
 import { UserData } from "@/lib/types/contenteType";
-import UserTile from "@/app/components/UserTile";
-import ImageDescription from "@/app/components/ImageDescription";
+import UserTile from "@/app/components/small_components/UserTile";
+import ImageDescription from "@/app/components/main_components/ImageDescription";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import CommentModule from "@/app/components/CommentModule";
+import CommentModule from "@/app/components/main_components/CommentModule";
 import { defaultUser } from "@/lib/tools/DefaultValues";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 
@@ -50,7 +50,7 @@ const LogingRegister: FC = () => {
                             id={authorData.id} 
                             name={authorData.name} 
                             followers={authorData.followers} 
-                            url={authorData.url} size={75}
+                            url={authorData.avatarUrl} size={75}
                         />
                         <button className={`button-like ${testLike ? "liked" : ""}`} onClick={()=> setTestLike((prevstate)=>!prevstate)}>
                             <svg

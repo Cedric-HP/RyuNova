@@ -1,5 +1,5 @@
 import { numberReducerFormat } from "@/lib/tools/stringTools";
-import "../../styles/view_like_component.scss"
+import "../../../styles/components/small_components/view_like_component.scss"
 import { type FC } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye} from '@fortawesome/free-solid-svg-icons'

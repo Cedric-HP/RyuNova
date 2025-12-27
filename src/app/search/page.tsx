@@ -2,17 +2,17 @@
 
 // import Link from "next/link";
 // import Image from "next/image";
-import "../../styles/search.scss"
+import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
 import { ContentData, SorterImput, TypeImput, UserData } from "@/lib/types/contenteType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
-import BentoGallery from "../components/BentoGallery";
-import ArticlePreview from "../components/ArticlePreview";
+import BentoGallery from "../components/main_components/BentoGallery";
+import ArticlePreview from "../components/main_components/ArticlePreview";
 import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
-import UserList from "../components/UserList";
+import UserList from "../components/main_components/UserList";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 
 const Search: FC = () => {
@@ -40,7 +40,7 @@ const Search: FC = () => {
         if (pathname === "/search") {
             const input = searchParams.get('type')
             if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
+                router.replace(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
                 return "image"
             } 
             return input
@@ -53,7 +53,7 @@ const Search: FC = () => {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
             if ( (input !== "view" && input !== "like" && input !== "date" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
+                router.replace(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
                 return "view"
             }   
             return input
@@ -87,7 +87,7 @@ const Search: FC = () => {
         event.preventDefault();
         setCurrentSearch(searchInput)
         if(pathname !== "/search")
-            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
+            router.replace(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
     },[currentSearch, currentSort, currentTag, currentType, pathname, router, searchInput])
 
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
@@ -96,7 +96,13 @@ const Search: FC = () => {
 
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const trimedImput = tagInput.replaceAll("_", " ").replaceAll("&", " ").replaceAll("=", " ").replaceAll("#", " ").trim().replace(/\s\s+/g, ' ')
+        const trimedImput = 
+            tagInput.replaceAll("_", " ")
+            .replaceAll("&", " ")
+            .replaceAll("=", " ")
+            .replaceAll("#", " ")
+            .trim()
+            .replace(/\s\s+/g, ' ')
         const rawTagList = trimedImput.split(" ")
         const filteredTagList: string[] = []
         rawTagList.forEach((item)=>{
@@ -112,8 +118,13 @@ const Search: FC = () => {
     }, [tagInput])
 
     useEffect(()=>{
-        if (pathname === "/search" && (currentSearch !== search || currentSort !== sort || currentTag !== tag || (currentType !== type && lastType === type) )) {
-            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
+        if (pathname === "/search" && (
+                currentSearch !== search || 
+                currentSort !== sort || 
+                currentTag !== tag || 
+                (currentType !== type && lastType === type) 
+            )) {
+            router.replace(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
         }
     },[currentSearch, currentSort, currentTag, currentType, lastType, pathname, router, search, sort, tag, type])
 
@@ -208,7 +219,9 @@ const Search: FC = () => {
             <hr className="section-separator"/>
             <section id="result-section">
                 <div id="result-info">
-                    <span>Result : {currentType === "user" ? numberReducerFormat(userResultList.length) : numberReducerFormat(resultList.length)}</span>
+                    <span>Result : {currentType === "user" ? 
+                        numberReducerFormat(userResultList.length) : 
+                        numberReducerFormat(resultList.length)}</span>
                     <span>Tags : {String(currentTag).replaceAll("_", " ")}</span>
                 </div>
                 {currentType === "image" ? <>

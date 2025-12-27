@@ -1,0 +1,51 @@
+.user-hero{
+    margin-top: 30px;
+    height: fit-content;
+    width: 75vw;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    .hero-height-1{
+        height: 100px;
+    }
+    .hero-height-2{
+        height: 240px;
+    }
+    .banner, .user-hero-content-box, .banner-filter{
+        position: absolute;
+    }
+    .banner, .banner-filter{
+        left: 0;
+        width: 100%;
+    }
+    .banner{
+        top: 0;
+        height: 100%;
+        z-index: 0;
+        display: flex;
+        img{
+            flex: 1;
+            height: 100%;
+            object-fit: cover;
+            width: auto;
+        }
+        .banner-filter{
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+    }
+    .user-hero-content-box{
+        bottom: 20px;
+        left: 20px;
+        height: 200px;
+        z-index: 0;
+        width: calc(75vw - 40px);
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 20px;
+        img{
+            filter: drop-shadow(0 0 7px rgba(0, 0, 0, 0.25));
+        }
+    }
+}

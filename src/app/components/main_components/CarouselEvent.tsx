@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState, type FC } from "react";
-import "../../styles/carousel_event.scss"
-import { EventList } from "../../lib/types/contenteType";
+import "../../../styles/components/main_components/carousel_event.scss"
+import { EventList } from "../../../lib/types/contenteType";
 import CarouselElement from "./CarouselElement";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faChevronLeft} from '@fortawesome/free-solid-svg-icons'

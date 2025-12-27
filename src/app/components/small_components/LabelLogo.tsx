@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { type FC } from "react";
-import "../../styles/label_logo.scss"
+import "../../../styles/components/small_components/label_logo.scss"
 type Iprops = {
     title: string,
     url: string,

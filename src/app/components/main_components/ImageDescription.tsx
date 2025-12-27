@@ -1,7 +1,7 @@
-import "../../styles/image_description.scss"
+import "../../../styles/components/main_components/image_description.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
-import LongTextDisplay from "./LongTextDisplay";
+import LongTextDisplay from "../small_components/LongTextDisplay";
 import { formatDate, formattedValue, numberReducerFormat, timeAgo } from "@/lib/tools/stringTools";
 type Iprops = {
     views: number,

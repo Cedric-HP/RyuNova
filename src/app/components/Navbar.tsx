@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
+import Avatar from "./small_components/Avatar";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -21,7 +22,7 @@ const Navbar: FC<IProps> = ({ children }) => {
     const handleSearch = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        router.push(`search?search=${formData.get("search")}&type=image&sort=view&tag=`)
+        router.replace(`/search?search=${formData.get("search")}&type=image&sort=view&tag=`)
     }
 
     return (
@@ -68,7 +69,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     <span id="notification-count" >99+</span>
                                 </div>
                                 <Link id="avatar" href={"/"}>
-                                    <div id="avatar-icon"></div>
+                                    <Avatar url={"/image/pictures/avatar/GBX_LOGO_Head_PNG.png"} name={"HYPERNOVA GBX"} size={55}/>
                                 </Link>
                             </div>
                         </div>

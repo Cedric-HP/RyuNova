@@ -1,12 +1,12 @@
 "use client"
 import Link from "next/link";
-import "../styles/home.scss"
+import "../styles/pages/home.scss"
 import Image from "next/image";
 // import { JSX, useEffect, useState } from "react";
 
-import BentoGallery from "./components/BentoGallery";
-import ArticlePreview from "./components/ArticlePreview";
-import CarouselEvent from "./components/CarouselEvent";
+import BentoGallery from "./components/main_components/BentoGallery";
+import ArticlePreview from "./components/main_components/ArticlePreview";
+import CarouselEvent from "./components/main_components/CarouselEvent";
 import { EventList } from "@/lib/types/contenteType";
 import { articleList, imageBentoList } from "@/lib/testContent";
 import { contentSorter } from "@/lib/tools/FilterSorter";

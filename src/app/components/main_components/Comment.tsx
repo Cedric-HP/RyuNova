@@ -1,12 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
 import { CommentData } from "@/lib/types/contenteType";
-import "../../styles/comment_style.scss"
+import "../../../styles/components/main_components/comment_style.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
 import CommentInfo from "./CommentInfo";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { defaultComment } from "@/lib/tools/DefaultValues";
+import Avatar from "../small_components/Avatar";
 type Iprops = {
     id: number,
     size: number,
@@ -26,7 +26,7 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                     <div className="comment-avatar">
                         <div className="avatar-image" style={{width: size, height: size, maxHeight: size, maxWidth: size}}>
                             <Link className="push-action" href={`/profile/${commenData.userId}`} >
-                                <img src={commenData.url} alt={`${commenData.userName}`}/>
+                                <Avatar url={commenData.url} name={commenData.userName} size={size}/>
                             </Link>
                         </div>
                          {commenData.replyList.length > 0 ? <>

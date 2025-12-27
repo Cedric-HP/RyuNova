@@ -1,9 +1,10 @@
 "use client"
-/* eslint-disable @next/next/no-img-element */
 import { TypeImput } from "@/lib/types/contenteType";
-import "../../styles/comment_style.scss"
+import "../../../styles/components/main_components/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
+import Avatar from "../small_components/Avatar";
+const userName = "HYPERNOVA GBX"
 type Iprops = {
     id: number,
     type: TypeImput,
@@ -131,7 +132,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
             {displayReply ? <>
             <div className="reply">
                 <div className="avatar-image" style={{width: imageSize, height: imageSize, maxHeight: imageSize, maxWidth: imageSize}}>
-                    <img src={url} alt={`User Avatar`}/>
+                    <Avatar url={url} name={userName} size={imageSize}/>
                 </div>
                 <div className="reply-main">
                     <span 

@@ -1,6 +1,6 @@
-import "../../styles/comment_style.scss"
+import "../../../styles/components/main_components/comment_style.scss"
 import { useState, type FC } from "react";
-import LongTextDisplay from "./LongTextDisplay";
+import LongTextDisplay from "../small_components/LongTextDisplay";
 import ReplyLike from "./ReplyLike";
 import { timeAgo } from "@/lib/tools/stringTools";
 type Iprops = {
