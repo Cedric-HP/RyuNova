@@ -11,6 +11,8 @@ import { EventList } from "@/lib/types/contenteType";
 import { articleList, imageBentoList } from "@/lib/testContent";
 import { contentSorter } from "@/lib/tools/FilterSorter";
 import { useRouter } from 'next/navigation'
+import { useGlobalContext } from "./components/Navbar";
+import languageList from "@/lib/language";
 
 const eventListPast: EventList[] = [
   {
@@ -53,17 +55,19 @@ const iconSize = 75;
 
 export default function Home() {
 
+  const { language } = useGlobalContext()
+
   const router = useRouter()
 
   return (
     <>
       {/* Hero Section */}
       <section id="hero">
-        <h1 className="glow spacing-letter-big">Connectez-vous à l’infini!</h1>
-        <p>Rejoignez une communauté d’astronomes, de rêveurs et de curieux unis par la passion des étoiles.</p>
+        <h1 className="glow spacing-letter-big">{languageList[language].titles.homeMainTitle}</h1>
+        <p>{languageList[language].titles.homeSecondTitle}</p>
         <div id="hero-buttons">
-          <button className="button-cta button-big push-action">Sign Up</button>
-          <button className="button-cta-reverse button-big push-action">Log In</button>
+          <button className="button-cta button-big push-action">{languageList[language].button.signUp}</button>
+          <button className="button-cta-reverse button-big push-action">{languageList[language].button.logIn}</button>
         </div>
       </section>
       <hr className="section-separator"/>
@@ -90,31 +94,31 @@ export default function Home() {
 
       {/* Gallery Section */}
       <section id="gallery">
-        <h2 className="glow spacing-letter-big">Featured Pictures Gallery</h2>
+        <h2 className="glow spacing-letter-big">{languageList[language].titles.featuredPicturesGallery}</h2>
         <BentoGallery elementList={contentSorter(imageBentoList, "like" )}/>
         <button 
           className="button-cta-reverse button-normal push-action" 
           onClick={()=>router.push(`search?search=&type=image&sort=view&tag=#nav`)}
-        >See More...</button>
+        >{languageList[language].button.seeMore}...</button>
       </section>
       <hr className="section-separator"/>
 
       {/* Article Section */}
       <section id="article">
-        <h2 className="glow spacing-letter-big">Articles</h2>
+        <h2 className="glow spacing-letter-big">{languageList[language].titles.featuredArticles}</h2>
         <ArticlePreview elementList={contentSorter(articleList, "date")}/>
         <button 
         className="button-cta-reverse button-normal push-action"
         onClick={()=>router.push(`search?search=&type=article&sort=view&tag=#nav`)}
-        >See More...</button>
+        >{languageList[language].button.seeMore}...</button>
       </section>
       <hr className="section-separator"/>
 
       {/* Event Section */}
       <section id="event">
-        <h2 className="glow spacing-letter-big">Upcoming astronomical events</h2>
+        <h2 className="glow spacing-letter-big">{languageList[language].titles.upcommingAstronomicalEvents}</h2>
         <CarouselEvent slidesPast={eventListPast} slidesFutur={eventListFutur}/>
-        <button className="button-cta-reverse button-normal push-action">See More...</button>
+        <button className="button-cta-reverse button-normal push-action">{languageList[language].button.seeMore}...</button>
       </section>
     </>
   );

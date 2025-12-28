@@ -6,9 +6,12 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { usePathname } from 'next/navigation'
+import { useGlobalContext } from "./Navbar";
+import languageList from "@/lib/language";
 
 const Footer: FC = () => {
     const pathname = usePathname()
+    const { language } = useGlobalContext()
     return (
         <>  
             <footer>
@@ -26,46 +29,46 @@ const Footer: FC = () => {
                         </div>
                     </section>
                     <section className="footer-link">
-                        <h3 className="spacing-letter-big">CONTENT</h3>
+                        <h3 className="spacing-letter-big">{languageList[language].titles.content}</h3>
                         <ul  className="footer-link-list">
                             <li>
                                 <Link className="link push-action" href={pathname === "/" ? "#image" : "/search?search=&type=image&sort=view&tag=#nav"}>
-                                    Gallery
+                                    {languageList[language].titles.gallery}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={pathname === "/" ? "#article" : "/search?search=&type=article&sort=view&tag=#nav"}>
-                                    Articles
+                                    {languageList[language].contentType.article.plural}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/#nav"}>
-                                    Events
+                                    {languageList[language].titles.events}
                                 </Link>
                             </li>
                         </ul>
                     </section>
                     <section className="footer-link">
-                        <h3 className="spacing-letter-big">INFORMATION</h3>
+                        <h3 className="spacing-letter-big">{languageList[language].titles.legalInformation}</h3>
                         <ul className="footer-link-list">
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    Terms Of Service
+                                    {languageList[language].titles.termsOfService}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    Privacy Policy
+                                    {languageList[language].titles.privacyPolicy}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    Copyright Notification
+                                    {languageList[language].titles.copyrightNotification}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    Intellectual Property Rights
+                                    {languageList[language].titles.intellectualPropertyRights}
                                 </Link>
                             </li>
                         </ul>
@@ -83,7 +86,7 @@ const Footer: FC = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <button className="button-cta button-normal">Sign Up</button>
+                        <button className="button-cta button-normal">{languageList[language].button.signUp}</button>
                     </section>
                 </div>
                 <span id="signature">©2025 MOUCHON Cédric</span>

@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { defaultComment } from "@/lib/tools/DefaultValues";
 import Avatar from "../small_components/Avatar";
+import { useGlobalContext } from "../Navbar";
+import languageList from "@/lib/language";
 type Iprops = {
     id: number,
     size: number,
@@ -16,8 +18,10 @@ type Iprops = {
 
 const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]} ) => {
 
+    const { language } = useGlobalContext()
     const commenData: CommentData = commentList.find((item)=> item.id === id) || defaultComment
     const [displayReplies, setDisplayReplies] = useState<boolean>(false)
+    
     return (
         <>  
             {commenData.id !== -1 ? <>
@@ -70,13 +74,23 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                         <button className="push-action reply-show-button button-simple" onClick={()=> setDisplayReplies((prevState)=>!prevState)}>
                             {displayReplies ?
                             <>
-                                {commenData.replyList.length > 1 ? <p>Hide Replies</p>:<p>Hide Reply</p>}
+                                <p>
+                                    {commenData.replyList.length > 1 ?  
+                                        `${languageList[language].button.hide.plural} ${languageList[language].contentType.reply.plural}` : 
+                                        `${languageList[language].button.hide.singular} ${languageList[language].contentType.reply.singular}`
+                                    }
+                                </p>
                                 <FontAwesomeIcon icon={faAngleUp} />
                             </>
                             :
                             <>
                                 <span>{commenData.replyList.length}</span>
-                                {commenData.replyList.length > 1 ? <p>Replies</p>:<p>Reply</p>}
+                                <p>
+                                    {commenData.replyList.length > 1 ?  
+                                        languageList[language].contentType.reply.plural : 
+                                        languageList[language].contentType.reply.singular
+                                    }
+                                </p>
                                 <FontAwesomeIcon icon={faAngleDown} />
                             </>}
                         </button>

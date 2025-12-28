@@ -172,18 +172,23 @@ h1{
 
 // Button Cta Styles
 
+.button-big, .button-normal {
+    width: fit-content;
+}
+
 .button-big{
-    width: 200px;
+    min-width: 200px;
     height: 70px;
     font-size: 24px;
 }
 .button-normal{
-    width: 150px;
+    min-width: 150px;
     height: 50px;
     font-size: 16px;
 }
 .button-cta, .button-cta-reverse{
     border-radius: 20px;
+    padding: 0 20px;
     display: inline-block;
     position: relative;
     border: 2px solid #FBA059;

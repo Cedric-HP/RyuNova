@@ -5,7 +5,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/layout_style.scss";
 import Particle from "./components/particules"
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { useMemo } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -50,7 +49,6 @@ export default function RootLayout({
           <Navbar>
             {children}
           </Navbar>
-          <Footer/>
         </div>
       </body>
     </html>

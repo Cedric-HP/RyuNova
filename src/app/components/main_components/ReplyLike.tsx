@@ -4,6 +4,8 @@ import "../../../styles/components/main_components/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 import Avatar from "../small_components/Avatar";
+import { useGlobalContext } from "../Navbar";
+import languageList from "@/lib/language";
 const userName = "HYPERNOVA GBX"
 type Iprops = {
     id: number,
@@ -15,13 +17,16 @@ type Iprops = {
 }
 
 const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLike= false, like= 0, allowToggleReplyDisplay= false} ) => {
+    const { language } = useGlobalContext()
     const textareaElement = useRef<HTMLSpanElement | null>(null)
+
     const [displayReply, setTDisplayReply] = useState<boolean>(type === "user" ? false : true)
     const [displayButton, setTDisplayButton] = useState<boolean>(type === "user" ? true : false)
     const [commentInput, setCommentInput] = useState<string>("")
     const [isPlaceholder, setIsPlaceholder] = useState(true)
     const [testLike, setTestLike] = useState<boolean>(false)
-    const PLACEHOLDER = "Add Comment..."
+
+    const PLACEHOLDER = useMemo(()=> languageList[language].button.addComment + "...", [language])
 
     const imageSize = useMemo(()=> { 
         return type === "user" ? 30 : displayButton ? 50 : 30
@@ -44,7 +49,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                         setIsPlaceholder(false) 
             setTDisplayButton(set)
         }
-    },[allowToggleReplyDisplay, textareaElement])
+    },[PLACEHOLDER, allowToggleReplyDisplay])
 
     const removeSpanContent = useCallback(() => {
         if (displayButton && type !== "user") {
@@ -84,7 +89,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                 textareaElement.current.textContent = ""
             }
         }       
-    },[isPlaceholder])
+    },[PLACEHOLDER, isPlaceholder])
 
     useEffect(()=>{
         if (displayButton && type === "user")
@@ -96,7 +101,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
             {/* Like Section */}
             {displayLike ? <>
                 <div className="like-reply">
-                <button className="comment-like" onClick={()=> setTestLike((prevstate)=>!prevstate)}>
+                <button className="comment-button comment-like" onClick={()=> setTestLike((prevstate)=>!prevstate)}>
                     {testLike ? <>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +130,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                         {testLike ? `${numberReducerFormat(like + 1)}` : `${numberReducerFormat(like)}`}
                     </span>
                 </button>
-                <button className="link push-action" onClick={()=> handleToggleDisplayReply(true)}>Reply</button>
+                <button className="comment-button link push-action" onClick={()=> handleToggleDisplayReply(true)}>{languageList[language].button.respond}</button>
             </div>
             </> : <></>}
             {/* Reply / Add Comment Section*/}
@@ -149,17 +154,17 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                     {displayButton ? <>
                     <div className="button-reply">
                         <button 
-                            className="link push-action" 
+                            className="button-normal button-cta-reverse push-action" 
                             onClick={()=> handleCancel()}
                         >
-                            Cancel
+                            {languageList[language].button.cancel}
                         </button>
                         <button 
-                            className="link push-action" 
+                            className="button-normal button-cta push-action" 
                             disabled={commentInput.replaceAll("\n" ,"") === "" ? true : false} 
                             onClick={()=> handleSend()}
                         >
-                            {type === "user" ? "Reply" : "Add Comment"}
+                            {type === "user" ? languageList[language].button.respond : languageList[language].button.addComment}
                         </button>
                     </div>
                     </>:<></>}

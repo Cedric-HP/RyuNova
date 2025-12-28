@@ -3,6 +3,9 @@ import "../../../styles/components/main_components/comment_style.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
 import Avatar from "./Avatar";
+import { useGlobalContext } from "../Navbar";
+import languageList from "@/lib/language";
+
 type Iprops = {
     id: number,
     name: string,
@@ -12,7 +15,10 @@ type Iprops = {
 }
 
 const UserTile: FC<Iprops>  = ( {id= -1, name = "title", followers = 0, url = "url", size = 50} ) => {
+
+    const { language } = useGlobalContext()
     const [testFollow, setTestFollow] = useState<boolean>(false)
+
     return (
         <>  
             <div className="user-tile">
@@ -24,11 +30,14 @@ const UserTile: FC<Iprops>  = ( {id= -1, name = "title", followers = 0, url = "u
                     </div>
                     <div className="user-info">
                         <h3>{name}</h3>
-                        <p><span>{numberReducerFormat(followers)}</span> Followers</p>
+                        <p><span>{numberReducerFormat(followers)}</span> {followers > 1 ? 
+                        languageList[language].contentType.follower.plural :
+                        languageList[language].contentType.follower.singular
+                        }</p>
                     </div>
                 </div>
                 <button className={`button-normal push-action ${testFollow ? "button-cta-reverse" : "button-cta"}`} onClick={()=>setTestFollow((prestate)=> !prestate)}>
-                    {testFollow ? "Unfollow" : "Follow"}
+                    {testFollow ? languageList[language].button.unfollow : languageList[language].button.follow}
                 </button>
             </div>
         </>

@@ -1,4 +1,7 @@
-// STring Tool Section
+import languageList from "../language"
+import { LanguageInput } from "../types/contenteType"
+
+// String Tool Section
 
 const stringReducer = (rawString: string, maxLenght: number) => {
     if (rawString.length > maxLenght) {
@@ -53,38 +56,47 @@ const formattedValue = (value: number) => Intl.NumberFormat("no").format(value);
 
 // DATE Format Section
 
-const timeAgo = (date: Date | string | number): string => {
+const timeAgo = (rawdate: Date | string | number, language: LanguageInput): string => {
   const now = new Date().getTime();
-  const past = new Date(date).getTime();
+  const past = new Date(rawdate).getTime();
 
   const diffInSeconds = Math.floor((now - past) / 1000);
 
   if (diffInSeconds < 0) {
-    return "à l'instant";
+    return languageList[language].date.justNow;
   }
 
-  const units = [
-    { label: "an", seconds: 31536000 },
-    { label: "mois", seconds: 2592000 },
-    { label: "semaine", seconds: 604800 },
-    { label: "jour", seconds: 86400 },
-    { label: "heure", seconds: 3600 },
-    { label: "min", seconds: 60 },
-    { label: "seconde", seconds: 1 }
+  type Unit = {
+  label:
+  "year" |
+  "month" |
+  "week" |
+  "day" |
+  "hour" |
+  "minute" |
+  "second" ,
+  seconds: number 
+}
+
+  const units: Unit[] = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "week", seconds: 604800 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 },
+    { label: "second", seconds: 1 }
   ];
 
   for (const unit of units) {
     const value = Math.floor(diffInSeconds / unit.seconds);
-
     if (value >= 1) {
-      const plural =
-        value > 1 && unit.label !== "mois" ? "s" : "";
-
-      return `il y a ${value} ${unit.label}${plural}`;
+      const plural = value > 1 ? "plural" : "singular";
+      return `${languageList[language].date.prefix} ${value} ${languageList[language].date[unit.label][plural]} ${languageList[language].date.sufix}`;
     }
   }
 
-  return "à l'instant";
+  return languageList[language].date.justNow;
 }
 
 const formatDate = (date: Date | string | number): string =>{
@@ -96,3 +108,4 @@ const formatDate = (date: Date | string | number): string =>{
 }
 
 export {stringReducer, stringCuter, numberReducerFormat, timeAgo, formatDate, formattedValue}
+

@@ -14,28 +14,38 @@ import ArticlePreview from "../components/main_components/ArticlePreview";
 import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
 import UserList from "../components/main_components/UserList";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
+import { useGlobalContext } from "../components/Navbar";
+import languageList from "@/lib/language";
 
 const Search: FC = () => {
 
+    // Context and router
+
+    const { language } = useGlobalContext()
+    
     const router = useRouter()
 
     // Search Params and Pathname set
+
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
     //Search
+
     const search = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('search')
     }, [pathname, searchParams])
 
     //Tag
+
     const tag = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('tag')
     }, [pathname, searchParams])
 
     //Type
+
     const type: TypeImput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('type')
@@ -49,6 +59,7 @@ const Search: FC = () => {
     }, [pathname, router, search, searchParams, tag])
 
     //Sort
+
     const sort: SorterImput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
@@ -61,6 +72,8 @@ const Search: FC = () => {
         return "view"
     }, [pathname, router, search, searchParams, tag, type])
 
+    // State Declaration
+
     const [lastType, setLastType] = useState<TypeImput>(type)
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
     const [currentType, setCurrentType] = useState<TypeImput>(type)
@@ -70,6 +83,8 @@ const Search: FC = () => {
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
     const [resultList, setResultList] = useState<ContentData[]>([])
     const [userResultList, setUserResultList] = useState<UserData[]>([])
+
+    // Use Effect to set correctly the current type
 
     useEffect(()=>{
         if(lastType !== type) {
@@ -117,6 +132,8 @@ const Search: FC = () => {
         setTagInput(newTags.slice(0, -1).replaceAll("_", " "))
     }, [tagInput])
 
+    // Use Effect to change the route automatically based on dependencies
+
     useEffect(()=>{
         if (pathname === "/search" && (
                 currentSearch !== search || 
@@ -127,6 +144,8 @@ const Search: FC = () => {
             router.replace(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
         }
     },[currentSearch, currentSort, currentTag, currentType, lastType, pathname, router, search, sort, tag, type])
+
+    // Use Effect which simulates a fetch based on the type and dependencies
 
     useEffect(()=>{
         switch(currentType) {
@@ -144,25 +163,29 @@ const Search: FC = () => {
 
     return (
         <>  
+
+            {/* Search nav bar Section */}
             <section id="search-tool-section">
+
+                {/* Tag Section */}
                 <div id="tag-search">
                     <form id="tags" className="search-bar" onSubmit={handleTag}>
                         <input
                             name="tag"
                             type="search" 
-                            placeholder="Tags (Separe tags with space)"
+                            placeholder={languageList[language].placeHolders.tagsPlaceholder}
                             onChange={handleTagInput}
                             value={tagInput}
                         />
                         <button className="push-action" type="submit">
-                            Apply
+                            {languageList[language].button.apply}
                         </button>
                     </form>
                     <form className="search-bar" onSubmit={handleSearch}>
                         <input
                             name="search"
                             type="search" 
-                            placeholder="Search"
+                            placeholder={languageList[language].placeHolders.search}
                             onChange={handleSearchInput}
                             defaultValue={(search === undefined || search === null) ? "" : String(currentSearch)}
                         />
@@ -171,59 +194,87 @@ const Search: FC = () => {
                         </button>
                     </form>
                 </div>
+
+                {/* Sort and type Section */}
                 <div id="sorter-type">
+
+                    {/* Sort Section */}
                     <div id="sorter">
-                        <p>Sort By :</p>
+                        <p>{languageList[language].button.sortBy} :</p>
                         <button 
                         className={`link push-action ${currentSort === "view" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("view")}
                         >
-                            View
+                            {languageList[language].contentType.view.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "like" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("like")}
                         >
-                            Like
+                            {languageList[language].contentType.like.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "date" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("date")}
                         >
-                            Date
+                            {languageList[language].contentType.date.singular}
                         </button>
                     </div>
+
+                    {/* Type Section */}
                     <div id="type">
-                        <p>Type :</p>
+                        <p>{languageList[language].button.type} :</p>
                         <button 
                         className={`link push-action ${currentType === "image" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("image")}
                         >
-                            Image
+                            {languageList[language].contentType.image.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentType === "article" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("article")}
                         >
-                            Article
+                            {languageList[language].contentType.article.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentType === "user" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("user")}
                         >
-                            User
+                            {languageList[language].contentType.user.singular}
                         </button>
                     </div>
                 </div>
             </section>
             <hr className="section-separator"/>
+
+            {/* Result Section */}
             <section id="result-section">
+
+                {/* Result Info */}
                 <div id="result-info">
-                    <span>Result : {currentType === "user" ? 
+                    <span>{ currentType === "user" ? 
+                        (userResultList.length > 1 ? 
+                            languageList[language].contentType.result.plural : 
+                            languageList[language].contentType.result.singular
+                        ) :
+                        (resultList.length > 1 ? 
+                            languageList[language].contentType.result.plural : 
+                            languageList[language].contentType.result.singular
+                        )
+                        } : {currentType === "user" ? 
                         numberReducerFormat(userResultList.length) : 
-                        numberReducerFormat(resultList.length)}</span>
-                    <span>Tags : {String(currentTag).replaceAll("_", " ")}</span>
+                        numberReducerFormat(resultList.length)}
+                    </span>
+                    {currentTag !== "" ? <>
+                    <span>{currentTag.split("_").length > 1 ? 
+                        languageList[language].contentType.tag.plural :
+                        languageList[language].contentType.tag.singular
+                        } : {String(currentTag).replaceAll("_", " ")}
+                    </span>
+                    </> : <></>}
                 </div>
+
+                {/* Result list */}
                 {currentType === "image" ? <>
                     <BentoGallery elementList={contentSorter( resultList, currentSort )}/>
                 </> : <></>}
@@ -234,7 +285,7 @@ const Search: FC = () => {
                         <UserList userList={userSorter(userResultList, currentSort)}/>
                 </> : <></>}
                 { ( (resultList.length === 0 && currentType !== "user") || (userResultList.length === 0 && currentType === "user") )  ? <>
-                    <h3 id="no-result" className="spacing-letter-big glow">No Result found</h3>
+                    <h3 id="no-result" className="spacing-letter-big glow">{languageList[language].message.error.noResultFound}</h3>
                 </> : <></>}
             </section>
         </>

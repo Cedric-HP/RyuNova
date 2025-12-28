@@ -13,10 +13,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CommentModule from "@/app/components/main_components/CommentModule";
 import { defaultUser } from "@/lib/tools/DefaultValues";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
+import { useGlobalContext } from "@/app/components/Navbar";
+import languageList from "@/lib/language";
 
 const userAvatar: string = "/image/pictures/avatar/GBX_LOGO_Head_PNG.png"
 
 const LogingRegister: FC = () => {
+
+    const { language } = useGlobalContext()
 
     const { imageId } = useParams();
 
@@ -80,7 +84,7 @@ const LogingRegister: FC = () => {
                     </> : <></>}
             </> : <>
                 <section className="no-image-found">
-                    <h1>Image Not Found</h1>
+                    <h1>{languageList[language].message.error.imageNotFound}</h1>
                     <p>Image id : {imageId}</p>
                 </section>
             </>

@@ -1,16 +1,26 @@
 "use client"
 /* eslint-disable @next/next/no-img-element */
-import { FormEvent, type FC, type ReactNode } from "react";
+import { createContext, FormEvent, useContext, useState, type FC, type ReactNode } from "react";
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
 import Avatar from "./small_components/Avatar";
+import { GlobalContextType, LanguageInput } from "@/lib/types/contenteType";
+import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
+import Footer from "./Footer";
+import languageList from "@/lib/language";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
 };
+
+const GlobalContext = createContext<GlobalContextType>(globalContextDefaultValue);
+
+export function useGlobalContext() {
+    return useContext(GlobalContext)
+}
 
 const Navbar: FC<IProps> = ({ children }) => {
 
@@ -18,11 +28,19 @@ const Navbar: FC<IProps> = ({ children }) => {
 
     // Search Params and Pathname set
     const pathname = usePathname()
+
+    const [currentLanguage, setCurrentLanguage] = useState<LanguageInput>("en")
     
     const handleSearch = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         router.replace(`/search?search=${formData.get("search")}&type=image&sort=view&tag=`)
+    }
+
+    const handleLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value
+        if (value === "en" || value === "fr")
+            setCurrentLanguage(value)
     }
 
     return (
@@ -42,25 +60,29 @@ const Navbar: FC<IProps> = ({ children }) => {
                             <ul id="link-list">
                                 <li>
                                     <Link className="link push-action" href={"/"}>
-                                        Home
+                                        {languageList[currentLanguage].titles.home}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link className="link push-action" href={pathname === "/" ? "#gallery" : "/search?search=&type=image&sort=view&tag="}>
-                                        Gallery
+                                        {languageList[currentLanguage].titles.gallery}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link className="link push-action" href={pathname === "/" ? "#article" : "/search?search=&type=article&sort=view&tag="}>
-                                        Articles
+                                        {languageList[currentLanguage].contentType.article.plural}
                                     </Link>
                                 </li>
                                 <li>
                                     <Link className="link push-action" href={pathname === "/" ? "#event" : "/search?search=&type=image&sort=view&tag="}>
-                                        Events
+                                        {languageList[currentLanguage].titles.events}
                                     </Link>
                                 </li>
                             </ul>
+                            <select id="language-select" onChange={handleLanguage}>
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                            </select>
                             <div id="user">
                                 <div id="notification-container">
                                     <div id="notification-moon">
@@ -78,7 +100,13 @@ const Navbar: FC<IProps> = ({ children }) => {
                     <section id="search-nav">
                         {(pathname.includes("/image") || pathname.includes("/article") || pathname.includes("/profile")) ?
                         <>
-                            <button className="push-action link" onClick={()=>router.back()}><FontAwesomeIcon icon={faArrowLeft} />{`Previous`}</button>
+                            <button 
+                                className="push-action link" 
+                                onClick={()=>router.back()}
+                            >
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                                {languageList[currentLanguage].button.previous}
+                            </button>
                         </> : <>
                             <div></div>
                         </>
@@ -87,7 +115,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                             <input
                                 name="search"
                                 type="search" 
-                                placeholder="Search"
+                                placeholder={languageList[currentLanguage].placeHolders.search}
                             />
                             <button className="push-action" type="submit">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -99,9 +127,12 @@ const Navbar: FC<IProps> = ({ children }) => {
                     }
                 </nav>
             </header>
-            <main>
-                {children}
-            </main>
+            <GlobalContext value={{language: currentLanguage}}>
+                <main>
+                    {children}
+                </main>
+                <Footer/>
+            </GlobalContext>
         </>
     )
 }

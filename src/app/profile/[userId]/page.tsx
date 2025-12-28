@@ -6,6 +6,7 @@ import "../../../styles/pages/profile.scss"
 import { useParams } from "next/navigation";
 import { fecthFinderUser } from "@/lib/tools/usefecth";
 import Avatar from "@/app/components/small_components/Avatar";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 
 const LogingRegister: FC = () => {
 
@@ -25,7 +26,10 @@ const LogingRegister: FC = () => {
                 <div className="hero-height-2"></div>
                 <div className="user-hero-content-box">
                     <Avatar url={userData.avatarUrl} name={userData.name} size={200}/>
-                    <div className=""></div>
+                    <div className="user-hero-main-content">
+                        <h1>{userData.name}</h1>
+                        <span>{`${numberReducerFormat(userData.followers)} Followers . ${userData.images}`}</span>
+                    </div>
                 </div>
             </section>
             <hr className="section-separator"/>
