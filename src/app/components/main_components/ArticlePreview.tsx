@@ -21,10 +21,10 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
             elementList.map((item, index)=>{
                 return (
                     <li 
-                        className="article-item-list push-action apear" 
+                        className="article-item-list push-action appear-transform-scale" 
                         style={{animationDelay: `${(1*index)/25}s`}} 
                         key={`${item.title}_${index}`}
-                        onClick={()=>router.replace(`/article/${item.id}/#nav`)}
+                        onClick={()=>router.push(`/article/${item.id}/#nav`)}
                     >
                         <ViewLikeBundle view={item.views} like={item.likes}/>
                         <img className="article-image" src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>

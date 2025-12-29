@@ -1,5 +1,7 @@
 // Content Types
 
+import { RefObject } from "react"
+
 type ContentData = {
   id: number,
   title: string,
@@ -23,7 +25,7 @@ type UserData = {
   views: number,
   likes: number,
   images: number,
-  article: number,
+  articles: number,
   followers: number,
   createdAt: string,
 }
@@ -55,7 +57,8 @@ type LanguageData = {
   date: LanguageDate,
   placeHolders: LanguagePlaceHolder,
   alt: LanguageAlt,
-  message: LanguageMessage, 
+  message: LanguageMessage,
+  utilities: LanguageUtilities, 
 }
 type SingulaPlural = {
   singular: string,
@@ -144,10 +147,15 @@ type LanguageNotificationMessage = {
   noTag: string,
 }
 
-
 type LanguageErrorMessage = {
   noResultFound: string,
   imageNotFound: string,
+}
+
+type LanguageUtilities = {
+  languageName: string,
+  flagKey: string,
+  uniCode: string,
 }
 
 type Language = {
@@ -167,6 +175,7 @@ type TypeImput = "image" | "article" | "user" | "comment"
 
 type GlobalContextType = {
   language: LanguageInput,
+  mainElement: RefObject<HTMLElement | null>,
 }
 
 // Server Side Table Format

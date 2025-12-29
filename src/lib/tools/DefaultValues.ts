@@ -17,7 +17,7 @@ const defaultUser: UserData = {
     name: "deleted_user",
     avatarUrl:"",
     bannerUrl: "",
-    article: 0,
+    articles: 0,
     images: 0,
     createdAt: "",
     description: "",
@@ -27,7 +27,8 @@ const defaultUser: UserData = {
 }
 
 const globalContextDefaultValue: GlobalContextType = {
-    language: "en"
+    language: "en",
+    headerElement: null
 }
 
 export {defaultComment, defaultUser, globalContextDefaultValue}

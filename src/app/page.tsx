@@ -13,6 +13,7 @@ import { contentSorter } from "@/lib/tools/FilterSorter";
 import { useRouter } from 'next/navigation'
 import { useGlobalContext } from "./components/Navbar";
 import languageList from "@/lib/language";
+import { useEffect } from "react";
 
 const eventListPast: EventList[] = [
   {
@@ -55,7 +56,14 @@ const iconSize = 75;
 
 export default function Home() {
 
-  const { language } = useGlobalContext()
+  const { language, mainElement } = useGlobalContext()
+
+  // Use Effect to set the z-index of the main element to 0
+  
+  useEffect(()=>{
+      if(mainElement.current)
+          mainElement.current.style.zIndex = "0"
+  },[mainElement])  
 
   const router = useRouter()
 

@@ -19,10 +19,10 @@ const BentoGallery: FC<Iprops>  = ({elementList = []}) => {
             elementList.map((item, index)=>{
                 return (
                     <li 
-                        className="bento-box push-action apear" 
+                        className="bento-box push-action appear-transform-scale" 
                         style={{animationDelay: `${(1*index)/25}s`}} 
                         key={`${item.title}_${index}`} 
-                        onClick={()=>router.replace(`/image/${item.id}/#nav`)}
+                        onClick={()=>router.push(`/image/${item.id}/#nav`)}
                     >
                         <div className="bento-image">
                             <img src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>

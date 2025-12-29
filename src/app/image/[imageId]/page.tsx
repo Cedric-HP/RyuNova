@@ -20,7 +20,7 @@ const userAvatar: string = "/image/pictures/avatar/GBX_LOGO_Head_PNG.png"
 
 const LogingRegister: FC = () => {
 
-    const { language } = useGlobalContext()
+    const { language, mainElement } = useGlobalContext()
 
     const { imageId } = useParams();
 
@@ -31,6 +31,8 @@ const LogingRegister: FC = () => {
     const [fullScreenLimit, setFullScreenLimit] = useState<boolean>(false)
     const conmmentList = fecthFinderComment(content?.commentList || [])
 
+    // Use Effect that simule e fecth
+
     useEffect(()=>{
         if(content !== undefined) {
             const author = fecthFinderUser(content.authorId)
@@ -38,6 +40,18 @@ const LogingRegister: FC = () => {
                 setAuthorData(author)
         }
     },[content]) 
+
+    // Use Effect that changes the z-index of the main element when fullscreen is on
+
+    useEffect(()=>{
+        if (fullScreen) {
+            if(mainElement.current)
+                mainElement.current.style.zIndex = "3"
+        }
+        else
+            if(mainElement.current)
+                mainElement.current.style.zIndex = "0"    
+    },[fullScreen, mainElement])
     
     return (
         <>  
@@ -75,9 +89,13 @@ const LogingRegister: FC = () => {
                 </section>
                 <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userAvatar}/>
                 {fullScreen ? <>
-                    <div className="full-screen">
-                        <img className={fullScreenLimit ? "image-full image-full-limit" : "image-full"} src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>setFullScreenLimit((prevState)=>!prevState)}/>
-                        <button onClick={()=>setFullScreen(false)}>
+                    <div className="full-screen full-screen-blur">
+                        <div className="full-screen-button" onClick={()=>setFullScreen(false)}></div>
+                        <img className={fullScreenLimit ? "image-full image-full-limit appear" : "image-full appear"} src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>setFullScreenLimit((prevState)=>!prevState)}/>
+                        <button 
+                            onClick={()=>setFullScreen(false)}
+                            onKeyDown={()=>setFullScreen(false)}
+                        >
                             <FontAwesomeIcon icon={faXmark} />
                         </button>
                     </div>

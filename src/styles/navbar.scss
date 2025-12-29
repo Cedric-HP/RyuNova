@@ -1,3 +1,15 @@
+header{
+    position: relative;
+    z-index: 2;
+}
+main{
+    position: relative;
+    z-index: 0;
+}
+footer{
+    position: relative;
+    z-index: 1;
+}
 nav {
     width: 75vw;
     display: flex;
@@ -10,6 +22,8 @@ nav {
     width: 100%;
     }
     #top-nav{
+        position: relative;
+        z-index: 1;
         height: 95px;
         justify-content: space-between;
         align-items: center;
@@ -78,6 +92,8 @@ nav {
         }
     }
     #search-nav{
+        position: relative;
+        z-index: 0;
         display: flex;
         height: 65px;
         flex-flow: row nowrap;
@@ -94,9 +110,63 @@ nav {
     }
 }
 
+// Lang Select
+
+#language-selector{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    max-height: fit-content;
+    button {
+        padding: 10px 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+        transition: border 0.2s;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .select-container{
+        top: 50px;
+        left: -40px;
+        position: absolute;
+    }
+    ul{
+        list-style: none;
+        width: fit-content;
+        overflow-y: auto;
+        max-height: calc(36 * 4);
+        li{
+            z-index: 100;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            padding: 8px 10px;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            &:hover{
+                background-color: rgba(10, 42, 89, 0.5);  
+            }
+        }
+        .lang-selected{
+            background-color: rgba(10, 42, 89, 0.5);
+            p{
+                color: #FBA059;
+            }
+        }
+    }
+}
+
 // Search Bar
 
 .search-bar{
+    z-index: 0;
     height: 38px;
     width: 300px;
     background-color: rgba(7, 13, 39, 0.5);

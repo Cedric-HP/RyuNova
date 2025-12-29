@@ -18,6 +18,7 @@
     "@tsparticles/slim": "^3.9.1",
     "next": "15.5.2",
     "react": "19.1.0",
+    "react-circle-flags": "^0.0.25",
     "react-dom": "19.1.0",
     "sass": "^1.91.0",
     "sass-export": "^2.1.2"

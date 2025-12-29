@@ -1,6 +1,6 @@
 "use client"
 /* eslint-disable @next/next/no-img-element */
-import { createContext, FormEvent, useContext, useState, type FC, type ReactNode } from "react";
+import { createContext, FormEvent, useContext, useRef, useState, type FC, type ReactNode } from "react";
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +11,7 @@ import { GlobalContextType, LanguageInput } from "@/lib/types/contenteType";
 import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
 import Footer from "./Footer";
 import languageList from "@/lib/language";
+import { CircleFlag } from "react-circle-flags";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -29,7 +30,10 @@ const Navbar: FC<IProps> = ({ children }) => {
     // Search Params and Pathname set
     const pathname = usePathname()
 
+    const mainRef = useRef<HTMLElement | null>(null)
+
     const [currentLanguage, setCurrentLanguage] = useState<LanguageInput>("en")
+    const [isLangSelectOpen, setIsLangSelectOpen] = useState<boolean>(false)
     
     const handleSearch = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -37,10 +41,9 @@ const Navbar: FC<IProps> = ({ children }) => {
         router.replace(`/search?search=${formData.get("search")}&type=image&sort=view&tag=`)
     }
 
-    const handleLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        if (value === "en" || value === "fr")
-            setCurrentLanguage(value)
+    const handleLanguage = (lang: LanguageInput) => {
+        setIsLangSelectOpen(false)    
+        setCurrentLanguage(lang)
     }
 
     return (
@@ -79,10 +82,36 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     </Link>
                                 </li>
                             </ul>
-                            <select id="language-select" onChange={handleLanguage}>
-                                <option value="en">English</option>
-                                <option value="fr">Français</option>
-                            </select>
+                            <div id="language-selector" aria-roledescription="listbox">
+                                <button 
+                                    className="link"
+                                    onClick={()=>setIsLangSelectOpen(!isLangSelectOpen)}
+                                    onKeyDownCapture={()=>setIsLangSelectOpen(!isLangSelectOpen)}
+                                >   
+                                    <p>{languageList[currentLanguage].utilities.uniCode}</p>
+                                    <CircleFlag countryCode={languageList[currentLanguage].utilities.flagKey} height={20}/>
+                                </button>
+                                <div className={isLangSelectOpen ? "custom-select-appear select-container" : "custom-select-disappear select-container"}>
+                                    <ul>
+                                        <li 
+                                            className={currentLanguage === "en" ? "option-selected" : ""}
+                                            onClick={()=>handleLanguage("en")}
+                                            onKeyDown={()=>handleLanguage("en")}
+                                        >
+                                            <CircleFlag countryCode={languageList.en.utilities.flagKey} height={20}/>
+                                            <p>{languageList.en.utilities.languageName}</p>
+                                        </li>
+                                        <li 
+                                            className={currentLanguage === "fr" ? "option-selected" : ""}
+                                            onClick={()=>handleLanguage("fr")}
+                                            onKeyDown={()=>handleLanguage("fr")}
+                                        >
+                                            <CircleFlag countryCode={languageList.fr.utilities.flagKey} height={20}/>
+                                            <p>{languageList.fr.utilities.languageName}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div id="user">
                                 <div id="notification-container">
                                     <div id="notification-moon">
@@ -127,8 +156,8 @@ const Navbar: FC<IProps> = ({ children }) => {
                     }
                 </nav>
             </header>
-            <GlobalContext value={{language: currentLanguage}}>
-                <main>
+            <GlobalContext value={{language: currentLanguage, mainElement: mainRef}}>
+                <main ref={mainRef}>
                     {children}
                 </main>
                 <Footer/>
@@ -138,3 +167,4 @@ const Navbar: FC<IProps> = ({ children }) => {
 }
 
 export default Navbar
+

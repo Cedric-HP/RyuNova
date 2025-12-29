@@ -382,16 +382,72 @@ h1{
     }
 }
 
-// Apear Animation
+// Select Container
 
-.apear{
-    animation: apearAnimation 1s backwards;
-}
-.apear-user{
-    animation: apearUserAnimation 1s backwards;
+.select-container{
+    display: flex;
+    align-items: flex-start !important;
+    backdrop-filter: blur(5px) brightness(0.8);
+    border: 1px solid #0A2A59;
+    background-color: rgba(7, 13, 39, 0.5);
+    width: fit-content;
+    border-radius: 12px;
+    overflow: hidden;
+    ul{
+        list-style: none;
+        width: fit-content;
+        overflow-y: auto;
+        max-height: calc(36 * 4);
+        li{
+            z-index: 100;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            padding: 8px 10px;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            &:hover{
+                background-color: rgba(10, 42, 89, 0.5);  
+            }
+        }
+        .option-selected{
+            background-color: rgba(10, 42, 89, 0.5);
+            p{
+                color: #FBA059;
+            }
+        }
+    }
 }
 
-@keyframes apearAnimation {
+// Appear Animation
+
+.appear{
+    animation: appear-animation 0.3s backwards;
+}
+
+@keyframes appear-transform-scale-animation {
+    0% {
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+// Appear transform scale Animation
+
+.appear-transform-scale{
+    animation: appear-transform-scale-animation 1s backwards;
+}
+.appear-transform-scale-user{
+    animation: appear-transform-scale-user-animation 1s backwards;
+}
+
+@keyframes appear-transform-scale-animation {
     0% {
         opacity: 0;
         transform: scale(0.9);
@@ -405,7 +461,7 @@ h1{
         transform: scale(1);
     }
 }
-@keyframes apearUserAnimation {
+@keyframes appear-transform-scale-user-animation {
     0% {
         opacity: 0;
         transform: scale(0.9);
@@ -417,5 +473,76 @@ h1{
     100% {
         opacity: 1; 
         transform: scale(1);
+    }
+}
+
+// Animation full screen blur appear
+
+.full-screen-blur{
+    animation: full-screen-blur-appear 1 0.2s both ;
+}
+
+@keyframes full-screen-blur-appear {
+    0% {
+        backdrop-filter: blur(0) brightness(1);
+    }
+    100% {
+        backdrop-filter: blur(5px) brightness(0.8);
+    }
+}
+
+// Custom Select Appear and disappear Animation
+
+.custom-select-appear{
+    animation: custom-select-appear-animation 1 0.3s both ;
+}
+
+.custom-select-disappear{
+    animation: custom-select-disappear-animation 1 0.6s both ;
+}
+
+@keyframes custom-select-appear-animation {
+    0%{
+        display: flex;
+        height: 0;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        background-color: #EBECFA;
+    }
+    100%{
+        height: calc(36 * 4);
+        border-radius: 12px;
+        border: 1px solid #0A2A59;
+        background-color: rgba(7, 13, 39, 0.5);
+    }
+}
+
+@keyframes custom-select-disappear-animation {
+    0%{
+        height: calc(36 * 4);
+        border-radius: 12px;
+        border: 1px solid #0A2A59;
+        opacity: 1;
+        background-color: rgba(7, 13, 39, 0.5);
+    }
+    50%{
+        height: 1px;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 1;
+        background-color: #EBECFA;
+    }
+    99%{
+        height: 1px ;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 0;
+    }
+    100%{
+        height: 1px ;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 0;
+        display: none;
     }
 }
