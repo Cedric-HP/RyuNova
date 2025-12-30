@@ -12,6 +12,7 @@ import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
 import Footer from "./Footer";
 import languageList from "@/lib/language";
 import { CircleFlag } from "react-circle-flags";
+import useWindowSize from "@/lib/tools/useWindowSize";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -31,6 +32,8 @@ const Navbar: FC<IProps> = ({ children }) => {
     const pathname = usePathname()
 
     const mainRef = useRef<HTMLElement | null>(null)
+
+    const windowSize = useWindowSize()
 
     const [currentLanguage, setCurrentLanguage] = useState<LanguageInput>("en")
     const [isLangSelectOpen, setIsLangSelectOpen] = useState<boolean>(false)
@@ -156,7 +159,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                     }
                 </nav>
             </header>
-            <GlobalContext value={{language: currentLanguage, mainElement: mainRef}}>
+            <GlobalContext value={{language: currentLanguage, mainElement: mainRef, windowSize: windowSize}}>
                 <main ref={mainRef}>
                     {children}
                 </main>

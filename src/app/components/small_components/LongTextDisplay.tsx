@@ -8,7 +8,8 @@ type Iprops = {
 
 const LongTextDisplay: FC<Iprops>  = ( {text = "Text Here", sizeCute = 100, displayFull = false} ) => {
     const textList = stringCuter(text, "\n")
-    const textListShort = stringCuter(stringReducer(text, sizeCute), "\n")
+    const reducedText = stringReducer(text, sizeCute)
+    const textListShort = stringCuter(reducedText.text, "\n")
     return (
         <>  
             <div className="text-section">
@@ -17,6 +18,9 @@ const LongTextDisplay: FC<Iprops>  = ( {text = "Text Here", sizeCute = 100, disp
                 }) : textListShort.map((item, index)=>{
                     return <p key={index}>{item}</p>
                 }) }
+                {!displayFull && reducedText.isReduced ? <>
+                <div className="text-section-fade"></div>
+                </> : <></>}
             </div>
         </>
     )

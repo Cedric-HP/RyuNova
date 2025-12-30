@@ -171,11 +171,17 @@ type SorterImput = "view" | "like" | "date" | "follower"
 
 type TypeImput = "image" | "article" | "user" | "comment"
 
+type WindowSize = {
+  width: number | undefined,
+  height: number | undefined,
+}
+
 // Context Type
 
 type GlobalContextType = {
   language: LanguageInput,
   mainElement: RefObject<HTMLElement | null>,
+  windowSize: WindowSize,
 }
 
 // Server Side Table Format
@@ -205,5 +211,6 @@ export type {
   Language, 
   LanguageData, 
   LanguageInput,
-  GlobalContextType
+  GlobalContextType,
+  WindowSize
 }

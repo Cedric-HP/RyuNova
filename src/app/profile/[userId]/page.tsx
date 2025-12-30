@@ -6,17 +6,18 @@ import "../../../styles/pages/profile.scss"
 import { useParams } from "next/navigation";
 import { fecthFinderUser } from "@/lib/tools/usefecth";
 import Avatar from "@/app/components/small_components/Avatar";
-import { numberReducerFormat } from "@/lib/tools/stringTools";
+import { handleLongTextSize, numberReducerFormat } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "@/app/components/Navbar";
 import languageList from "@/lib/language";
 import LongTextDisplay from "@/app/components/small_components/LongTextDisplay";
+import { Exo_2 } from "next/font/google";
 
 const LogingRegister: FC = () => {
 
-    const { language, mainElement } = useGlobalContext()
+    const { language, mainElement, windowSize } = useGlobalContext()
     const { userId } = useParams();
     const userData = fecthFinderUser( Number(userId))
-    
+
     return (
         <>  {userData ? <>
             <section className="user-hero">
@@ -53,7 +54,9 @@ const LogingRegister: FC = () => {
                             }` : 
                             ""}
                         </span>
-                        <LongTextDisplay text={userData.description} sizeCute={200} displayFull={false}/>
+                        <LongTextDisplay text={userData.description} sizeCute={handleLongTextSize(0.75, 2, 260, windowSize.width, 8)} displayFull={false}/>
+                        <span>{windowSize.width}width</span>
+                        <span>{windowSize.height}height</span>
                     </div>
                 </div>
             </section>

@@ -50,6 +50,9 @@
         .user-hero-main-content{
             height: 100%;
             width: 100%;
+            .text-section{
+                max-height: 50px;
+            }
         }
     }
 }
