@@ -6,12 +6,10 @@ import "../../../styles/pages/profile.scss"
 import { useParams } from "next/navigation";
 import { fecthFinderUser } from "@/lib/tools/usefecth";
 import Avatar from "@/app/components/small_components/Avatar";
-import { handleLongTextSize, numberReducerFormat } from "@/lib/tools/stringTools";
+import { numberReducerFormat } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "@/app/components/Navbar";
 import languageList from "@/lib/language";
-import LongTextDisplay from "@/app/components/small_components/LongTextDisplay";
-import { Exo_2 } from "next/font/google";
-
+import LongTextDisplay from "@/app/components/main_components/LongTextDisplay";
 const LogingRegister: FC = () => {
 
     const { language, mainElement, windowSize } = useGlobalContext()
@@ -54,9 +52,8 @@ const LogingRegister: FC = () => {
                             }` : 
                             ""}
                         </span>
-                        <LongTextDisplay text={userData.description} sizeCute={handleLongTextSize(0.75, 2, 260, windowSize.width, 8)} displayFull={false}/>
-                        <span>{windowSize.width}width</span>
-                        <span>{windowSize.height}height</span>
+                        <LongTextDisplay text={userData.description} displayFull={false} row={2}/>
+                        
                     </div>
                 </div>
             </section>

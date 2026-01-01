@@ -1,7 +1,7 @@
 import "../../../styles/components/main_components/image_description.scss"
 import Link from "next/link";
 import { useState, type FC } from "react";
-import LongTextDisplay from "../small_components/LongTextDisplay";
+import LongTextDisplay from "./LongTextDisplay";
 import { formatDate, formattedValue, numberReducerFormat, timeAgo } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
@@ -30,7 +30,7 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     </span>
                     <p>{displayFull ? formatDate(date) : timeAgo(date, language)}</p>
                 </div>
-                <LongTextDisplay text={description} sizeCute={300} displayFull={displayFull}/>
+                <LongTextDisplay text={description} displayFull={displayFull} row={3}/>
                 { displayFull ? <>
                 <hr className="section-separator"/>
                 <div className="tags-list-section">

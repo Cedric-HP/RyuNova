@@ -1,25 +1,14 @@
-import { RefObject } from "react"
+
 import languageList from "../language"
 import { LanguageInput } from "../types/contenteType"
-import React from "react"
 
 // String Tool Section
 
-type TextReduced = {
-  text: string,
-  isReduced: boolean,
-}
-
 const stringReducer = (rawString: string, maxLenght: number) => {
-  const returnText:TextReduced = {
-    text: "",
-    isReduced: false
-  }
     if (rawString.length > maxLenght) {
-        returnText.text = rawString.slice(0, (maxLenght))
-        returnText.isReduced = true
+        return rawString.slice(0, (maxLenght))
     }
-    return returnText
+    return rawString
 }
 
 const stringCuter = (rawString: string, pattern: string) => {
@@ -28,38 +17,9 @@ const stringCuter = (rawString: string, pattern: string) => {
 
 // Long Text Size Calculator depending on sreen size
 
-const handleLongTextSize = (textAreaSizePercentage: number, textRow: number, textOffSet: number, screenWidth: number | undefined, fontSize: number) => {
-  if (screenWidth)
-    return Math.floor( ( (screenWidth*textAreaSizePercentage - textOffSet)  / fontSize) * textRow )
-  return 100
+const handleLongTextSize = (textRow: number, containerWidth: number, fontSize: number) => {
+  return Math.floor( ( containerWidth  / fontSize) * textRow )
 }
-
-// Element Overflow detector
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-const useIsOverflow = (ref: RefObject<HTMLElement | null>, callback: Function | undefined) => {
-  const [isOverflow, setIsOverflow] = React.useState<boolean | undefined>(undefined);
-
-  React.useLayoutEffect(() => {
-    const { current } = ref;
-
-    const trigger = () => {
-      if(current) {
-        const hasOverflow = current.scrollHeight > current.clientHeight;
-
-        setIsOverflow(hasOverflow);
-
-      if (callback) callback(hasOverflow);
-      } 
-    };
-
-    if (current) {
-      trigger();
-    }
-  }, [callback, ref]);
-
-  return isOverflow;
-};
 
 // Number Format Section
 
@@ -160,7 +120,6 @@ export {
     timeAgo, 
     formatDate, 
     formattedValue,
-    handleLongTextSize,
-    useIsOverflow
+    handleLongTextSize
 }
 

@@ -1,6 +1,6 @@
 import "../../../styles/components/main_components/comment_style.scss"
 import { useState, type FC } from "react";
-import LongTextDisplay from "../small_components/LongTextDisplay";
+import LongTextDisplay from "./LongTextDisplay";
 import ReplyLike from "./ReplyLike";
 import { timeAgo } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "../Navbar";
