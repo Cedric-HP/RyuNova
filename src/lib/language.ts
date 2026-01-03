@@ -1,6 +1,6 @@
 import languageEnglish from "./languageFiles/english";
 import languageFrancais from "./languageFiles/francais";
-import type { Language } from "./types/contenteType";
+import type { Language } from "./types/languageType";
 
 const languageList: Language = {
     en: languageEnglish,

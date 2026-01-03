@@ -1,4 +1,4 @@
-import { LanguageData } from "../types/contenteType"
+import { LanguageData } from "../types/languageType"
 
 const languageEnglish: LanguageData = {
     titles:{

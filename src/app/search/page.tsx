@@ -5,7 +5,8 @@
 import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
-import { ContentData, SorterImput, TypeImput, UserData } from "@/lib/types/contenteType";
+import { ContentData, UserData } from "@/lib/types/contenteType";
+import {  SorterImput, TypeImput } from "@/lib/types/utilitisesType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
@@ -57,7 +58,7 @@ const Search: FC = () => {
         if (pathname === "/search") {
             const input = searchParams.get('type')
             if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
-                router.replace(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
+                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
                 return "image"
             } 
             return input
@@ -70,10 +71,10 @@ const Search: FC = () => {
     const sort: SorterImput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
-            if ( (input !== "view" && input !== "like" && input !== "date" ) || input === undefined) {
-                router.replace(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
+            if ( (input !== "view" && input !== "like" && input !== "date" && input !== "follower") || input === undefined || (input === "follower" && type !== "user")) {
+                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
                 return "view"
-            }   
+            } 
             return input
         }
         return "view"
@@ -82,6 +83,7 @@ const Search: FC = () => {
     // State Declaration
 
     const [lastType, setLastType] = useState<TypeImput>(type)
+    const [lastSort, setLastSort] = useState<SorterImput>(sort)
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
     const [currentType, setCurrentType] = useState<TypeImput>(type)
     const [currentSort, setCurrentSort] = useState<SorterImput>(sort)
@@ -91,14 +93,18 @@ const Search: FC = () => {
     const [resultList, setResultList] = useState<ContentData[]>([])
     const [userResultList, setUserResultList] = useState<UserData[]>([])
 
-    // Use Effect to set correctly the current type
+    // Use Effect to correctly set the current type and sort
 
     useEffect(()=>{
         if(lastType !== type) {
             setCurrentType(type)
             setLastType(type)
         }
-    },[lastType, type])
+        if(lastSort !== sort) {
+            setCurrentSort(sort)
+            setLastSort(sort)
+        }
+    },[lastSort, lastType, sort, type])
 
     const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setSearchInput(String(e.currentTarget.value).trim())
@@ -109,7 +115,7 @@ const Search: FC = () => {
         event.preventDefault();
         setCurrentSearch(searchInput)
         if(pathname !== "/search")
-            router.replace(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
+            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
     },[currentSearch, currentSort, currentTag, currentType, pathname, router, searchInput])
 
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
@@ -148,7 +154,7 @@ const Search: FC = () => {
                 currentTag !== tag || 
                 (currentType !== type && lastType === type) 
             )) {
-            router.replace(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
+            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
         }
     },[currentSearch, currentSort, currentTag, currentType, lastType, pathname, router, search, sort, tag, type])
 
@@ -226,6 +232,15 @@ const Search: FC = () => {
                         >
                             {languageList[language].contentType.date.singular}
                         </button>
+                        {currentType === "user" ? <>
+                        <button 
+                        className={`link push-action ${currentSort === "follower" ? "sort-selected" : ""}`}
+                        onClick={()=>setCurrentSort("follower")}
+                        >
+                            {languageList[language].contentType.follower.singular}
+                        </button>
+                        </> : <></>
+                        }
                     </div>
 
                     {/* Type Section */}

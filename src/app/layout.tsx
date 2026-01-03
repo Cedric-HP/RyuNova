@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import { useMemo } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import { Providers } from "./components/Provider";
 config.autoAddCss = false
 
 const geistSans = Geist({
@@ -44,11 +45,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div id="body" >
-          <div id= "filter"></div>
-          {particlesElement}
-          <Navbar>
-            {children}
-          </Navbar>
+           <Providers>
+              <div id= "filter"></div>
+              {particlesElement}
+              <Navbar>
+                {children}
+              </Navbar>
+           </Providers>
         </div>
       </body>
     </html>

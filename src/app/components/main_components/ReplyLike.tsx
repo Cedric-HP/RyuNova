@@ -1,5 +1,5 @@
 "use client"
-import { TypeImput } from "@/lib/types/contenteType";
+import { TypeImput } from "@/lib/types/utilitisesType";
 import "../../../styles/components/main_components/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { numberReducerFormat } from "@/lib/tools/stringTools";

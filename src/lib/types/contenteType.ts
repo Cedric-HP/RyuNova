@@ -1,6 +1,5 @@
 // Content Types
 
-import { RefObject } from "react"
 
 type ContentData = {
   id: number,
@@ -48,142 +47,6 @@ type CommentData = {
   isReply: boolean,
 }
 
-// Language Types
-
-type LanguageData = {
-  titles: LanguageTitles,
-  contentType: LanguageContentType,
-  button: LanguageButton,
-  date: LanguageDate,
-  placeHolders: LanguagePlaceHolder,
-  alt: LanguageAlt,
-  message: LanguageMessage,
-  utilities: LanguageUtilities, 
-}
-type SingulaPlural = {
-  singular: string,
-  plural: string,
-}
-
-type LanguageTitles = {
-  homeMainTitle: string,
-  homeSecondTitle: string,
-  featuredPicturesGallery: string,
-  featuredArticles: string,
-  upcommingAstronomicalEvents: string,
-  home: string,
-  gallery: string,
-  events: string,
-  content: string,
-  legalInformation: string,
-  termsOfService: string,
-  privacyPolicy: string,
-  copyrightNotification: string,
-  intellectualPropertyRights: string,
-}
-
-type LanguageContentType = {
-  article: SingulaPlural,
-  comment: SingulaPlural,
-  date: SingulaPlural,
-  follower: SingulaPlural,
-  image: SingulaPlural,
-  like: SingulaPlural,
-  reply: SingulaPlural,
-  user: SingulaPlural,
-  view: SingulaPlural,
-  tag: SingulaPlural,
-  result: SingulaPlural, 
-}
-
-type LanguageButton = {
-  signUp: string,
-  logIn: string,
-  seeMore: string,
-  seeLess: string,
-  readMore: string,
-  apply: string,
-  sortBy: string,
-  type: string,
-  addComment: string,
-  respond: string,
-  hide: SingulaPlural,
-  cancel: string,
-  previous: string,
-  follow: string,
-  unfollow: string,
-}
-
-type LanguageDate = {
-  year: SingulaPlural,
-  month: SingulaPlural,
-  week: SingulaPlural,
-  day: SingulaPlural,
-  hour: SingulaPlural,
-  minute: SingulaPlural,
-  second: SingulaPlural,
-  prefix: string,
-  sufix: string,
-  justNow: string,
-}
-
-type LanguagePlaceHolder = {
-  search: string,
-  tagsPlaceholder: string,
-}
-
-type LanguageAlt = {
-  button: string,
-  by: string,
-  link: string,
-}
-
-type LanguageMessage = {
-  notification: LanguageNotificationMessage,
-  error: LanguageErrorMessage,
-}
-
-type LanguageNotificationMessage = {
-  noTag: string,
-}
-
-type LanguageErrorMessage = {
-  noResultFound: string,
-  imageNotFound: string,
-}
-
-type LanguageUtilities = {
-  languageName: string,
-  flagKey: string,
-  uniCode: string,
-}
-
-type Language = {
-  en: LanguageData,
-  fr: LanguageData
-}
-
-// Uyility Types
-
-type LanguageInput = "en" | "fr"
-
-type SorterImput = "view" | "like" | "date" | "follower"
-
-type TypeImput = "image" | "article" | "user" | "comment"
-
-type WindowSize = {
-  width: number | undefined,
-  height: number | undefined,
-}
-
-// Context Type
-
-type GlobalContextType = {
-  language: LanguageInput,
-  mainElement: RefObject<HTMLElement | null>,
-  windowSize: WindowSize,
-}
-
 // Server Side Table Format
 
 type ImageServerData = {
@@ -203,14 +66,7 @@ type ImageServerData = {
 
 export type {
   ContentData, 
-  EventList, 
-  SorterImput, 
-  TypeImput, 
+  EventList,
   UserData, 
-  CommentData, 
-  Language, 
-  LanguageData, 
-  LanguageInput,
-  GlobalContextType,
-  WindowSize
+  CommentData
 }

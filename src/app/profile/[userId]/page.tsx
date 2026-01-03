@@ -10,6 +10,7 @@ import { numberReducerFormat } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "@/app/components/Navbar";
 import languageList from "@/lib/language";
 import LongTextDisplay from "@/app/components/main_components/LongTextDisplay";
+import FollowButton from "@/app/components/small_components/FollowButton";
 const LogingRegister: FC = () => {
 
     const { language, mainElement, windowSize } = useGlobalContext()
@@ -53,12 +54,17 @@ const LogingRegister: FC = () => {
                             ""}
                         </span>
                         <LongTextDisplay text={userData.description} displayFull={false} row={2}/>
-                        
+                        <div className="user-hero-main-buttons">
+                            <FollowButton urserId={userData.id}/>
+                        </div>
                     </div>
                 </div>
             </section>
             <hr className="section-separator"/>
-        </> : <></>}
+        </> : <>
+        <h3>No User Found</h3>
+        <p>User Id : {userId}</p>
+        </>}
         </>
     )
 }

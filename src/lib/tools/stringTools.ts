@@ -1,6 +1,6 @@
 
 import languageList from "../language"
-import { LanguageInput } from "../types/contenteType"
+import { LanguageInput } from "../types/utilitisesType"
 
 // String Tool Section
 
@@ -28,11 +28,11 @@ const numberReducerFormat = (rawNumber: number) => {
         return `${rawNumber}`
     // K
     if (rawNumber >= 1000 && rawNumber < 10000)
-        return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} k`
+        return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} K`
     if (rawNumber >= 10000 && rawNumber < 100000)
-         return `${String(rawNumber).slice(0,2)} k`
+         return `${String(rawNumber).slice(0,2)} K`
     if (rawNumber >= 100000 && rawNumber < 1000000)
-         return `${String(rawNumber).slice(0,3)} k`
+         return `${String(rawNumber).slice(0,3)} K`
     // M
     if (rawNumber >= 1000000 && rawNumber < 10000000)
         return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} M`
@@ -42,11 +42,11 @@ const numberReducerFormat = (rawNumber: number) => {
          return `${String(rawNumber).slice(0,3)} M`
     // Md
     if (rawNumber >= 1000000000 && rawNumber < 10000000000)
-        return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} Md`
+        return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} G`
     if (rawNumber >= 10000000000 && rawNumber < 100000000000)
-         return `${String(rawNumber).slice(0,2)} Md`
+         return `${String(rawNumber).slice(0,2)} G`
     if (rawNumber >= 100000000000 && rawNumber < 1000000000000)
-         return `${String(rawNumber).slice(0,3)} Md`
+         return `${String(rawNumber).slice(0,3)} G`
     // T
     if (rawNumber >= 1000000000000 && rawNumber < 10000000000000)
         return `${String(rawNumber).charAt(0)},${String(rawNumber).charAt(1)} T`

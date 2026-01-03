@@ -25,6 +25,19 @@ body {
     scroll-behavior: smooth;
 }
 
+header{
+    position: relative;
+    z-index: 1;
+}
+main{
+    position: relative;
+    z-index: 0;
+}
+footer{
+    position: relative;
+    z-index: 1;
+}
+
 /* Pour les navigateurs qui prennent en charge les propriétés `scrollbar-*` */
 
 @supports (scrollbar-color: auto) {
@@ -503,21 +516,6 @@ h1{
     100% {
         opacity: 1; 
         transform: scale(1);
-    }
-}
-
-// Animation full screen blur appear
-
-.full-screen-blur{
-    animation: full-screen-blur-appear 1 0.2s both ;
-}
-
-@keyframes full-screen-blur-appear {
-    0% {
-        backdrop-filter: blur(0) brightness(1);
-    }
-    100% {
-        backdrop-filter: blur(5px) brightness(0.8);
     }
 }
 

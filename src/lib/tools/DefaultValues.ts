@@ -1,4 +1,5 @@
-import { CommentData, GlobalContextType, UserData } from "../types/contenteType"
+import { CommentData, ContentData,UserData } from "../types/contenteType"
+import { GlobalContextType } from "../types/utilitisesType"
 
 const defaultComment: CommentData = {
     id: -1,
@@ -26,9 +27,32 @@ const defaultUser: UserData = {
     followers: 0
 }
 
-const globalContextDefaultValue: GlobalContextType = {
-    language: "en",
-    headerElement: null
+const defaultContent: ContentData = {
+    author: "",
+    authorId: -1,
+    commentList: [],
+    createdAt: "",
+    description: "",
+    id: -1,
+    likes: 0,
+    tags: [],
+    title: "",
+    url: "",
+    views: 0
 }
 
-export {defaultComment, defaultUser, globalContextDefaultValue}
+const globalContextDefaultValue: GlobalContextType = {
+    language: "en",
+    mainElement: null,
+    windowSize:  {
+        height: 0,
+        width: 0
+    }
+}
+
+export {
+    defaultComment, 
+    defaultUser, 
+    globalContextDefaultValue,
+    defaultContent
+}

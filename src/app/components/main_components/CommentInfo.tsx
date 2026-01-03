@@ -27,7 +27,7 @@ const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:
                     <span>{timeAgo(date, language)}</span>
                 </div>
                 {commentLenght > 200 ? <>
-                <LongTextDisplay text={comment} sizeCute={200} displayFull={displayFull}/>
+                <LongTextDisplay text={comment} row={2} displayFull={displayFull}/>
                 <button 
                     className="comment-button link push-action" 
                     onClick={()=>setTDisplayFull((prevState)=> !prevState)}

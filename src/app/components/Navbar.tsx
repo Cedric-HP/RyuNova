@@ -7,12 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
 import Avatar from "./small_components/Avatar";
-import { GlobalContextType, LanguageInput } from "@/lib/types/contenteType";
+import { GlobalContextType, LanguageInput } from "@/lib/types/utilitisesType";
 import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
 import Footer from "./Footer";
 import languageList from "@/lib/language";
 import { CircleFlag } from "react-circle-flags";
 import useWindowSize from "@/lib/tools/useWindowSize";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
+import FullScreenComponent from "./fullscreen_components/FullScreenDisplay";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -25,6 +28,11 @@ export function useGlobalContext() {
 }
 
 const Navbar: FC<IProps> = ({ children }) => {
+
+    const { fullScreenDisplayed } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
+    const dispatch: AppDispatch = useDispatch()
 
     const router = useRouter()
 
@@ -164,6 +172,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                     {children}
                 </main>
                 <Footer/>
+                <FullScreenComponent/>
             </GlobalContext>
         </>
     )
