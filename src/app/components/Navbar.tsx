@@ -29,20 +29,20 @@ export function useGlobalContext() {
 
 const Navbar: FC<IProps> = ({ children }) => {
 
+    // Reducer
     const { fullScreenDisplayed } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
     const dispatch: AppDispatch = useDispatch()
 
-    const router = useRouter()
-
     // Search Params and Pathname set
     const pathname = usePathname()
+    const router = useRouter()
 
-    const mainRef = useRef<HTMLElement | null>(null)
-
+    // Window Size Context
     const windowSize = useWindowSize()
 
+    // Language Selector and Context
     const [currentLanguage, setCurrentLanguage] = useState<LanguageInput>("en")
     const [isLangSelectOpen, setIsLangSelectOpen] = useState<boolean>(false)
     
@@ -167,8 +167,8 @@ const Navbar: FC<IProps> = ({ children }) => {
                     }
                 </nav>
             </header>
-            <GlobalContext value={{language: currentLanguage, mainElement: mainRef, windowSize: windowSize}}>
-                <main ref={mainRef}>
+            <GlobalContext value={{language: currentLanguage, windowSize: windowSize}}>
+                <main>
                     {children}
                 </main>
                 <Footer/>

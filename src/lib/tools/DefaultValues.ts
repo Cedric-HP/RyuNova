@@ -1,4 +1,4 @@
-import { CommentData, ContentData,UserData } from "../types/contenteType"
+import { CommentData, ContentData,ProfileData,UserData } from "../types/contenteType"
 import { GlobalContextType } from "../types/utilitisesType"
 
 const defaultComment: CommentData = {
@@ -43,16 +43,35 @@ const defaultContent: ContentData = {
 
 const globalContextDefaultValue: GlobalContextType = {
     language: "en",
-    mainElement: null,
     windowSize:  {
         height: 0,
         width: 0
     }
 }
 
+const defaultUserData: ProfileData = {
+    id: -1,
+    name: "deleted_user",
+    avatarUrl:"",
+    bannerUrl: "",
+    description: "",
+    views: 0,
+    likes: 0,
+    images: [],
+    imageLiked: [],
+    followers: 0,
+    followed: [],
+    commentLiked: [],
+    commentPosted: [],
+    articles: [],
+    articleLiked: [],
+    createdAt: "", 
+}
+
 export {
     defaultComment, 
     defaultUser, 
     globalContextDefaultValue,
-    defaultContent
+    defaultContent,
+    defaultUserData
 }

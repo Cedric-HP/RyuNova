@@ -13,7 +13,11 @@ import { contentSorter } from "@/lib/tools/FilterSorter";
 import { useRouter } from 'next/navigation'
 import { useGlobalContext } from "./components/Navbar";
 import languageList from "@/lib/language";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
+import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
+import { LogRegImput } from "@/lib/types/utilitisesType";
+import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegAction";
 
 const eventListPast: EventList[] = [
   {
@@ -56,28 +60,43 @@ const iconSize = 75;
 
 export default function Home() {
 
-  const { language, mainElement } = useGlobalContext()
+  // Reducer
+  const { accessToken } = useSelector(
+      (store: RootState) => store.auth
+  )
+  const dispatch: AppDispatch = useDispatch()
 
-  // Use Effect to set the z-index of the main element to 0
+  // Language Context
+  const { language } = useGlobalContext()
   
-  useEffect(()=>{
-      if(mainElement.current)
-          mainElement.current.style.zIndex = "0"
-  },[mainElement])  
-
+  // Router
   const router = useRouter()
+
+  const handleLogReg = (type: LogRegImput) => {
+    dispatch(setLogRegAction(type))
+    dispatch(setFullScreenAction("log-reg"))
+  }
 
   return (
     <>
+      {accessToken === "" ? <>
       {/* Hero Section */}
       <section id="hero">
         <h1 className="glow spacing-letter-big">{languageList[language].titles.homeMainTitle}</h1>
         <p>{languageList[language].titles.homeSecondTitle}</p>
         <div id="hero-buttons">
-          <button className="button-cta button-big push-action">{languageList[language].button.signUp}</button>
-          <button className="button-cta-reverse button-big push-action">{languageList[language].button.logIn}</button>
+          <button 
+            className="button-cta button-big push-action" 
+            onClick={()=>handleLogReg("reg")}
+            onKeyDown={()=>handleLogReg("reg")}
+          >{languageList[language].button.signUp}</button>
+          <button 
+            className="button-cta-reverse button-big push-action"
+            onClick={()=>handleLogReg("log")}
+            onKeyDown={()=>handleLogReg("log")}
+          >{languageList[language].button.logIn}</button>
         </div>
-      </section>
+      </section></> : <></>}
       <hr className="section-separator"/>
 
       {/* Tag Section */}

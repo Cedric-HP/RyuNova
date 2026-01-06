@@ -29,6 +29,25 @@ type UserData = {
   createdAt: string,
 }
 
+type ProfileData = {
+  id: number,
+  name: string,
+  description: string,
+  avatarUrl: string,
+  bannerUrl: string,
+  views: number,
+  likes: number,
+  images: number[],
+  imageLiked: number[],
+  articles: number[],
+  articleLiked: number[],
+  followers: number,
+  followed: number[],
+  commentPosted: number[],
+  commentLiked: number[],
+  createdAt: string,
+}
+
 type EventList = {
   title: string,
   date: string,
@@ -47,26 +66,10 @@ type CommentData = {
   isReply: boolean,
 }
 
-// Server Side Table Format
-
-type ImageServerData = {
-  id: number,
-  title: string,
-  authorId: number,
-  imageType: string,
-  imageName: string,
-  imageData: string,
-  description: string,
-  views: number,
-  likes: number,
-  commentList: number[],
-  tags: string[],
-  createdAt: Date,
-}
-
 export type {
   ContentData, 
   EventList,
   UserData, 
-  CommentData
+  CommentData,
+  ProfileData
 }

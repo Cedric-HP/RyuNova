@@ -3,9 +3,11 @@ import { createReducer } from "@reduxjs/toolkit"
 import setFullScreenAction from "./actions/setFullScreenAction"
 import { defaultContent } from "@/lib/tools/DefaultValues"
 import setCurrentImageAction from "./actions/setCurrentImageAction"
+import setLogRegAction from "./actions/setLogRegAction"
 
 const initialState: UtilitisesReducerType = {
     fullScreenDisplayed: "",
+    logReg: "log",
     currentImage: defaultContent
 }
 
@@ -17,6 +19,9 @@ const utilitisesReducer = createReducer<UtilitisesReducerType>(
         })
         .addCase(setCurrentImageAction, (state, action) => {
             state.currentImage = action.payload
+        })
+        .addCase(setLogRegAction, (state, action) => {
+            state.logReg = action.payload
         })
     }
 )

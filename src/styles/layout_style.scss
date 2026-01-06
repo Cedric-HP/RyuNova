@@ -183,6 +183,35 @@ h1{
     }
 }
 
+// Input Style
+
+.base-input{
+    background-color: transparent;
+    border: 1px solid #EBECFA;
+    height: 25px;
+    border-radius: 12px;
+    font-size: 1rem;
+    padding: 5px 10px;
+    color: #9f9fa7;
+    outline: none;
+    transition: color 0.2s, border-color 0.2s;
+    &:hover{
+        color: #EBECFA;
+    }
+    &:focus{
+        color: #EBECFA;
+        border-color: #FBA059;
+        backdrop-filter: blur(5px) britghness(0.8);
+    }
+}
+
+.input-valid{
+    border-color: greenyellow;
+}
+.input-invalid{
+    border-color: red;
+}
+
 // Button Cta Styles
 
 .button-big, .button-normal {
@@ -265,16 +294,20 @@ h1{
     border: none;
 }
 
+
 // Button CTA Hover Animation
 
 .button-cta:hover{
     color: #FBA059;
-    // background-color: #070D27;
 }
 .button-cta-reverse:hover{
     color: #070D27;
-    // background-color: #FBA059;
 }
+
+.button-disable{
+    opacity: 0.5;
+}
+
 .button-like:hover{
     border-color: #FBA059;
     svg{
