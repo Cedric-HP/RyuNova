@@ -1,12 +1,10 @@
 "use client"
 
-// import Link from "next/link";
-// import Image from "next/image";
 import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
 import { ContentData, UserData } from "@/lib/types/contenteType";
-import {  SorterImput, TypeImput } from "@/lib/types/utilitisesType";
+import {  SorterInput, TypeInput } from "@/lib/types/utilitisesType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
@@ -22,14 +20,7 @@ const Search: FC = () => {
 
     // Context and router
 
-    const { language, mainElement } = useGlobalContext()
-
-    // Use Effect to set the z-index of the main element to 0
-
-    useEffect(()=>{
-        if(mainElement.current)
-            mainElement.current.style.zIndex = "0"
-    },[mainElement])
+    const { language } = useGlobalContext()
     
     const router = useRouter()
 
@@ -38,23 +29,23 @@ const Search: FC = () => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    //Search
+    //Search Param
 
     const search = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('search')
     }, [pathname, searchParams])
 
-    //Tag
+    //Tag Param
 
     const tag = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('tag')
     }, [pathname, searchParams])
 
-    //Type
+    //Type Param
 
-    const type: TypeImput = useMemo( ()=> {
+    const type: TypeInput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('type')
             if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
@@ -66,9 +57,9 @@ const Search: FC = () => {
         return "image"
     }, [pathname, router, search, searchParams, tag])
 
-    //Sort
+    //Sort Param
 
-    const sort: SorterImput = useMemo( ()=> {
+    const sort: SorterInput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
             if ( (input !== "view" && input !== "like" && input !== "date" && input !== "follower") || input === undefined || (input === "follower" && type !== "user")) {
@@ -82,11 +73,11 @@ const Search: FC = () => {
 
     // State Declaration
 
-    const [lastType, setLastType] = useState<TypeImput>(type)
-    const [lastSort, setLastSort] = useState<SorterImput>(sort)
+    const [lastType, setLastType] = useState<TypeInput>(type)
+    const [lastSort, setLastSort] = useState<SorterInput>(sort)
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
-    const [currentType, setCurrentType] = useState<TypeImput>(type)
-    const [currentSort, setCurrentSort] = useState<SorterImput>(sort)
+    const [currentType, setCurrentType] = useState<TypeInput>(type)
+    const [currentSort, setCurrentSort] = useState<SorterInput>(sort)
     const [currentTag, setCurrentTag] = useState<string>(tag || "")
     const [searchInput, setSearchInput] = useState<string>(search || "")
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")

@@ -118,7 +118,11 @@ const languageFrancais: LanguageData = {
     },
     placeHolders:{
         search: "Rechercher",
-        tagsPlaceholder: "Tags (Séparez les Tags avec des espaces)"
+        tagsPlaceholder: "Tags (Séparez les Tags avec des espaces)",
+        name: "Nom",
+        email: "Email",
+        password: "Mot de passe",
+        confirmPassword: "Confirmer le mot de passe"
     },
     alt:{
         button: "Bouton",
@@ -131,7 +135,15 @@ const languageFrancais: LanguageData = {
         },
         error: {
             imageNotFound: "Image introuvable",
-            noResultFound: "Aucun résultat trouvé"
+            noResultFound: "Aucun résultat trouvé",
+            nameTooShort: "Nom trop court! (Min 3 Caractère)",
+            nameTooLong: "Nom trop long! (Max 50 Character)",
+            nameAlreadyExist: "Le nom existe déjà!",
+            emaiInvalid: "Email invalide",
+            emailAlreadyExist: "L'Email existe déjà!",
+            passwordTooShort: "Mot de passe trop court! (Min 8 caractères)",
+            passwordMustHaveSPCharacter: "Le mot de passe doit avoir un caractère spécial!",
+            confPasswordNotIndentical: "Mot de passe non identique!"
         }
     },
     utilities: {

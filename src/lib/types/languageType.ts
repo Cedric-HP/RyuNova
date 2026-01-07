@@ -78,6 +78,10 @@ type LanguageDate = {
 type LanguagePlaceHolder = {
   search: string,
   tagsPlaceholder: string,
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
 }
 
 type LanguageAlt = {
@@ -98,6 +102,14 @@ type LanguageNotificationMessage = {
 type LanguageErrorMessage = {
   noResultFound: string,
   imageNotFound: string,
+  nameTooShort: string,
+  nameTooLong: string,
+  nameAlreadyExist: string,
+  emaiInvalid: string,
+  emailAlreadyExist: string,
+  passwordTooShort: string,
+  passwordMustHaveSPCharacter: string,
+  confPasswordNotIndentical: string,
 }
 
 type LanguageUtilities = {

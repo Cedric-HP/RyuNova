@@ -13,7 +13,7 @@ import LongTextDisplay from "@/app/components/main_components/LongTextDisplay";
 import FollowButton from "@/app/components/small_components/FollowButton";
 const LogingRegister: FC = () => {
 
-    const { language, mainElement, windowSize } = useGlobalContext()
+    const { language, windowSize } = useGlobalContext()
     const { userId } = useParams();
     const userData = fecthFinderUser( Number(userId))
 

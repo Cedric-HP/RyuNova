@@ -1,8 +1,8 @@
-import { RegisterImput, RegisterRespond } from "@/lib/types/utilitisesType";
+import { RegisterInput, RegisterRespond } from "@/lib/types/utilitisesType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-const SERVER_URL = process.env.SERVER_URL
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000'
 
-const postRegisterAction = createAsyncThunk<RegisterRespond, RegisterImput>(
+const postRegisterAction = createAsyncThunk<RegisterRespond, RegisterInput>(
   "AUTH_SLICE/postRegister",
   async ({ name, email, password }) => {
     try {

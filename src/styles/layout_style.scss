@@ -188,13 +188,15 @@ h1{
 .base-input{
     background-color: transparent;
     border: 1px solid #EBECFA;
-    height: 25px;
+    height: calc(25px - 0.33px);
+    max-height: calc(25px - 0.33px);
+    min-height: calc(25px - 0.33px);
     border-radius: 12px;
     font-size: 1rem;
     padding: 5px 10px;
     color: #9f9fa7;
     outline: none;
-    transition: color 0.2s, border-color 0.2s;
+    transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
     &:hover{
         color: #EBECFA;
     }
@@ -210,6 +212,10 @@ h1{
 }
 .input-invalid{
     border-color: red;
+    &:focus{
+        border-color: red;
+        box-shadow: 0 0 7px red;
+    } 
 }
 
 // Button Cta Styles
@@ -237,7 +243,7 @@ h1{
     font-family: "Michroma", sans-serif;
     text-align: center;
     text-decoration: underline;
-    transition: color 0.2s, background-color 0.2s, transform 0.1s;
+    transition: color 0.2s, background-color 0.2s, transform 0.1s, opacity 0.2s;
     overflow: hidden;
 }
 .button-cta{
@@ -305,7 +311,7 @@ h1{
 }
 
 .button-disable{
-    opacity: 0.5;
+    opacity: 0.30;
 }
 
 .button-like:hover{

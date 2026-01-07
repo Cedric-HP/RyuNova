@@ -118,7 +118,11 @@ const languageEnglish: LanguageData = {
     },
     placeHolders:{
         search: "Search",
-        tagsPlaceholder: "Tags (Separate tags with spaces)"
+        tagsPlaceholder: "Tags (Separate tags with spaces)",
+        name: "Name",
+        email: "Email",
+        password: "Password",
+        confirmPassword: "Confirm Password"
     },
     alt:{
         button: "Button",
@@ -131,7 +135,15 @@ const languageEnglish: LanguageData = {
         },
         error: {
             imageNotFound: "Image not found",
-            noResultFound: "No result found"
+            noResultFound: "No result found",
+            nameTooShort: "Name too short! (Min 3 Character)",
+            nameTooLong: "Name too long! (Max 50 Character)",
+            nameAlreadyExist: "Name already exist!",
+            emaiInvalid: "Email invalid",
+            emailAlreadyExist: "Email already exist!",
+            passwordTooShort: "Password too short! (Min 8 Character)",
+            passwordMustHaveSPCharacter: "Password must have special character!",
+            confPasswordNotIndentical: "Password not identical!"
         }
     },
     utilities: {

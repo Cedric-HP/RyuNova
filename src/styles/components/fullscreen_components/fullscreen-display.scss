@@ -121,7 +121,7 @@
     z-index: 2;
     padding: 20px;
     border: 2px solid #EBECFA;
-    background-color: rgba(7, 13, 39, 0.5);
+    background-color: rgba(7, 13, 39, 0.8);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -137,22 +137,49 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
         .input-logreg-container{
             display: flex;
             position: relative;
             flex-direction: column;
             gap: 5px;
-            input, p{
+            max-height: 50px;
+            min-height: 50px;
+            overflow: hidden;
+            transition: heigth 0.2s, max-heigth 0.2s, min-heigth 0.2s;
+            input{
                 margin: 0 70px;
+            }
+            p {
+                width: 100%;
+                height: 20px;
+                min-height: 20px;
+                text-align: center;
+            }
+            input{
+                margin-top: 7px;
+                width: 250px;
             }
             span{
                 position: absolute;
                 width: 36px;
                 height: 36px;
-                top: 0;
+                top: 7px;
                 right: 0;
             }
         }
+        .input-logreg-container-error{
+            animation: error-appear 0.2s 1 both;
+            max-height: 70px;
+        }
     }
 }
+ @keyframes error-appear {
+    0% {
+        height: 50px;
+    }
+    100%{
+        height: 70px;
+        
+    }
+ }
