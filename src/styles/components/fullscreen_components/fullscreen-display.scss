@@ -172,6 +172,17 @@
             animation: error-appear 0.2s 1 both;
             max-height: 70px;
         }
+        .button-logreg-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 70px;
+            width: 250px;
+            gap: 10px;
+            .link{
+                font-size: 0.85rem;
+            }
+        }
     }
 }
  @keyframes error-appear {
@@ -180,6 +191,5 @@
     }
     100%{
         height: 70px;
-        
     }
  }

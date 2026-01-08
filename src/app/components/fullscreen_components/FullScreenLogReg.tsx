@@ -7,23 +7,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
-import { InputStateInput, IsTyping } from "@/lib/types/utilitisesType";
-import checkDuplicateAction from "@/lib/reducers/authSliceReducer/actions/checkDuplicateAction";
-import setRegisterFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/setRegisterFetchStateIdleAction";
+import { InputStateInput } from "@/lib/types/utilitisesType";
+import checkDuplicateAction from "@/lib/reducers/authSliceReducer/actions/logReg/checkDuplicateAction";
+import setRegisterFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/logReg/setRegisterFetchStateIdleAction";
 import SpanInputFetchState from "../small_components/SpanInputFetchState";
 import { setRegisterFetchTypeAction } from "@/lib/reducers/authSliceReducer/authSlice";
 import validator from 'validator';
-import postRegisterAction from "@/lib/reducers/authSliceReducer/actions/postRegisterAction";
+import postRegisterAction from "@/lib/reducers/authSliceReducer/actions/logReg/postRegisterAction";
 import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegAction";
-
-let isTypingTimeOut: ReturnType<typeof setTimeout> | null = null
+import resetRegisterStateAction from "@/lib/reducers/authSliceReducer/actions/logReg/resetRegisterStateAction";
+import postLoginAction from "@/lib/reducers/authSliceReducer/actions/logReg/postLoginAction";
+import resetLoginStateAction from "@/lib/reducers/authSliceReducer/actions/logReg/resetLoginAction";
+import setLoginFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/logReg/setLoginFetchStateIdleAction";
+import useIsTyping from "@/lib/tools/useIsTyping";
 
 const regularExpression = /^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
 const FullScreenLogReg: FC  = () => {
 
     // Reducers
-    const { accessToken, register } = useSelector(
+    const { accessToken, register, login } = useSelector(
         (store: RootState) => store.auth
     )
     const { logReg } = useSelector(
@@ -40,9 +43,11 @@ const FullScreenLogReg: FC  = () => {
             dispatch(setFullScreenAction(""))
     },[accessToken, dispatch])
 
+    // Use IsTyping
+    const {isTyping, handleTyping} = useIsTyping()
+
     // useStates Section
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
-    const [isTyping, setIsTyping] = useState<IsTyping>({state: false, type: ""})
     const [isValidatorEmail, setIsValidatorEmail] = useState<boolean>(false)
 
     // Input Valid States
@@ -52,14 +57,10 @@ const FullScreenLogReg: FC  = () => {
     const [isConfPasswordValid, setIsConfPasswordValid] = useState<InputStateInput>("idle")
 
     // Input Data States
-    // Register
     const [nameInput, setNameInput] = useState<string>("")
-    const [emailInputReg, setEmailInputReg] = useState<string>("")
-    const [passwordInputReg, setPasswordInputReg] = useState<string>("")
+    const [emailInput, setEmailInput] = useState<string>("")
+    const [passwordInput, setPasswordInput] = useState<string>("")
     const [confPasswordInput, setConfPasswordInput] = useState<string>("")
-    // Login
-    const [emailInputLog, setEmailInputLog] = useState<string>("")
-    const [passwordInputLog, setPasswordInputLog] = useState<string>("")
 
     // Error States
     const [nameError, setNameError] = useState<string>("")
@@ -67,41 +68,42 @@ const FullScreenLogReg: FC  = () => {
     const [passwordError, setPasswordError] = useState<string>("")
     const [confPasswordError, setConfPasswordError] = useState<string>("")
 
-    // Is Typing Handler
-    const handleTyping = (type: string) => {
-        if (isTypingTimeOut !== null) {
-            clearTimeout(isTypingTimeOut);
-            isTypingTimeOut = null
-        }
-        else setIsTyping((prevState)=>{
-            const newState = {...prevState}
-            newState.state = true
-            newState.type = type
-            return newState
-        })   
-        isTypingTimeOut = setTimeout(() => {
-            setIsTyping((prevState)=>{
-            const newState = {...prevState}
-            newState.state = false
-            return newState
-        })
-            isTypingTimeOut = null
-        }, 1000);
+
+    // Fonction to reset form input
+    const resetFormInput = () => {
+        setNameInput("")
+        setEmailInput("")
+        setPasswordInput("")
+        setConfPasswordInput("")
     }
+
+
+    // Use Effect to reset states when changing form
+    useEffect(()=>{
+        if(logReg === "reg")
+            resetFormInput()
+        if (logReg === "log")
+            resetFormInput()
+    },[logReg])
+
+
+    // Is Typing Handler
+    
         
+
     // Input handler
     const handleNameInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setNameInput(String(e.currentTarget.value))
         handleTyping("name")
     }
 
-    const handleEmailInputReg = (e: React.ChangeEvent<HTMLInputElement >) => {
-        setEmailInputReg(String(e.currentTarget.value))
+    const handleEmailInput= (e: React.ChangeEvent<HTMLInputElement >) => {
+        setEmailInput(String(e.currentTarget.value))
         handleTyping("email")
     }
 
-    const handlePasswordInputReg = (e: React.ChangeEvent<HTMLInputElement >) => {
-        setPasswordInputReg(String(e.currentTarget.value))
+    const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement >) => {
+        setPasswordInput(String(e.currentTarget.value))
         handleTyping("password")
     }
 
@@ -110,14 +112,24 @@ const FullScreenLogReg: FC  = () => {
         handleTyping("confPassword")
     }
 
-    // UseEffect to handle Register Fetch state
 
+    // UseEffect to handle Fetch state
+    // Register
     useEffect(()=>{
         if (register.fetch.fetchState === "done" || register.fetch.fetchState === "error")
             setTimeout(() => {
                 dispatch(setRegisterFetchStateIdleAction())
             }, 500);
     },[dispatch, register.fetch.fetchState])
+
+    // Login
+    useEffect(()=>{
+        if (login.fetch.fetchState === "done" || login.fetch.fetchState === "error")
+            setTimeout(() => {
+                dispatch(setLoginFetchStateIdleAction())
+            }, 500);
+    },[dispatch, login.fetch.fetchState])
+
 
     // Use Effect to Validate inputs
     // Name
@@ -159,8 +171,8 @@ const FullScreenLogReg: FC  = () => {
 
     // Email
     useEffect(()=>{
-        setIsValidatorEmail(validator.isEmail(emailInputReg))
-        if (emailInputReg === "") {
+        setIsValidatorEmail(validator.isEmail(emailInput))
+        if (emailInput === "") {
             setIsEmailValid("idle")
             setEmailError("")
             return
@@ -170,53 +182,78 @@ const FullScreenLogReg: FC  = () => {
             setEmailError(languageList[language].message.error.emaiInvalid)
             return
         }
-        if ( 
-            (isValidatorEmail && register.emailValid.valid !== "valid" && !isTyping.state && emailInputReg !== register.emailValid.value && register.fetch.fetchState === "idle") ||
-            (isValidatorEmail && register.emailValid.valid === "valid" && !isTyping.state && emailInputReg !== register.emailValid.value && register.fetch.fetchState === "idle")
-        ) {
-            setIsEmailValid("idle")
-            setEmailError("")
-            dispatch(setRegisterFetchTypeAction("email"))
-            dispatch(checkDuplicateAction({type: "email", value: emailInputReg}))
+
+        // For Register
+        if (logReg === "reg") {
+            if ( 
+                (isValidatorEmail && register.emailValid.valid !== "valid" && !isTyping.state && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle") ||
+                (isValidatorEmail && register.emailValid.valid === "valid" && !isTyping.state && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle")
+            ) {
+                setIsEmailValid("idle")
+                setEmailError("")
+                dispatch(setRegisterFetchTypeAction("email"))
+                dispatch(checkDuplicateAction({type: "email", value: emailInput}))
+                return
+            }
+            if (register.emailValid.valid === "invalid" && emailInput === register.emailValid.value) {
+                setIsEmailValid("invalid")
+                setEmailError(languageList[language].message.error.emailAlreadyExist)
+                return
+            }
+            if (register.emailValid.valid === "valid" && emailInput === register.emailValid.value) {
+                setIsEmailValid("valid")
+            }
             return
         }
-        if (register.emailValid.valid === "invalid" && emailInputReg === register.emailValid.value) {
-            setIsEmailValid("invalid")
-            setEmailError(languageList[language].message.error.emailAlreadyExist)
-            return
+
+        // For LogIn
+        if (logReg === "log") {
+            if (isValidatorEmail) {
+                setIsEmailValid("valid")
+            }
         }
-        if (register.emailValid.valid === "valid" && emailInputReg === register.emailValid.value) {
-            setIsEmailValid("valid")
-        }
-    },[dispatch, emailInputReg, isTyping, isValidatorEmail, language, register.emailValid.valid, register.emailValid.value, register.fetch.fetchState, register.nameValid.valid])
+    },[dispatch, emailInput, isTyping, isValidatorEmail, language, logReg, register.emailValid.valid, register.emailValid.value, register.fetch.fetchState, register.nameValid.valid])
 
     // Password
     useEffect(()=>{
-        if (passwordInputReg === "") {
+        if (passwordInput === "") {
             setIsPasswordValid("idle")
             setConfPasswordError("") 
             return
         }
-        if(passwordInputReg.length < 8 && !isTyping.state){
-            setIsPasswordValid("invalid")
-            setPasswordError(languageList[language].message.error.passwordTooShort)
-            return
+
+       // For Register
+        if (logReg === "reg") {
+            if(passwordInput.length < 8 && !isTyping.state){
+                setIsPasswordValid("invalid")
+                setPasswordError(languageList[language].message.error.passwordTooShort)
+                return
+            }
+            if (!regularExpression.test(passwordInput) && !isTyping.state) {
+                setIsPasswordValid("invalid")
+                setPasswordError(languageList[language].message.error.passwordMustHaveSPCharacter)
+                return
+            }
+            if(regularExpression.test(passwordInput) && !isTyping.state) {
+                setIsPasswordValid("valid")
+                setConfPasswordError("") 
+                return
+            }
         }
-        if (!regularExpression.test(passwordInputReg) && !isTyping.state) {
-            setIsPasswordValid("invalid")
-            setPasswordError(languageList[language].message.error.passwordMustHaveSPCharacter)
-            return
+        
+        // For Login
+        if (logReg === "log") {
+            if(passwordInput.length > 8 && !isTyping.state){
+                setIsPasswordValid("valid")
+                setConfPasswordError("") 
+                return
+            }
         }
-        if(regularExpression.test(passwordInputReg) && !isTyping.state) {
-            setIsPasswordValid("valid")
-            setConfPasswordError("") 
-            return
-        }
-    },[isTyping, language, passwordInputReg])
+    },[isTyping, language, logReg, passwordInput])
 
     // Confirm Password
     useEffect(()=>{
-        if (passwordInputReg === confPasswordInput && !isTyping.state && isPasswordValid === "valid") {
+        if (passwordInput === confPasswordInput && !isTyping.state && isPasswordValid === "valid") {
             setIsConfPasswordValid("valid")
             setConfPasswordError("")
             return
@@ -228,19 +265,32 @@ const FullScreenLogReg: FC  = () => {
         else {
             setIsConfPasswordValid("idle")
         }
-    },[confPasswordInput, isPasswordValid, isTyping, language, passwordInputReg])
+    },[confPasswordInput, isPasswordValid, isTyping, language, passwordInput])
+
 
     // Use Effect to allow submission when all inputs are valid
     useEffect(()=>{
-        if (
-            isNameValid === "valid" && 
-            isEmailValid === "valid" &&
-            isPasswordValid === "valid" &&
-            isConfPasswordValid === "valid"
-        )
-        setCanSubmit(true)
-        else setCanSubmit(false)
-    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid])
+        if (logReg === "reg") {
+            if (
+                isNameValid === "valid" && 
+                isEmailValid === "valid" &&
+                isPasswordValid === "valid" &&
+                isConfPasswordValid === "valid"
+            )
+            setCanSubmit(true)
+            else setCanSubmit(false)
+            return
+        }
+        if (logReg === "log") {
+            if (
+                isEmailValid === "valid" &&
+                isPasswordValid === "valid"
+            )
+            setCanSubmit(true)
+            else setCanSubmit(false)
+        }
+    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid, logReg])
+
 
     // Handle Register
     const handleRegister = useCallback( async (formdata: FormData) => {
@@ -253,31 +303,67 @@ const FullScreenLogReg: FC  = () => {
             })
         );
     },[dispatch]);
+    
+    // Handle Login
+    const handleLogin = useCallback( async (formdata: FormData) => {
+        dispatch(setRegisterFetchTypeAction("register"))
+        dispatch(
+            postLoginAction({
+                email: String(formdata.get("email")),
+                password: String(formdata.get("password")),
+            })
+        );
+    },[dispatch]);
+
+
     // FormeData
+    // Register
     const handleSubmitRegister = useCallback((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        console.log({
-            name: String(formData.get("name")),
-            email: String(formData.get("email")),
-            password: String(formData.get("password"))
-        })
         handleRegister(formData);
     },[handleRegister])
 
-    // Use Effect After Succefull Register Submit
+    // Login
+    const handleSubmitLogin = useCallback((event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        handleLogin(formData);
+    },[handleLogin])
 
+
+    // Use Effect that handles respond Register Submit
     useEffect(()=>{
         if (register.registerValid.state === "valid") {
-            setNameInput("")
-            setEmailInputReg("")
-            setPasswordInputReg("")
-            setConfPasswordInput("")
             setTimeout(()=>{
+                resetFormInput()
+                dispatch(resetRegisterStateAction())
                 dispatch(setLogRegAction("log"))
             },2000)
+            return
+        }
+        if (register.registerValid.state === "invalid") {
+            console.log("SA MARCHE PAS!!")
+            return
         }    
-    },[dispatch, register.registerValid.state])
+    },[dispatch, register.registerValid, register.registerValid.state])
+
+    // Use Effect that handles respond Login Submit
+    useEffect(()=>{
+        if (login.loginValid.state === "valid") {
+            setTimeout(()=>{
+                resetFormInput()
+                dispatch(resetLoginStateAction())
+                dispatch(setFullScreenAction(""))
+            },2000)
+            return
+        }
+        if (login.loginValid.state === "invalid") {
+            console.log("SA MARCHE PAS!!")
+            return
+        }    
+    },[dispatch, login.loginValid.state])
+
 
     return ( 
         <>
@@ -290,31 +376,10 @@ const FullScreenLogReg: FC  = () => {
             </button>
             <div className="full-screen-popup full-screen-lor-reg">
                 {logReg === "log" ? <>
+
+                {/* Login Section */}
                 <h2 className="spacing-letter-big glow">{languageList[language].button.logIn}</h2>
-                <form action="">
-                </form>
-                
-                </> : <>
-                <h2 className="spacing-letter-big glow">{languageList[language].button.signUp}</h2>
-                <form action="" onSubmit={handleSubmitRegister}>
-                    {register.registerValid.state === "valid" ? <></> : <>
-                    <div className={`input-logreg-container ${isNameValid === "invalid" ? "input-logreg-container-error" : ""}`}>
-                        <input 
-                            name="name" 
-                            className={`base-input 
-                                ${isNameValid === "valid" ? "input-valid" : 
-                                isNameValid === "invalid" ? "input-invalid" : ""}`} 
-                            type="text" 
-                            placeholder="Name"
-                            onChange={handleNameInput}
-                        />
-                        <SpanInputFetchState 
-                            state={(register.fetch.fetchState === "feching" && register.fetchType === "name") ? "feching" : isNameValid} 
-                            isTyping={isTyping} 
-                            type="name"                           
-                        />
-                        <p>{nameError}</p>
-                    </div>
+                <form action="LogIn" onSubmit={handleSubmitLogin}>
                     <div className={`input-logreg-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="email" 
@@ -323,7 +388,8 @@ const FullScreenLogReg: FC  = () => {
                                 isEmailValid === "invalid" ? "input-invalid" : ""}`} 
                             type="email" 
                             placeholder="Email"
-                            onChange={handleEmailInputReg}
+                            onChange={handleEmailInput}
+                            disabled={(login.fetch.fetchState === "feching" || login.loginValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={ (register.fetch.fetchState === "feching" && register.fetchType === "email") ? "feching" : isEmailValid}
@@ -340,7 +406,92 @@ const FullScreenLogReg: FC  = () => {
                                 isPasswordValid === "invalid" ? "input-invalid" : ""}`} 
                             type="password" 
                             placeholder="Password"
-                            onChange={handlePasswordInputReg}
+                            onChange={handlePasswordInput}
+                            disabled={(login.fetch.fetchState === "feching" || login.loginValid.state === "valid")}
+                        />
+                        <SpanInputFetchState 
+                            state={isPasswordValid}
+                            isTyping={isTyping}
+                            type="password"  
+                        />
+                        <p>{passwordError}</p>
+                    </div>
+                    {login.fetch.fetchState === "feching" ?
+                    <span>Loading</span> : 
+                    <>{login.loginValid.state === "valid" ? 
+                    <span>DONE</span>: 
+                    <div className="button-logreg-container">
+                        <button 
+                            className="link link-button" 
+                            onClick={()=> dispatch(setLogRegAction("reg"))}
+                            onKeyDown={()=> dispatch(setLogRegAction("reg"))}
+                        >SignUp</button>
+                        <button 
+                            type="submit" 
+                            className={`button-normal button-cta 
+                            ${canSubmit ? "push-action" : "button-disable"}`} 
+                            disabled={!canSubmit}
+                        >{languageList[language].button.logIn}</button>
+                    </div>}</>}
+                    {login.loginValid.state === "invalid" ? 
+                    <>
+                    <p>{login.loginValid.message}</p>
+                    <p>{login.loginValid.error}</p>
+                    </> : 
+                    <></>}
+                    <p>{login.fetch.error}</p>
+                </form>
+                </> : <>
+
+                {/* Register Section */}
+                <h2 className="spacing-letter-big glow">{languageList[language].button.signUp}</h2>
+                <form action="Register" onSubmit={handleSubmitRegister}>
+                    <div className={`input-logreg-container ${isNameValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                        <input 
+                            name="name" 
+                            className={`base-input 
+                                ${isNameValid === "valid" ? "input-valid" : 
+                                isNameValid === "invalid" ? "input-invalid" : ""}`} 
+                            type="text" 
+                            placeholder="Name"
+                            onChange={handleNameInput}
+                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                        />
+                        <SpanInputFetchState 
+                            state={(register.fetch.fetchState === "feching" && register.fetchType === "name") ? "feching" : isNameValid} 
+                            isTyping={isTyping} 
+                            type="name"                           
+                        />
+                        <p>{nameError}</p>
+                    </div>
+                    <div className={`input-logreg-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                        <input 
+                            name="email" 
+                            className={`base-input 
+                                ${isEmailValid === "valid" ? "input-valid" : 
+                                isEmailValid === "invalid" ? "input-invalid" : ""}`} 
+                            type="email" 
+                            placeholder="Email"
+                            onChange={handleEmailInput}
+                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                        />
+                        <SpanInputFetchState 
+                            state={ (register.fetch.fetchState === "feching" && register.fetchType === "email") ? "feching" : isEmailValid}
+                            isTyping={isTyping}
+                            type="email"  
+                        />
+                        <p>{emailError}</p>
+                    </div>
+                    <div className={`input-logreg-container ${isPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                        <input 
+                            name="password" 
+                            className={`base-input 
+                                ${isPasswordValid === "valid" ? "input-valid" : 
+                                isPasswordValid === "invalid" ? "input-invalid" : ""}`} 
+                            type="password" 
+                            placeholder="Password"
+                            onChange={handlePasswordInput}
+                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
@@ -358,6 +509,7 @@ const FullScreenLogReg: FC  = () => {
                             type="password" 
                             placeholder="Confirme Password"
                             onChange={handleConfPasswordInput}
+                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isConfPasswordValid}
@@ -365,23 +517,33 @@ const FullScreenLogReg: FC  = () => {
                             type="confPassword"  
                         />
                         <p>{confPasswordError}</p>
-                    </div></>}
+                    </div>
                     {register.fetchType === "register" && register.fetch.fetchState === "feching" ?
                     <span>Loading</span> : 
                     <>{ register.registerValid.state === "valid" ? 
-                    <span>DONE</span>:
-                    <button 
-                        type="submit" 
-                        className={`button-normal button-cta 
-                        ${canSubmit ? "push-action" : "button-disable"}`} 
-                        disabled={!canSubmit}
-                    >{languageList[language].button.signUp}</button>}</>}
+                    <span>DONE</span>: 
+                    <div className="button-logreg-container">
+                        <button 
+                            className="link link-button" 
+                            onClick={()=> dispatch(setLogRegAction("log"))}
+                            onKeyDown={()=> dispatch(setLogRegAction("log"))}
+                        >Login</button>
+                        <button 
+                            type="submit" 
+                            className={`button-normal button-cta 
+                            ${canSubmit ? "push-action" : "button-disable"}`} 
+                            disabled={!canSubmit}
+                        >{languageList[language].button.signUp}</button>
+                    </div>}</>}
                     {register.fetchType === "register" && register.registerValid.state === "invalid" ? 
-                    <p>{register.registerValid.message}</p> : 
+                    <>
+                    <p>{register.registerValid.message}</p>
+                    <p>{register.registerValid.error}</p>
+                    </> : 
                     <></>}
+                    <p>{register.fetch.error}</p>
                 </form>
                 </>}
-                {/* <p>URL is : {process.env.SERVER_URL}</p> */}
             </div>
         </>
     )

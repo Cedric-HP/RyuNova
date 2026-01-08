@@ -1,13 +1,13 @@
 "use client"
 /* eslint-disable @next/next/no-img-element */
-import { createContext, FormEvent, useContext, useRef, useState, type FC, type ReactNode } from "react";
+import { createContext, FormEvent, useContext, useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
 import Avatar from "./small_components/Avatar";
-import { GlobalContextType, LanguageInput } from "@/lib/types/utilitisesType";
+import { GlobalContextType, LanguageInput, LogRegInput } from "@/lib/types/utilitisesType";
 import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
 import Footer from "./Footer";
 import languageList from "@/lib/language";
@@ -16,6 +16,11 @@ import useWindowSize from "@/lib/tools/useWindowSize";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import FullScreenComponent from "./fullscreen_components/FullScreenDisplay";
+import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
+import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegAction";
+import getProfileAction from "@/lib/reducers/authSliceReducer/actions/user/getProfileAction";
+import useLocalStorage from "@/lib/tools/useLocalStorage";
+import { setTokenAction } from "@/lib/reducers/authSliceReducer/authSlice";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -29,7 +34,16 @@ export function useGlobalContext() {
 
 const Navbar: FC<IProps> = ({ children }) => {
 
+    // isMounted
+    const [isMounted, setIsMounted] = useState(false);
+
+    // LocalStorage
+    const [localToken, setLocalToken] = useLocalStorage("accessToken", "")
+
     // Reducer
+    const { accessToken, userData, profile } = useSelector(
+        (store: RootState) => store.auth
+    )
     const { fullScreenDisplayed } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
@@ -52,11 +66,29 @@ const Navbar: FC<IProps> = ({ children }) => {
         router.replace(`/search?search=${formData.get("search")}&type=image&sort=view&tag=`)
     }
 
+    const handleLogReg = (type: LogRegInput) => {
+        dispatch(setLogRegAction(type))
+        dispatch(setFullScreenAction("log-reg"))
+    }
+
     const handleLanguage = (lang: LanguageInput) => {
         setIsLangSelectOpen(false)    
         setCurrentLanguage(lang)
     }
 
+    useEffect(()=>{
+        if (accessToken === "" && localToken !== "" && isMounted) {
+            dispatch(setTokenAction(localToken))
+        }
+        if (accessToken !== "") {
+            setLocalToken(accessToken)
+            dispatch(getProfileAction(accessToken))
+        }
+    },[accessToken, dispatch, isMounted, localToken, setLocalToken])
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
     return (
         <>
             <header>
@@ -123,6 +155,21 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     </ul>
                                 </div>
                             </div>
+                            <button 
+                                className="button-cta-reverse button-normal push-action"
+                                onClick={()=>dispatch(setFullScreenAction("image-upload"))}
+                                onKeyDown={()=>dispatch(setFullScreenAction("image-upload"))}
+                            >Image Upload
+                            </button>
+                            {accessToken === "" ? <>
+                                <button 
+                                     className="button-cta-reverse button-normal push-action"
+                                    onClick={()=>handleLogReg("log")}
+                                    onKeyDown={()=>handleLogReg("log")}
+                                >{languageList[currentLanguage].button.logIn}</button>
+                            </> : <>
+                            {profile.fetch.fetchState === "feching" ? <></> : <>
+                            {profile.fetch.fetchState === "done" ? 
                             <div id="user">
                                 <div id="notification-container">
                                     <div id="notification-moon">
@@ -130,10 +177,13 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     </div>
                                     <span id="notification-count" >99+</span>
                                 </div>
-                                <Link id="avatar" href={"/"}>
-                                    <Avatar url={"/image/pictures/avatar/GBX_LOGO_Head_PNG.png"} name={"HYPERNOVA GBX"} size={55}/>
+                                <Link id="avatar" href={`/profile/${userData.id}`}>
+                                    <Avatar url={userData.avatarUrl} name={userData.name} size={55}/>
                                 </Link>
                             </div>
+                            : <></>}
+                            </>}
+                            </>}
                         </div>
                     </section>
                     {pathname !== "/search" ? 

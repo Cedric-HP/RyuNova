@@ -1,9 +1,14 @@
 import { AuthSliceReducerType, RegisterFetchType } from "@/lib/types/utilitisesType"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { defaultUserData } from "@/lib/tools/DefaultValues"
-import postRegisterAction from "./actions/postRegisterAction"
-import setRegisterFetchStateIdleAction from "./actions/setRegisterFetchStateIdleAction"
-import checkDuplicateAction from "./actions/checkDuplicateAction"
+import postRegisterAction from "./actions/logReg/postRegisterAction"
+import setRegisterFetchStateIdleAction from "./actions/logReg/setRegisterFetchStateIdleAction"
+import checkDuplicateAction from "./actions/logReg/checkDuplicateAction"
+import resetRegisterStateAction from "./actions/logReg/resetRegisterStateAction"
+import resetLoginStateAction from "./actions/logReg/resetLoginAction"
+import setLoginFetchStateIdleAction from "./actions/logReg/setLoginFetchStateIdleAction"
+import postLoginAction from "./actions/logReg/postLoginAction"
+import getProfileAction from "./actions/user/getProfileAction"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
@@ -24,10 +29,38 @@ const initialState: AuthSliceReducerType = {
         },
         fetch: {
             fetchState: "idle",
-            message: "",
             error: ""
         },
         fetchType: ""
+    },
+    login: {
+        loginValid: {
+          state: "idle",
+          message: "",
+          error: ""
+        },
+        fetch: {
+            fetchState: "idle",
+            error: ""
+        }
+    },
+    profile: {
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        }
+    },
+    imageUpload: {
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        },
+        imageCategory: "image",
+        imageUploadValid: {
+          state: "idle",
+          message: "",
+          error: ""
+        }
     }
 }
 
@@ -39,6 +72,9 @@ const authSlice = createSlice({
         // Name and Email checkDuplicate
         setRegisterFetchTypeAction: (state, action: PayloadAction<RegisterFetchType>) =>{
             state.register.fetchType = action.payload;
+        },
+        setTokenAction: (state, action:  PayloadAction<string>)=>{
+            state.accessToken = action.payload
         }
     },
 
@@ -46,6 +82,17 @@ const authSlice = createSlice({
         builder
 
         // Register Case
+        .addCase(resetRegisterStateAction, (state)=>{
+            state.register.nameValid.valid = "idle"
+            state.register.emailValid.valid = "idle"
+            state.register.nameValid.value = ""
+            state.register.emailValid.value = ""
+            state.register.fetchType = ""
+            state.register.registerValid.state = "idle"
+            state.register.registerValid.message = ""
+            state.register.registerValid.error = ""
+            state.register.fetch.error = ""
+        })
         .addCase(setRegisterFetchStateIdleAction, (state)=>{
             state.register.fetch.fetchState = "idle"
         })
@@ -56,10 +103,6 @@ const authSlice = createSlice({
         .addCase(postRegisterAction.fulfilled, (state, action) => {
             state.register.fetch.fetchState = "done";
             if (action.payload.state) {
-                state.register.nameValid.valid = "idle"
-                state.register.emailValid.valid = "idle"
-                state.register.nameValid.value = ""
-                state.register.emailValid.value = ""
                 state.register.registerValid.state = "valid"
             }
             else {
@@ -75,13 +118,46 @@ const authSlice = createSlice({
             state.register.fetch.error = action.error.message || "Fail to Fetch";
         })
 
+        // Login Case
+        .addCase(resetLoginStateAction, (state)=>{
+            state.login.loginValid.state = "idle"
+            state.login.loginValid.message = ""
+            state.login.loginValid.error = ""
+            state.login.fetch.error = ""
+        })
+        .addCase(setLoginFetchStateIdleAction, (state)=>{
+            state.login.fetch.fetchState = "idle"
+        })
+        .addCase(postLoginAction.pending, (state) => {
+            state.login.fetch.fetchState= "feching";
+            state.login.fetch.error = "";
+        })
+        .addCase(postLoginAction.fulfilled, (state, action) => {
+            state.login.fetch.fetchState = "done";
+            if (action.payload.state) {
+                console.log(action.payload)
+                state.login.loginValid.state = "valid"
+                state.accessToken = action.payload.data.token
+            }
+            else {
+                state.login.loginValid.state = "invalid"
+                if (action.payload.message)
+                    state.login.loginValid.message = action.payload.message
+                if (action.payload.error)
+                    state.login.loginValid.message = action.payload.error
+            }
+        })
+        .addCase(postLoginAction.rejected, (state, action) => {
+            state.login.fetch.fetchState = "error";
+            state.login.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
         // Name and Email checkDuplicate
         .addCase(checkDuplicateAction.pending, (state) => {
             state.register.fetch.fetchState= "feching";
         })
         .addCase(checkDuplicateAction.fulfilled, (state, action) => {
             state.register.fetch.fetchState = "done";
-            console.log(action.payload)
             switch (action.payload.type) {
                 case "name": {
                     state.register.nameValid.value = action.payload.value
@@ -105,8 +181,24 @@ const authSlice = createSlice({
         })
 
         // Get Profile
+        .addCase(getProfileAction.pending, (state) => {
+            state.profile.fetch.fetchState= "feching";
+        })
+        .addCase(getProfileAction.fulfilled, (state, action) => {
+            state.profile.fetch.fetchState = "done";
+            if (action.payload.state) {
+                state.userData = action.payload.data
+            }
+            else {
+                state.accessToken = ""
+            }
+        })
+        .addCase(getProfileAction.rejected, (state, action) => {
+            state.profile.fetch.fetchState = "error";
+            state.profile.fetch.error = action.error.message || "Fail to Fetch";
+        })
     }
 })
 
-export const { setRegisterFetchTypeAction } = authSlice.actions;
+export const { setRegisterFetchTypeAction, setTokenAction } = authSlice.actions;
 export default authSlice.reducer

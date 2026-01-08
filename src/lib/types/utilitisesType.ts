@@ -18,7 +18,7 @@ type SorterInput = "view" | "like" | "date" | "follower"
 
 type TypeInput = "image" | "article" | "user" | "comment"
 
-type FullScreenInput = "" | "image" | "log-reg" | "user-description"
+type FullScreenInput = "" | "image" | "log-reg" | "user-description" | "image-upload"
 
 type FetchingInput = "idle" | "feching" | "done" | "error"
 
@@ -30,6 +30,11 @@ type InputStateInput = "idle" | "valid" | "invalid"
 
 type RegisterInput = {
   name: string,
+  email: string,
+  password: string,
+}
+
+type LoginInput = {
   email: string,
   password: string,
 }
@@ -66,13 +71,21 @@ type AuthSliceReducerType = {
       value: string,
       valid: InputStateInput
     },
-    registerValid: {
-      state: InputStateInput,
-      message: string,
-      error: string
-    },
+    registerValid:  ValidateFetch,
     fetch: FetchState,
     fetchType: RegisterFetchType
+  },
+  login: {
+    loginValid: ValidateFetch,
+    fetch: FetchState,
+  }
+  profile: {
+    fetch: FetchState,
+  },
+  imageUpload: {
+    imageUploadValid: ValidateFetch,
+    imageCategory: "image" | "avatar" | "banner"
+    fetch: FetchState,
   }
 }
 // Respond Type
@@ -86,6 +99,25 @@ type RegisterRespond = {
   message: string,
   error: string
 }
+
+type LoginRespond = {
+  state: boolean,
+  data: {
+    userId: number,
+    token: string,
+  },
+  message: string,
+  error: string
+}
+
+type ProfilRespond = {
+  state: boolean,
+  data: ProfileData,
+  message: string,
+  error: string
+}
+
+
 type CheckDuplicateRespond = {
   state: boolean,
   type: "name" | "email",
@@ -98,8 +130,13 @@ type CheckDuplicateRespond = {
 
 type FetchState = {
   fetchState: FetchingInput,
-  message: string,
   error: string,
+}
+
+type ValidateFetch = {
+  state: InputStateInput,
+  message: string,
+  error: string
 }
 
 // Fetch Type
@@ -122,5 +159,8 @@ export type {
   CheckDuplicateInput,
   CheckDuplicateRespond,
   RegisterFetchType,
-  IsTyping
+  IsTyping,
+  LoginRespond,
+  LoginInput,
+  ProfilRespond
 }

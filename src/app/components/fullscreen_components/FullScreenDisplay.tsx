@@ -23,6 +23,7 @@ const FullScreenComponent: FC  = () => {
             {fullScreenDisplayed === "image" ? <FullScreenImage/> : <></>}
             {fullScreenDisplayed === "log-reg" ? <FullScreenLogReg/> : <></>}
             {fullScreenDisplayed === "user-description" ? <></> : <></>}
+            {fullScreenDisplayed === "image-upload" ? <></> : <></>}
         </div>
     )
 }

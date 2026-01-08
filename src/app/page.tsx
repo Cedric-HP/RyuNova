@@ -16,7 +16,7 @@ import languageList from "@/lib/language";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-import { LogRegImput } from "@/lib/types/utilitisesType";
+import { LogRegInput } from "@/lib/types/utilitisesType";
 import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegAction";
 
 const eventListPast: EventList[] = [
@@ -72,7 +72,7 @@ export default function Home() {
   // Router
   const router = useRouter()
 
-  const handleLogReg = (type: LogRegImput) => {
+  const handleLogReg = (type: LogRegInput) => {
     dispatch(setLogRegAction(type))
     dispatch(setFullScreenAction("log-reg"))
   }
