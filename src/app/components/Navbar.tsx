@@ -41,7 +41,7 @@ const Navbar: FC<IProps> = ({ children }) => {
     const [localToken, setLocalToken] = useLocalStorage("accessToken", "")
 
     // Reducer
-    const { accessToken, userData, profile } = useSelector(
+    const { accessToken, userData, profile, authorized } = useSelector(
         (store: RootState) => store.auth
     )
     const { fullScreenDisplayed } = useSelector(
@@ -77,14 +77,17 @@ const Navbar: FC<IProps> = ({ children }) => {
     }
 
     useEffect(()=>{
-        if (accessToken === "" && localToken !== "" && isMounted) {
+        if (accessToken === "" && localToken !== "" && isMounted && authorized) {
             dispatch(setTokenAction(localToken))
         }
         if (accessToken !== "") {
             setLocalToken(accessToken)
             dispatch(getProfileAction(accessToken))
         }
-    },[accessToken, dispatch, isMounted, localToken, setLocalToken])
+        if (accessToken === "" && localToken !== "" && isMounted && !authorized) {
+            setLocalToken("")
+        }
+    },[accessToken, authorized, dispatch, isMounted, localToken, setLocalToken])
 
     useEffect(() => {
         setIsMounted(true);

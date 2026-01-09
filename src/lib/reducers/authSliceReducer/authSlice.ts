@@ -9,9 +9,11 @@ import resetLoginStateAction from "./actions/logReg/resetLoginAction"
 import setLoginFetchStateIdleAction from "./actions/logReg/setLoginFetchStateIdleAction"
 import postLoginAction from "./actions/logReg/postLoginAction"
 import getProfileAction from "./actions/user/getProfileAction"
+import postImageAction from "./actions/image/postImageAction"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
+    authorized: true,
     userData: defaultUserData,
     register: {
         nameValid: {
@@ -138,6 +140,7 @@ const authSlice = createSlice({
                 console.log(action.payload)
                 state.login.loginValid.state = "valid"
                 state.accessToken = action.payload.data.token
+                state.authorized = true
             }
             else {
                 state.login.loginValid.state = "invalid"
@@ -190,12 +193,39 @@ const authSlice = createSlice({
                 state.userData = action.payload.data
             }
             else {
-                state.accessToken = ""
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
             }
         })
         .addCase(getProfileAction.rejected, (state, action) => {
             state.profile.fetch.fetchState = "error";
             state.profile.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Post Image
+        .addCase(postImageAction.pending, (state) => {
+            state.imageUpload.fetch.fetchState= "feching";
+        })
+        .addCase(postImageAction.fulfilled, (state, action) => {
+            state.imageUpload.fetch.fetchState = "done";
+            if (action.payload.state) {
+                switch(action.payload.data.imageCategory) {
+                    case "avatar":
+                        state.userData.avatarUrl = action.payload.data.url
+                        break
+                    case "banner":
+                        state.userData.bannerUrl = action.payload.data.url
+                        break
+                    case "image":
+                        state.userData.images.push({id: action.payload.data.id}) 
+                }
+            }
+        })
+        .addCase(postImageAction.rejected, (state, action) => {
+            state.imageUpload.fetch.fetchState = "error";
+            state.imageUpload.fetch.error = action.error.message || "Fail to Fetch";
         })
     }
 })

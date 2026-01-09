@@ -12,12 +12,8 @@ const checkDuplicateAction = createAsyncThunk<CheckDuplicateRespond, CheckDuplic
           "Content-Type": "application/json",
         }
       });
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.detail ||`Http error. status: ${res.status}`);
-      }
-
       const data: CheckDuplicateRespond = await res.json();
+      data.code = res.status
       return data;
     } catch (err) {
       console.error(err);

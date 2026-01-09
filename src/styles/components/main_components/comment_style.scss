@@ -147,25 +147,7 @@
             flex-direction: column;
             width: 100%;
             .textarea{
-                background-color: transparent;
-                border: none;
-                resize: none;
-                line-height: 25px;
                 width: calc(100% - 20px);
-                font-size: 1rem;
-                padding: 5px 10px;
-                border-radius: 12px;
-                max-height: 375px;
-                min-height: 25px;
-                field-sizing: content;
-                overflow-y: auto;
-                transition: backdrop-filter 0.2s;
-                &:focus{
-                    backdrop-filter: blur(5px) brightness(0.8);
-                }
-            }
-            .textarea.placeholder {
-                color: #9f9fa7;
             }
             .button-reply{
                 button{

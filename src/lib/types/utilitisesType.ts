@@ -26,6 +26,8 @@ type LogRegInput = "log" | "reg"
 
 type InputStateInput = "idle" | "valid" | "invalid"
 
+type ImageCategoryInput = "image" | "avatar" | "banner"
+
 // Fetch Input
 
 type RegisterInput = {
@@ -42,6 +44,11 @@ type LoginInput = {
 type CheckDuplicateInput = {
   type: "name" | "email"
   value: string,
+}
+
+type ImageUploadInput = {
+  token: string,
+  formData: FormData
 }
 
 // Context Type
@@ -61,6 +68,7 @@ type UtilitisesReducerType = {
 
 type AuthSliceReducerType = {
   accessToken: string,
+  authorized: boolean,
   userData: ProfileData,
   register: {
     nameValid: {
@@ -84,7 +92,7 @@ type AuthSliceReducerType = {
   },
   imageUpload: {
     imageUploadValid: ValidateFetch,
-    imageCategory: "image" | "avatar" | "banner"
+    imageCategory: ImageCategoryInput,
     fetch: FetchState,
   }
 }
@@ -92,6 +100,7 @@ type AuthSliceReducerType = {
 
 type RegisterRespond = {
   state: boolean,
+  code: number,
   data: {
     id: number,
     name: string,
@@ -102,6 +111,7 @@ type RegisterRespond = {
 
 type LoginRespond = {
   state: boolean,
+  code: number,
   data: {
     userId: number,
     token: string,
@@ -112,16 +122,31 @@ type LoginRespond = {
 
 type ProfilRespond = {
   state: boolean,
+  code: number,
+  authorized: boolean,
   data: ProfileData,
   message: string,
   error: string
 }
 
-
 type CheckDuplicateRespond = {
   state: boolean,
+  code: number,
   type: "name" | "email",
   value: string,
+  message: string,
+  error: string
+}
+
+type ImageUploadRespond = {
+  state: boolean,
+  code: number,
+  authorized: boolean,
+  data: {
+    id: number,
+    imageCategory: ImageCategoryInput,
+    url: string,
+  },
   message: string,
   error: string
 }
@@ -162,5 +187,7 @@ export type {
   IsTyping,
   LoginRespond,
   LoginInput,
-  ProfilRespond
+  ProfilRespond,
+  ImageUploadInput,
+  ImageUploadRespond
 }

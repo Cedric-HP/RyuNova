@@ -131,24 +131,27 @@
         font-family: "Michroma", sans-serif;
     }
 }
-.full-screen-lor-reg{
+.full-screen-lor-reg, .full-screen-image-upload{
     align-items: center;
     form{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 10px;
-        .input-logreg-container{
+        .input-container{
             display: flex;
             position: relative;
             flex-direction: column;
+            width: fit-content;
             gap: 5px;
             max-height: 50px;
             min-height: 50px;
             overflow: hidden;
             transition: heigth 0.2s, max-heigth 0.2s, min-heigth 0.2s;
-            input{
+            input, .textarea{
                 margin: 0 70px;
+                margin-top: 7px;
+                width: 250px;
             }
             p {
                 width: 100%;
@@ -156,11 +159,7 @@
                 min-height: 20px;
                 text-align: center;
             }
-            input{
-                margin-top: 7px;
-                width: 250px;
-            }
-            span{
+            .input-fetch-state{
                 position: absolute;
                 width: 36px;
                 height: 36px;
@@ -168,11 +167,11 @@
                 right: 0;
             }
         }
-        .input-logreg-container-error{
+        .input-container-error{
             animation: error-appear 0.2s 1 both;
             max-height: 70px;
         }
-        .button-logreg-container{
+        .button-container{
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -183,6 +182,19 @@
                 font-size: 0.85rem;
             }
         }
+    }
+}
+.full-screen-image-upload{
+    .textarea-container {
+        .textarea{
+            border: 1px solid #EBECFA;
+            outline: none;
+            transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            &:focus{
+                border-color: #FBA059;
+            }
+        }
+        min-width: 250px;
     }
 }
  @keyframes error-appear {

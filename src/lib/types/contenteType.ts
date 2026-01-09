@@ -1,5 +1,12 @@
 // Content Types
 
+type IdElement = {
+  id: number
+}
+
+type TagElement = {
+  name: string,
+}
 
 type ContentData = {
   id: number,
@@ -11,8 +18,8 @@ type ContentData = {
   views: number,
   likes: number,
   createdAt: string,
-  commentList: number[],
-  tags: string[]
+  commentList: IdElement[],
+  tags: TagElement[]
 }
 
 type UserData = {
@@ -37,14 +44,14 @@ type ProfileData = {
   bannerUrl: string,
   views: number,
   likes: number,
-  images: number[],
-  imageLiked: number[],
-  articles: number[],
-  articleLiked: number[],
+  images: IdElement[],
+  imageLiked: IdElement[],
+  articles: IdElement[],
+  articleLiked: IdElement[],
   followers: number,
-  followed: number[],
-  commentPosted: number[],
-  commentLiked: number[],
+  followed: IdElement[],
+  commentPosted: IdElement[],
+  commentLiked: IdElement[],
   createdAt: string,
 }
 
@@ -62,7 +69,7 @@ type CommentData = {
   comment: string,
   likes: number,
   createdAt: string,
-  replyList: number[],
+  replyList: IdElement[],
   isReply: boolean,
 }
 

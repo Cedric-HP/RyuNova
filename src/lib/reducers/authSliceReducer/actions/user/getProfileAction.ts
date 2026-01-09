@@ -13,16 +13,11 @@ const postRegisterAction = createAsyncThunk<ProfilRespond, string>(
           'Authorization': 'Bearer ' + token,
         }
       });
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.detail ||`Http error. status: ${res.status}`);
-      }
-
       const data: ProfilRespond = await res.json();
+      data.code = res.status
       return data;
     } catch (err) {
-      console.error(err);
-      throw err;
+      throw new Error(String(err))
     }
   }
 );

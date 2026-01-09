@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import "../../../styles/components/fullscreen_components/fullscreen-display.scss"
 import FullScreenImage from "./FullScreenImage";
 import FullScreenLogReg from "./FullScreenLogReg";
+import FullScreenImageUpload from "./FullScreenImageUpload";
 
 const FullScreenComponent: FC  = () => {
     const { fullScreenDisplayed } = useSelector(
@@ -23,7 +24,7 @@ const FullScreenComponent: FC  = () => {
             {fullScreenDisplayed === "image" ? <FullScreenImage/> : <></>}
             {fullScreenDisplayed === "log-reg" ? <FullScreenLogReg/> : <></>}
             {fullScreenDisplayed === "user-description" ? <></> : <></>}
-            {fullScreenDisplayed === "image-upload" ? <></> : <></>}
+            {fullScreenDisplayed === "image-upload" ? <FullScreenImageUpload/>  : <></>}
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { AppDispatch, RootState} from "@/lib/reducers/store";
-import { FormEvent, useCallback, useEffect, useState, type FC } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import "../../../styles/components/fullscreen_components/fullscreen-display.scss"
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
@@ -20,6 +20,7 @@ import postLoginAction from "@/lib/reducers/authSliceReducer/actions/logReg/post
 import resetLoginStateAction from "@/lib/reducers/authSliceReducer/actions/logReg/resetLoginAction";
 import setLoginFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/logReg/setLoginFetchStateIdleAction";
 import useIsTyping from "@/lib/tools/useIsTyping";
+import postImageAction from "@/lib/reducers/authSliceReducer/actions/image/postImageAction";
 
 const formData = new FormData()
 formData.append("image", "")
@@ -38,7 +39,11 @@ const FullScreenImageUpload: FC  = () => {
     // Use IsTyping
     const {isTyping, handleTyping} = useIsTyping()
 
-
+    // PLACEHOLDER
+    const PLACEHOLDER = useMemo(()=> languageList[language].button.addComment + "...", [language])
+    const [isPlaceholder, setIsPlaceholder] = useState(true)
+    const textareaElement = useRef<HTMLSpanElement | null>(null)
+    
     // useStates Section
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
 
@@ -57,6 +62,39 @@ const FullScreenImageUpload: FC  = () => {
     const [descriptionError, setDescriptionError] = useState<string>("")
     const [imageError, setImageError] = useState<string>("")
 
+    // Handle Placeholder
+
+    const handleFocus = useCallback((e: React.FocusEvent<HTMLSpanElement >)=>{
+        if (e.currentTarget) {
+            if (textareaElement.current) 
+                if (textareaElement.current.textContent === PLACEHOLDER) 
+                    setIsPlaceholder(false) 
+        }
+        else {
+            if (textareaElement.current) 
+                if (textareaElement.current.textContent !== PLACEHOLDER) 
+                    setIsPlaceholder(true) 
+        }  
+    },[PLACEHOLDER])
+
+    useEffect(()=>{
+        if (descriptionInput === "") 
+            setIsPlaceholder(true)
+        else if (descriptionInput !== "" && descriptionInput !== PLACEHOLDER)
+            setIsPlaceholder(false)
+    },[PLACEHOLDER, descriptionInput])
+
+    useEffect(()=>{
+        if (isPlaceholder) {
+            if (textareaElement.current)
+                textareaElement.current.textContent = PLACEHOLDER
+        }    
+        else {
+            if (textareaElement.current) {
+                textareaElement.current.textContent = ""
+            }
+        }       
+    },[PLACEHOLDER, isPlaceholder])
 
     // Fonction to reset form input
     const resetFormInput = () => {
@@ -71,9 +109,9 @@ const FullScreenImageUpload: FC  = () => {
         handleTyping("name")
     }
 
-    const handleDescriptionInput= (e: React.ChangeEvent<HTMLInputElement >) => {
-        setDescriptionInput(String(e.currentTarget.value))
-        handleTyping("email")
+    const handleDescriptionInput = (e: React.ChangeEvent<HTMLInputElement >)=>{
+        const input = String(e.target.innerHTML).replaceAll("<br>", "\n")
+        setDescriptionInput(input)
     }
 
     const handleImageInput = (e: React.ChangeEvent<HTMLInputElement >) => {
@@ -124,7 +162,7 @@ const FullScreenImageUpload: FC  = () => {
     // Description
     useEffect(()=>{
         if (descriptionInput.length <= 1000) {
-            setIsDescriptionValid("idle")
+            setIsDescriptionValid("valid")
             setDescriptionError("")
             return
         }
@@ -169,20 +207,21 @@ const FullScreenImageUpload: FC  = () => {
     const handleImageUpload = useCallback( async (formdata: FormData) => {
         dispatch(setRegisterFetchTypeAction("register"))
         dispatch(
-            postRegisterAction({
-                name: String(formdata.get("name")),
-                email: String(formdata.get("email")),
-                password: String(formdata.get("password")),
+            postImageAction({
+                formData: formdata,
+                token: accessToken,
             })
         );
-    },[dispatch]);
+    },[accessToken, dispatch]);
 
     // FormeData
     const handleSubmitImage = useCallback((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
+        formData.append("description", descriptionInput)
+        formData.append("imageCategory", imageUpload.imageCategory)
         handleImageUpload(formData);
-    },[handleImageUpload])
+    },[descriptionInput, handleImageUpload, imageUpload.imageCategory])
 
     // Use Effect that handles respond Register Submit
     // useEffect(()=>{
@@ -209,14 +248,15 @@ const FullScreenImageUpload: FC  = () => {
             >
                 <FontAwesomeIcon icon={faXmark} />
             </button>
-            <div className="full-screen-popup full-screen-lor-reg">
+            <div className="full-screen-popup full-screen-image-upload">
                 <p>{titleInput}</p>
                 <p>{descriptionInput}</p>
-
+                <p>{isPlaceholder ? "true" : "false"}</p>
+                <p>{String(imageInput.get("image")?.name)}</p>
                 {/* Register Section */}
                 <h2 className="spacing-letter-big glow">{languageList[language].button.signUp}</h2>
                 <form action="Image-Upload" onSubmit={handleSubmitImage}>
-                    <div className={`input-logreg-container ${isTitleValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isTitleValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="title" 
                             className={`base-input 
@@ -234,7 +274,7 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <p>{titleError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isDescriptionValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container textarea-container${isDescriptionValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <span 
                             ref={textareaElement}
                             id={`textarea_image`} 
@@ -243,6 +283,7 @@ const FullScreenImageUpload: FC  = () => {
                                 isDescriptionValid === "invalid" ? "input-invalid" : ""}`}
                             role="textbox"  
                             contentEditable
+                            onFocus={handleFocus} 
                             onInput={handleDescriptionInput}
                         >
                         </span>
@@ -253,7 +294,7 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <p>{descriptionError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isImageValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isImageValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="image" 
                             className={`base-input 
@@ -276,7 +317,7 @@ const FullScreenImageUpload: FC  = () => {
                     <span>Loading</span> : 
                     <>{ imageUpload.imageUploadValid.state === "valid" ? 
                     <span>DONE</span>: 
-                    <div className="button-logreg-container">
+                    <div className="button-container">
                         <button 
                             className="link link-button" 
                             onClick={()=> dispatch(setLogRegAction("log"))}

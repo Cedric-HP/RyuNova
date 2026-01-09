@@ -380,7 +380,7 @@ const FullScreenLogReg: FC  = () => {
                 {/* Login Section */}
                 <h2 className="spacing-letter-big glow">{languageList[language].button.logIn}</h2>
                 <form action="LogIn" onSubmit={handleSubmitLogin}>
-                    <div className={`input-logreg-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="email" 
                             className={`base-input 
@@ -398,7 +398,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{emailError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="password" 
                             className={`base-input 
@@ -420,7 +420,7 @@ const FullScreenLogReg: FC  = () => {
                     <span>Loading</span> : 
                     <>{login.loginValid.state === "valid" ? 
                     <span>DONE</span>: 
-                    <div className="button-logreg-container">
+                    <div className="button-container">
                         <button 
                             className="link link-button" 
                             onClick={()=> dispatch(setLogRegAction("reg"))}
@@ -446,7 +446,7 @@ const FullScreenLogReg: FC  = () => {
                 {/* Register Section */}
                 <h2 className="spacing-letter-big glow">{languageList[language].button.signUp}</h2>
                 <form action="Register" onSubmit={handleSubmitRegister}>
-                    <div className={`input-logreg-container ${isNameValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isNameValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="name" 
                             className={`base-input 
@@ -464,7 +464,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{nameError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isEmailValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="email" 
                             className={`base-input 
@@ -482,7 +482,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{emailError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="password" 
                             className={`base-input 
@@ -500,7 +500,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{passwordError}</p>
                     </div>
-                    <div className={`input-logreg-container ${isConfPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isConfPasswordValid === "invalid" ? "input-logreg-container-error" : ""}`}>
                         <input 
                             name="confirmePassword" 
                             className={`base-input 
@@ -522,7 +522,7 @@ const FullScreenLogReg: FC  = () => {
                     <span>Loading</span> : 
                     <>{ register.registerValid.state === "valid" ? 
                     <span>DONE</span>: 
-                    <div className="button-logreg-container">
+                    <div className="button-container">
                         <button 
                             className="link link-button" 
                             onClick={()=> dispatch(setLogRegAction("log"))}
