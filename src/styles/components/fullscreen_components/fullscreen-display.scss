@@ -31,12 +31,12 @@
         width: fit-content;
         cursor: zoom-in;
     }
-    .full-screen-xmark{
-        position: absolute;
-        z-index: 3;
-        top: 20px;
-        left: calc(100vw - 100px);
-    }
+}
+.full-screen > .full-screen-xmark{
+    position: absolute;
+    z-index: 3;
+    top: 20px;
+    left: calc(100vw - 100px);
 }
 
 .full-screen-xmark{
@@ -126,9 +126,17 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    h2{
+    .full-screen-xmark{
+        position: absolute;
+        z-index: 3;
+        top: 20px;
+        right: 20px;
+    }
+    h2{ 
+        min-width: 300px;
         font-size: 2rem;
         font-family: "Michroma", sans-serif;
+        margin: 0 70px;
     }
 }
 .full-screen-lor-reg, .full-screen-image-upload{
@@ -138,20 +146,22 @@
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        width: 100%;
         .input-container{
             display: flex;
             position: relative;
             flex-direction: column;
-            width: fit-content;
+            width: 100%;
             gap: 5px;
             max-height: 50px;
             min-height: 50px;
             overflow: hidden;
             transition: heigth 0.2s, max-heigth 0.2s, min-heigth 0.2s;
             input, .textarea{
-                margin: 0 70px;
-                margin-top: 7px;
-                width: 250px;
+                margin: 7px 70px 0 70px;
+                min-width: 350px;
+                width: calc(100% - 160px);
+                max-width: 50vw;
             }
             p {
                 width: 100%;
@@ -176,7 +186,8 @@
             flex-direction: column;
             align-items: center;
             margin: 0 70px;
-            width: 250px;
+            width: calc(100% - 140px);
+            max-width: 50vw;
             gap: 10px;
             .link{
                 font-size: 0.85rem;
@@ -195,6 +206,13 @@
             }
         }
         min-width: 250px;
+    }
+    .file-input{
+        display: flex;
+        flex-direction: column;
+        #file-upload-button{
+            background-color: transparent;
+        }
     }
 }
  @keyframes error-appear {

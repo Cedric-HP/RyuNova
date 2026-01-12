@@ -78,5 +78,7 @@ export type {
   EventList,
   UserData, 
   CommentData,
-  ProfileData
+  ProfileData,
+  TagElement,
+  IdElement
 }

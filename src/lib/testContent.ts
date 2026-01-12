@@ -12,7 +12,7 @@ const imageBentoList: ContentData[] = [
     views: 500,
     likes: 50,
     createdAt: "2012-08-24",
-    tags: ["planet"],
+    tags: [{name: "planet"}],
     commentList: []
   },
   {
@@ -25,7 +25,7 @@ const imageBentoList: ContentData[] = [
     views: 124,
     likes: 34,
     createdAt: "2015-02-16",
-    tags: ["gallaxy", "stars"],
+    tags: [{name: "gallaxy"}, {name: "stars"}],
     commentList: []
   },
   {
@@ -38,7 +38,7 @@ const imageBentoList: ContentData[] = [
     views: 465,
     likes: 40,
     createdAt: "2016-07-22",
-    tags: ["planet"],
+    tags: [{name: "planet"}],
     commentList: []
   },
   {
@@ -51,8 +51,8 @@ const imageBentoList: ContentData[] = [
     views: 24837108,
     likes: 1824298,
     createdAt: "2011-10-15",
-    tags: ["nebula"],
-    commentList: [1, 2, 3, 4, 5, 6, 7, 8]
+    tags: [{name: "nebula"}],
+    commentList: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}]
   },
   {
     id: 5,
@@ -64,7 +64,7 @@ const imageBentoList: ContentData[] = [
     views: 201,
     likes: 21,
     createdAt: "2021-02-21",
-    tags: ["gallaxy"],
+    tags: [{name: "gallaxy"}],
     commentList: []
   },
   {
@@ -77,7 +77,7 @@ const imageBentoList: ContentData[] = [
     views: 78,
     likes: 8,
     createdAt: "2020-04-30",
-    tags: ["iss", "moon", "planet"],
+    tags: [{name: "iss"}, {name: "moon"}, {name: "planet"}],
     commentList: []
   },
   {
@@ -90,7 +90,7 @@ const imageBentoList: ContentData[] = [
     views: 36456795,
     likes: 1557294,
     createdAt: "2013-03-13",
-    tags: ["nebula"],
+    tags: [{name: "nebula"}],
     commentList: []
   },
   {
@@ -103,7 +103,7 @@ const imageBentoList: ContentData[] = [
     views: 254,
     likes: 35,
     createdAt: "2024-06-12",
-    tags: ["planet", "iss"],
+    tags: [{name: "planet"}, {name: "iss"}],
     commentList: []
   },
   {
@@ -116,7 +116,7 @@ const imageBentoList: ContentData[] = [
     views: 524,
     likes: 66,
     createdAt: "2019-07-05",
-    tags: ["planet", "moon"],
+    tags: [{name: "planet"}, {name: "moon"}],
     commentList: []
   }
   ,
@@ -130,7 +130,7 @@ const imageBentoList: ContentData[] = [
     views: 156,
     likes: 48,
     createdAt: "2012-09-24",
-    tags: ["planet"],
+    tags: [{name: "planet"}],
     commentList: []
   }
 ]
@@ -145,7 +145,7 @@ const articleList: ContentData[] = [
     views: 1500,
     likes: 200,
     createdAt: "7/28/2023, 8:00:14 PM",
-    tags: ["nebula", "telescope"],
+    tags: [{name: "nebula"}, {name: "telescope"}],
     commentList: []
   },
   {
@@ -158,7 +158,7 @@ const articleList: ContentData[] = [
     views: 460,
     likes: 54,
     createdAt: "5/1/2025, 7:05:35 PM",
-    tags: ["comet"],
+    tags: [{name: "comet"}],
     commentList: []
   },
   {
@@ -171,7 +171,7 @@ const articleList: ContentData[] = [
     views: 50,
     likes: 50,
     createdAt: "8/24/2012, 8:00:12 AM",
-    tags: ["obsevatory", "telescope"],
+    tags: [{name: "obsevatory"}, {name: "telescope"}],
     commentList: []
   }
 ]
@@ -305,7 +305,7 @@ const commentList: CommentData[] = [
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti \n\nnulla hic error quo aliquid quis reprehenderit illum provident perspiciatis labore exercitationem dolor itaque consequatur eos excepturi enim. Molestias dolor autem saepe itaque omnis voluptatibus fugit ex reiciendis aliquid tempore assumenda aperiam veritatis repudiandae ab \ntenetur nihil quam perferendis accusantium ducimus eligendi, quae nemo? Dolor aut culpa error quae suscipit \nipsam eaque ipsa voluptate alias \ndignissimos. Nisi fuga illo, aliquid nostrum sapiente esse cum autem pariatur neque tempore nulla odio laborum ex voluptates \neligendi itaque similique laboriosam quo maiores! Deleniti perferendis accusamus quos eaque voluptatum maiores et culpa, similique quisquam nostrum ipsam, tempore, illo exercitationem veniam incidunt \nperspiciatis sed laborum aperiam nulla quis unde quas ex tempora! Accusamus, nulla consequuntur? Est numquam quas corporis maiores, ut ipsam aut accusamus odio unde ab eligendi. Aspernatur vitae atque in quisquam nulla necessitatibus sit quia a, rem dicta, \nconsectetur repellendus! Odit, vel! Magni mollitia delectus architecto aspernatur deserunt, dignissimos cumque rem sunt, nisi ullam non ab quaerat facilis quo quos rerum nemo distinctio voluptatum quod saepe \nperferendis tempora est porro. Mollitia cum molestiae, nobis distinctio a sunt eligendi voluptate id at optio quos itaque enim facilis explicabo saepe assumenda quibusdam ratione, impedit nemo eum excepturi nulla ab quod aliquid? Dolor repellat aliquam repudiandae earum explicabo quasi adipisci, corporis ipsa iusto ullam error sed possimus dolorum nulla iure sapiente odit itaque, tenetur, voluptas saepe accusamus obcaecati alias officia necessitatibus! Neque expedita earum odit omnis rem impedit ad quos molestiae et? Adipisci totam et possimus laudantium, delectus consectetur quos excepturi beatae doloribus enim quis rem laboriosam sapiente recusandae sequi tempore optio odio itaque iste rerum dignissimos corrupti tempora placeat! Aliquid expedita odit, eius molestias aliquam alias labore fugiat illo rem accusamus fugit eveniet voluptate nemo laborum, maxime repellat impedit voluptas assumenda necessitatibus mollitia iusto doloribus eos eligendi. Corrupti dicta pariatur dolorum, labore saepe reprehenderit quo accusamus ea id asperiores praesentium est dolor. Autem maiores esse expedita ex. Illum laboriosam dignissimos ipsam corrupti optio nulla in, et necessitatibus repellat enim ipsum tempore cumque, doloremque temporibus accusantium sapiente, quam aliquid incidunt. Voluptatem aspernatur iusto illo voluptatibus, voluptates quidem, laboriosam fugit recusandae rem dolorum eveniet odio hic iure unde quisquam reiciendis ullam mollitia possimus, provident quo labore cum libero eum? Nihil praesentium cum, laborum dolorem id velit enim mollitia libero recusandae veniam reprehenderit animi asperiores incidunt. Et voluptatem magnam, itaque fuga cupiditate placeat officiis aspernatur maiores harum. Qui, deleniti, quam architecto adipisci alias, laborum placeat exercitationem autem minus ipsa aliquid? Ad, qui laboriosam saepe in eos laborum mollitia necessitatibus nemo. Ad quos, exercitationem voluptatum distinctio excepturi inventore. Facilis, tempora exercitationem! Quas provident, vel aperiam aspernatur exercitationem est pariatur ullam!",
     likes: 4546574,
     createdAt: "12/11/2025, 13:05:35",
-    replyList: [2, 6],
+    replyList: [{id: 2}, {id: 6}],
     isReply: false
   },
   {
@@ -316,7 +316,7 @@ const commentList: CommentData[] = [
     comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates nisi nihil atque neque recusandae temporibus ducimus ad eius dolorem, tenetur distinctio soluta placeat dicta ullam pariatur, odio, in doloremque quae \n\nillum sequi? A consequuntur tenetur aut rem fugiat autem deserunt debitis ab, accusantium, vero nihil atque eum quisquam necessitatibus vitae esse excepturi placeat consequatur, vel labore nam minima itaque perspiciatis. Officiis, iusto earum tempora eveniet recusandae blanditiis deleniti ",
     likes: 4,
     createdAt: "12/11/2025, 13:35:35",
-    replyList: [4],
+    replyList: [{id: 4}],
     isReply: true
   },
   {
@@ -338,7 +338,7 @@ const commentList: CommentData[] = [
     comment: "I'm COOMING!!!",
     likes: 2,
     createdAt: "12/13/2025, 10:30:26",
-    replyList: [5],
+    replyList: [{id: 5}],
     isReply: true
   },
   {

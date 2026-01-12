@@ -12,7 +12,7 @@ import BentoGallery from "../components/main_components/BentoGallery";
 import ArticlePreview from "../components/main_components/ArticlePreview";
 import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
 import UserList from "../components/main_components/UserList";
-import { numberReducerFormat } from "@/lib/tools/stringTools";
+import { numberReducerFormat, tagFormat } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "../components/Navbar";
 import languageList from "@/lib/language";
 
@@ -115,25 +115,9 @@ const Search: FC = () => {
 
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const trimedImput = 
-            tagInput.replaceAll("_", " ")
-            .replaceAll("&", " ")
-            .replaceAll("=", " ")
-            .replaceAll("#", " ")
-            .trim()
-            .replace(/\s\s+/g, ' ')
-        const rawTagList = trimedImput.split(" ")
-        const filteredTagList: string[] = []
-        rawTagList.forEach((item)=>{
-            if(!filteredTagList.includes(item) && item !== "")
-                filteredTagList.push(item)
-        })
-        let newTags = ""
-        filteredTagList.forEach((item)=>{
-            newTags += item + "_"
-        })
-        setCurrentTag(newTags.slice(0, -1))
-        setTagInput(newTags.slice(0, -1).replaceAll("_", " "))
+        const newTags = tagFormat(tagInput)
+        setCurrentTag(newTags)
+        setTagInput(newTags.replaceAll("_", " "))
     }, [tagInput])
 
     // Use Effect to change the route automatically based on dependencies

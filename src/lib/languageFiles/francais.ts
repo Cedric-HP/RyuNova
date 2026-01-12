@@ -15,7 +15,12 @@ const languageFrancais: LanguageData = {
         legalInformation: "INFORMATION LEGAL",
         privacyPolicy: "Politique de confidentialité",
         termsOfService: "Conditions d'utilisation",
-        upcommingAstronomicalEvents: "Événements astronomiques à venir"
+        upcommingAstronomicalEvents: "Événements astronomiques à venir",
+        imageUpload: {
+            uploadAvatar: "Changé votre Avatar",
+            uploadBanner: "Changé votre Bannière",
+            uploadImage: "Poster une Image"
+        }
     },
     contentType:{
         article: {
@@ -81,7 +86,9 @@ const languageFrancais: LanguageData = {
         signUp: "S'inscrire",
         sortBy: "Trier par",
         type: "Type",
-        unfollow: "Se Désabonner"
+        unfollow: "Se Désabonner",
+        upload: "Poster",
+        send: "Envoyer",
     },
     date:{
         year: {
@@ -122,7 +129,10 @@ const languageFrancais: LanguageData = {
         name: "Nom",
         email: "Email",
         password: "Mot de passe",
-        confirmPassword: "Confirmer le mot de passe"
+        confirmPassword: "Confirmer le mot de passe",
+        chooseAnImage: "Choisir une image",
+        description: "Description",
+        title: "Titre"
     },
     alt:{
         button: "Bouton",

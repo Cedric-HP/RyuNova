@@ -10,6 +10,7 @@ import setLoginFetchStateIdleAction from "./actions/logReg/setLoginFetchStateIdl
 import postLoginAction from "./actions/logReg/postLoginAction"
 import getProfileAction from "./actions/user/getProfileAction"
 import postImageAction from "./actions/image/postImageAction"
+import resetPostImageStateAction from "./actions/image/resetPostImageStateAction"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
@@ -58,6 +59,7 @@ const initialState: AuthSliceReducerType = {
             fetchState: "idle"
         },
         imageCategory: "image",
+        imageId: -1,
         imageUploadValid: {
           state: "idle",
           message: "",
@@ -205,12 +207,19 @@ const authSlice = createSlice({
         })
 
         // Post Image
+        .addCase(resetPostImageStateAction, (state)=>{
+            state.imageUpload.imageUploadValid.state = "idle"
+            state.imageUpload.imageUploadValid.message = ""
+            state.imageUpload.imageUploadValid.error = ""
+            state.imageUpload.fetch.error = ""
+        })
         .addCase(postImageAction.pending, (state) => {
             state.imageUpload.fetch.fetchState= "feching";
         })
         .addCase(postImageAction.fulfilled, (state, action) => {
             state.imageUpload.fetch.fetchState = "done";
             if (action.payload.state) {
+                state.imageUpload.imageUploadValid.state = "valid"
                 switch(action.payload.data.imageCategory) {
                     case "avatar":
                         state.userData.avatarUrl = action.payload.data.url
@@ -219,8 +228,16 @@ const authSlice = createSlice({
                         state.userData.bannerUrl = action.payload.data.url
                         break
                     case "image":
+                        state.imageUpload.imageId = action.payload.data.id
                         state.userData.images.push({id: action.payload.data.id}) 
                 }
+            }
+            else {
+                state.imageUpload.imageUploadValid.state = "invalid"
+                if(action.payload.message)
+                    state.imageUpload.imageUploadValid.message = action.payload.message
+                if (action.payload.error)
+                    state.imageUpload.imageUploadValid.error = action.payload.error
             }
         })
         .addCase(postImageAction.rejected, (state, action) => {

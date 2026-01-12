@@ -5,6 +5,7 @@ import "../../../styles/components/fullscreen_components/fullscreen-display.scss
 import FullScreenImage from "./FullScreenImage";
 import FullScreenLogReg from "./FullScreenLogReg";
 import FullScreenImageUpload from "./FullScreenImageUpload";
+import FullScreenNeedToLogIn from "./FullScreenNeedToLogIn";
 
 const FullScreenComponent: FC  = () => {
     const { fullScreenDisplayed } = useSelector(
@@ -25,6 +26,7 @@ const FullScreenComponent: FC  = () => {
             {fullScreenDisplayed === "log-reg" ? <FullScreenLogReg/> : <></>}
             {fullScreenDisplayed === "user-description" ? <></> : <></>}
             {fullScreenDisplayed === "image-upload" ? <FullScreenImageUpload/>  : <></>}
+            {fullScreenDisplayed === "need-to-login" ? <FullScreenNeedToLogIn/>  : <></>}
         </div>
     )
 }

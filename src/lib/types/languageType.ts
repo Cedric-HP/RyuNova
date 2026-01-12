@@ -28,6 +28,7 @@ type LanguageTitles = {
   privacyPolicy: string,
   copyrightNotification: string,
   intellectualPropertyRights: string,
+  imageUpload: LanguageImageUpload
 }
 
 type LanguageContentType = {
@@ -60,6 +61,8 @@ type LanguageButton = {
   previous: string,
   follow: string,
   unfollow: string,
+  upload: string,
+  send: string
 }
 
 type LanguageDate = {
@@ -82,6 +85,15 @@ type LanguagePlaceHolder = {
   email: string,
   password: string,
   confirmPassword: string,
+  title: string,
+  description: string,
+  chooseAnImage: string
+}
+
+type LanguageImageUpload ={
+  uploadAvatar: string,
+  uploadBanner: string,
+  uploadImage: string,
 }
 
 type LanguageAlt = {

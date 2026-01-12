@@ -62,7 +62,7 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                                         <div className="reply-segment-main"></div>
                                     </div>
                                 </div>
-                                <Comment id={item} size={size} commentList={commentList} userAvatar={userAvatar}/>
+                                <Comment id={item.id} size={size} commentList={commentList} userAvatar={userAvatar}/>
                             </div>
                         )
                     })}

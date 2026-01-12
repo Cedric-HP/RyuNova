@@ -15,7 +15,12 @@ const languageEnglish: LanguageData = {
         legalInformation: "LEGAL INFORMATION",
         privacyPolicy: "Privacy Policy",
         termsOfService: "Terms Of Service",
-        upcommingAstronomicalEvents: "Upcoming astronomical events"
+        upcommingAstronomicalEvents: "Upcoming astronomical events",
+        imageUpload: {
+            uploadAvatar: "Change your Avatar",
+            uploadBanner: "Change your Banner",
+            uploadImage: "Post an Image"
+        }
     },
     contentType:{
         article: {
@@ -81,7 +86,9 @@ const languageEnglish: LanguageData = {
         signUp: "Sign Up",
         sortBy: "Sort By",
         type: "Type",
-        unfollow: "Unfollow"
+        unfollow: "Unfollow",
+        upload: "Upload",
+        send: "Send",
     },
     date:{
         year: {
@@ -122,7 +129,10 @@ const languageEnglish: LanguageData = {
         name: "Name",
         email: "Email",
         password: "Password",
-        confirmPassword: "Confirm Password"
+        confirmPassword: "Confirm Password",
+        chooseAnImage: "Choose an image",
+        description: "Description",
+        title: "Title"
     },
     alt:{
         button: "Button",

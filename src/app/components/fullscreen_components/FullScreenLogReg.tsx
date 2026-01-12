@@ -275,7 +275,8 @@ const FullScreenLogReg: FC  = () => {
                 isNameValid === "valid" && 
                 isEmailValid === "valid" &&
                 isPasswordValid === "valid" &&
-                isConfPasswordValid === "valid"
+                isConfPasswordValid === "valid" &&
+                !isTyping.state
             )
             setCanSubmit(true)
             else setCanSubmit(false)
@@ -284,12 +285,13 @@ const FullScreenLogReg: FC  = () => {
         if (logReg === "log") {
             if (
                 isEmailValid === "valid" &&
-                isPasswordValid === "valid"
+                isPasswordValid === "valid" &&
+                !isTyping.state
             )
             setCanSubmit(true)
             else setCanSubmit(false)
         }
-    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid, logReg])
+    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid, isTyping.state, logReg])
 
 
     // Handle Register
@@ -357,11 +359,7 @@ const FullScreenLogReg: FC  = () => {
                 dispatch(setFullScreenAction(""))
             },2000)
             return
-        }
-        if (login.loginValid.state === "invalid") {
-            console.log("SA MARCHE PAS!!")
-            return
-        }    
+        }   
     },[dispatch, login.loginValid.state])
 
 
@@ -533,7 +531,7 @@ const FullScreenLogReg: FC  = () => {
                             className={`button-normal button-cta 
                             ${canSubmit ? "push-action" : "button-disable"}`} 
                             disabled={!canSubmit}
-                        >{languageList[language].button.signUp}</button>
+                        >{languageList[language].button.send}</button>
                     </div>}</>}
                     {register.fetchType === "register" && register.registerValid.state === "invalid" ? 
                     <>

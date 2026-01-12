@@ -24,7 +24,7 @@ const useIsTyping = ()=> {
             return newState
         })
             isTypingTimeOut = null
-        }, 1000);
+        }, 1250);
     }
     return { isTyping, handleTyping}
 }

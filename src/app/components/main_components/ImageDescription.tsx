@@ -5,11 +5,12 @@ import LongTextDisplay from "./LongTextDisplay";
 import { formatDate, formattedValue, numberReducerFormat, timeAgo } from "@/lib/tools/stringTools";
 import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
+import { TagElement } from "@/lib/types/contenteType";
 type Iprops = {
     views: number,
     date: string,
     description: string,
-    tags: string[],
+    tags: TagElement[],
 }
 
 const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", description = "No description", tags = []} ) => {
@@ -41,8 +42,8 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     } :</h4>
                     {tags.map((item, index)=>{
                         return (
-                        <Link className="link push-action" key={`${item}_${index}`} href={`/search?search=&type=image&sort=view&tag=${item}#nav`}>
-                            {item}
+                        <Link className="link push-action" key={`${item.name}_${index}`} href={`/search?search=&type=image&sort=view&tag=${item}#nav`}>
+                            {item.name}
                         </Link>
                         )
                     })}

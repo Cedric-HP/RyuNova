@@ -1,7 +1,8 @@
-import { CommentData, ContentData, SorterImput, UserData } from "../types/contenteType";
+import { CommentData, ContentData, UserData } from "../types/contenteType";
+import {  SorterInput } from "../types/utilitisesType";
 
 
-const contentSorter = (contentList: ContentData[],sortType: SorterImput) => {
+const contentSorter = (contentList: ContentData[],sortType: SorterInput) => {
     switch (sortType) {
         case "view":
             return [...contentList].sort((a: ContentData, b: ContentData)=> 
@@ -20,7 +21,7 @@ const contentSorter = (contentList: ContentData[],sortType: SorterImput) => {
     }
 }
 
-const userSorter = (contentList: UserData[],sortType: SorterImput) => {
+const userSorter = (contentList: UserData[],sortType: SorterInput) => {
     switch (sortType) {
         case "view":
             return [...contentList].sort((a: UserData, b: UserData)=> 
@@ -43,7 +44,7 @@ const userSorter = (contentList: UserData[],sortType: SorterImput) => {
     }
 }
 
-const commentSorter = (commentList: CommentData[],sortType: SorterImput) => {
+const commentSorter = (commentList: CommentData[],sortType: SorterInput) => {
     switch (sortType) {
         case "like":
             return [...commentList].sort((a: CommentData, b: CommentData)=> 
@@ -63,7 +64,7 @@ const filterHandler = (initialList: ContentData[], search: string, tag: string) 
     if (tag.trim() !== ""){
         const tagList = tag.split("_")
         return tagList.reduce(
-        (accumulator, currentTag) => [...accumulator].filter((item)=> item.tags.includes(currentTag)),
+        (accumulator, currentTag) => [...accumulator].filter((item)=> item.tags.find((item)=>item.name === currentTag)),
         interArray,
         );
     }

@@ -1,7 +1,6 @@
-
 import languageList from "../language"
-import { LanguageInput } from "../types/utilitisesType"
-
+import { LanguageInput, ThumbnailSize, ThumbnailSizeInput } from "../types/utilitisesType"
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000'
 // String Tool Section
 
 const stringReducer = (rawString: string, maxLenght: number) => {
@@ -113,6 +112,56 @@ const formatDate = (date: Date | string | number): string =>{
   }).format(new Date(date));
 }
 
+// Image Url
+
+const ImageUrl = (url: string, type: "full" | "thumbnail" ,size: ThumbnailSizeInput) =>{
+  if (type ==="full")
+    return (SERVER_URL + "/" + url).replaceAll("\\", '/')
+  return (SERVER_URL + "/" + url.replace("full\\", `thumbnail\\${size}_`)).replaceAll("\\", '/').slice(0, -3) + "webp"
+}
+
+const thumbnailSize: ThumbnailSize = {
+  image: {
+    400: 400,
+    750: 750
+  },
+  avatar: {
+    30: 30,
+    50: 50,
+    55: 55,
+    75: 75,
+    200: 200,
+  },
+  banner: {
+    500: 500
+  } 
+}
+
+// Tag String
+
+const tagFormat = (tagInput: string) => {
+  const trimedImput = 
+    tagInput.replaceAll("_", " ")
+      .replaceAll("&", " ")
+      .replaceAll("=", " ")
+      .replaceAll("#", " ")
+      .trim()
+      .replace(/\s\s+/g, ' ')
+      .normalize("NFD").replace(/\p{Diacritic}/gu, "")
+      .toLowerCase()
+    const rawTagList = trimedImput.split(" ").filter((item)=> item.length >= 3 && item.length <= 50)
+    const filteredTagList: string[] = []
+    rawTagList.forEach((item)=>{
+      if(!filteredTagList.includes(item) && item !== "")
+        filteredTagList.push(item)
+    })
+    let newTags = ""
+    filteredTagList.forEach((item)=>{
+      newTags += item + "_"
+    })
+    return newTags.slice(0, -1)
+}
+
 export {
     stringReducer, 
     stringCuter, 
@@ -120,6 +169,9 @@ export {
     timeAgo, 
     formatDate, 
     formattedValue,
-    handleLongTextSize
+    handleLongTextSize,
+    ImageUrl,
+    thumbnailSize,
+    tagFormat
 }
 

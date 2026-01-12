@@ -97,6 +97,26 @@ export default function Home() {
           >{languageList[language].button.logIn}</button>
         </div>
       </section></> : <></>}
+          <button 
+            className="button-cta button-big push-action" 
+            onClick={()=>handleLogReg("reg")}
+            onKeyDown={()=>handleLogReg("reg")}
+          >{languageList[language].button.signUp}</button>
+          <button 
+            className="button-cta-reverse button-big push-action"
+            onClick={()=>handleLogReg("log")}
+            onKeyDown={()=>handleLogReg("log")}
+          >{languageList[language].button.logIn}</button>
+          <button 
+            className="button-cta-reverse button-big push-action"
+            onClick={()=>dispatch(setFullScreenAction("need-to-login"))}
+            onKeyDown={()=>dispatch(setFullScreenAction("need-to-login"))}
+          >Test Need to be connected</button>
+          <button 
+            className="button-cta-reverse button-normal push-action"
+            onClick={()=>dispatch(setFullScreenAction("image-upload"))}
+            onKeyDown={()=>dispatch(setFullScreenAction("image-upload"))}
+          >Image Upload</button>
       <hr className="section-separator"/>
 
       {/* Tag Section */}

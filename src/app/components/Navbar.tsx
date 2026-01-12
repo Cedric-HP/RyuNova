@@ -21,6 +21,7 @@ import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegA
 import getProfileAction from "@/lib/reducers/authSliceReducer/actions/user/getProfileAction";
 import useLocalStorage from "@/lib/tools/useLocalStorage";
 import { setTokenAction } from "@/lib/reducers/authSliceReducer/authSlice";
+import { ImageUrl, thumbnailSize } from "@/lib/tools/stringTools";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -158,12 +159,6 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     </ul>
                                 </div>
                             </div>
-                            <button 
-                                className="button-cta-reverse button-normal push-action"
-                                onClick={()=>dispatch(setFullScreenAction("image-upload"))}
-                                onKeyDown={()=>dispatch(setFullScreenAction("image-upload"))}
-                            >Image Upload
-                            </button>
                             {accessToken === "" ? <>
                                 <button 
                                      className="button-cta-reverse button-normal push-action"
@@ -181,7 +176,8 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     <span id="notification-count" >99+</span>
                                 </div>
                                 <Link id="avatar" href={`/profile/${userData.id}`}>
-                                    <Avatar url={userData.avatarUrl} name={userData.name} size={55}/>
+                                    {/* <Avatar url={userData.avatarUrl} name={userData.name} size={55}/> */}
+                                    <img src={ImageUrl(userData.avatarUrl, "thumbnail", thumbnailSize.avatar[55])} alt="Avatar" />
                                 </Link>
                             </div>
                             : <></>}

@@ -1,4 +1,6 @@
 import { ContentData, ProfileData } from "./contenteType"
+//-------------------------------------------------------------------------
+// Utilitises Type
 
 type WindowSize = {
   width: number | undefined,
@@ -10,7 +12,26 @@ type IsTyping = {
   type: string
 }
 
+type ThumbnailSize = {
+  image: {
+    400: 400
+    750: 750
+  },
+  avatar: {
+    30: 30,
+    50: 50,
+    55: 55,
+    75: 75,
+    200: 200,
+  },
+  banner: {
+    500: 500
+  } 
+}
+//-------------------------------------------------------------------------
 // Input types
+
+type ThumbnailSizeInput = 30 | 50 | 55 | 75 | 200 | 400 | 500 | 750
 
 type LanguageInput = "en" | "fr"
 
@@ -18,7 +39,7 @@ type SorterInput = "view" | "like" | "date" | "follower"
 
 type TypeInput = "image" | "article" | "user" | "comment"
 
-type FullScreenInput = "" | "image" | "log-reg" | "user-description" | "image-upload"
+type FullScreenInput = "" | "image" | "log-reg" | "user-description" | "image-upload" | "need-to-login"
 
 type FetchingInput = "idle" | "feching" | "done" | "error"
 
@@ -27,7 +48,7 @@ type LogRegInput = "log" | "reg"
 type InputStateInput = "idle" | "valid" | "invalid"
 
 type ImageCategoryInput = "image" | "avatar" | "banner"
-
+//-------------------------------------------------------------------------
 // Fetch Input
 
 type RegisterInput = {
@@ -50,14 +71,14 @@ type ImageUploadInput = {
   token: string,
   formData: FormData
 }
-
+//-------------------------------------------------------------------------
 // Context Type
 
 type GlobalContextType = {
   language: LanguageInput,
   windowSize: WindowSize,
 }
-
+//-------------------------------------------------------------------------
 // Reducer
 
 type UtilitisesReducerType = {
@@ -92,10 +113,12 @@ type AuthSliceReducerType = {
   },
   imageUpload: {
     imageUploadValid: ValidateFetch,
+    imageId: number,
     imageCategory: ImageCategoryInput,
     fetch: FetchState,
   }
 }
+//-------------------------------------------------------------------------
 // Respond Type
 
 type RegisterRespond = {
@@ -150,7 +173,7 @@ type ImageUploadRespond = {
   message: string,
   error: string
 }
-
+//-------------------------------------------------------------------------
 // Fetch State
 
 type FetchState = {
@@ -163,7 +186,7 @@ type ValidateFetch = {
   message: string,
   error: string
 }
-
+//-------------------------------------------------------------------------
 // Fetch Type
 
 type RegisterFetchType = "" | "name" | "email" | "register"
@@ -189,5 +212,7 @@ export type {
   LoginInput,
   ProfilRespond,
   ImageUploadInput,
-  ImageUploadRespond
+  ImageUploadRespond,
+  ThumbnailSize,
+  ThumbnailSizeInput
 }
