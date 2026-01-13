@@ -1,0 +1,119 @@
+// Select Container
+
+.custom-selectors-display{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 75vw;
+    z-index: 1;
+    height: fit-content;
+    .custom-selectors-button{
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+    }
+    .custom-selectors-heigth{
+        border: none!important;
+        max-width: 0;
+    }
+}
+.select-language{
+    right: 200px;
+}
+.select-user{
+    right: 0;
+}
+.select-container{
+    position: absolute;
+    display: flex;
+    align-items: flex-start !important;
+    backdrop-filter: blur(5px) brightness(0.8);
+    border: 1px solid #0A2A59;
+    background-color: rgba(7, 13, 39, 0.5);
+    width: fit-content;
+    border-radius: 12px;
+    overflow: hidden;
+    ul{
+        list-style: none;
+        width: fit-content;
+        overflow-y: auto;
+        max-height: calc(36 * 4);
+        li{
+            z-index: 100;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            padding: 8px 10px;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            &:hover{
+                background-color: rgba(10, 42, 89, 0.5);  
+            }
+        }
+        .option-selected{
+            background-color: rgba(10, 42, 89, 0.5);
+            p{
+                color: #FBA059;
+            }
+        }
+    }
+}
+
+// Custom Select Appear and disappear Animation
+
+.custom-select-appear{
+    animation: custom-select-appear-animation 1 0.3s both ;
+}
+
+.custom-select-disappear{
+    animation: custom-select-disappear-animation 1 0.6s both ;
+}
+
+@keyframes custom-select-appear-animation {
+    0%{
+        display: flex;
+        height: 0;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        background-color: #EBECFA;
+    }
+    100%{
+        height: calc(36 * 4);
+        border-radius: 12px;
+        border: 1px solid #0A2A59;
+        background-color: rgba(7, 13, 39, 0.5);
+    }
+}
+
+@keyframes custom-select-disappear-animation {
+    0%{
+        height: calc(36 * 4);
+        border-radius: 12px;
+        border: 1px solid #0A2A59;
+        opacity: 1;
+        background-color: rgba(7, 13, 39, 0.5);
+    }
+    50%{
+        height: 1px;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 1;
+        background-color: #EBECFA;
+    }
+    99%{
+        height: 1px ;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 0;
+    }
+    100%{
+        height: 1px ;
+        border-radius: 0;
+        border: 0 solid #EBECFA;
+        opacity: 0;
+        display: none;
+    }
+}

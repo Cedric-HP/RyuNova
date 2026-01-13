@@ -44,6 +44,15 @@ nav {
             width: fit-content;
             display: flex;
             gap: 10px;
+            img{
+                border: 1px solid transparent;
+                border-radius: 50%;
+                transition: border 0.2s, transform 0.2s;
+                cursor: pointer;
+                &:hover{
+                    border: 1px solid #EBECFA;
+                }
+            }
         }
         #notification-container{
             height: fit-content;
@@ -86,10 +95,12 @@ nav {
         position: relative;
         z-index: 0;
         display: flex;
-        height: 65px;
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: flex-end;
+        form{
+            margin-top: calc(65px - 38px);
+        }
         input{
             background-color: transparent;
         }
@@ -122,36 +133,6 @@ nav {
         align-items: center;
         cursor: pointer;
     }
-    .select-container{
-        top: 50px;
-        left: -40px;
-        position: absolute;
-    }
-    ul{
-        list-style: none;
-        width: fit-content;
-        overflow-y: auto;
-        max-height: calc(36 * 4);
-        li{
-            z-index: 100;
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            padding: 8px 10px;
-            gap: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            &:hover{
-                background-color: rgba(10, 42, 89, 0.5);  
-            }
-        }
-        .lang-selected{
-            background-color: rgba(10, 42, 89, 0.5);
-            p{
-                color: #FBA059;
-            }
-        }
-    }
 }
 
 // Search Bar
@@ -165,6 +146,7 @@ nav {
     border-radius: 10px;
     display: flex;
     overflow: hidden;
+    position: relative;
     input, button{
         background-color: transparent;
         border: none;

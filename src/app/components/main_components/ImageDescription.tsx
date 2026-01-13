@@ -3,9 +3,10 @@ import Link from "next/link";
 import { useState, type FC } from "react";
 import LongTextDisplay from "./LongTextDisplay";
 import { formatDate, formattedValue, numberReducerFormat, timeAgo } from "@/lib/tools/stringTools";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
 import { TagElement } from "@/lib/types/contenteType";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 type Iprops = {
     views: number,
     date: string,
@@ -15,7 +16,10 @@ type Iprops = {
 
 const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", description = "No description", tags = []} ) => {
 
-    const { language } = useGlobalContext()
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
     const [displayFull, setTDisplayFull] = useState<boolean>(false)
     
     return (
@@ -25,11 +29,11 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     <span>
                         {displayFull ? formattedValue(views) : numberReducerFormat(views)} 
                         {" "}{views > 1 ? 
-                            languageList[language].contentType.view.plural :
-                            languageList[language].contentType.view.singular
+                            languageList[currentLanguage].contentType.view.plural :
+                            languageList[currentLanguage].contentType.view.singular
                         }
                     </span>
-                    <p>{displayFull ? formatDate(date) : timeAgo(date, language)}</p>
+                    <p>{displayFull ? formatDate(date) : timeAgo(date, currentLanguage)}</p>
                 </div>
                 <LongTextDisplay text={description} displayFull={displayFull} row={3}/>
                 { displayFull ? <>
@@ -37,8 +41,8 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                 <div className="tags-list-section">
                     {tags.length > 0 ? <>
                     <h4>{tags.length > 1 ? 
-                        languageList[language].contentType.tag.plural :
-                        languageList[language].contentType.tag.singular
+                        languageList[currentLanguage].contentType.tag.plural :
+                        languageList[currentLanguage].contentType.tag.singular
                     } :</h4>
                     {tags.map((item, index)=>{
                         return (
@@ -48,12 +52,12 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                         )
                     })}
                     </> : 
-                    <p>{languageList[language].message.notification.noTag}</p>
+                    <p>{languageList[currentLanguage].message.notification.noTag}</p>
                     }
                 </div>
                 </> : <></>}
                 <button className="button-simple" onClick={()=>setTDisplayFull((prevState)=> !prevState)}>
-                    {displayFull ? languageList[language].button.seeLess : languageList[language].button.seeMore}
+                    {displayFull ? languageList[currentLanguage].button.seeLess : languageList[currentLanguage].button.seeMore}
                 </button>
             </div>
         </>

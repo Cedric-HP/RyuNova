@@ -2,11 +2,11 @@ import { ProfilRespond } from "@/lib/types/utilitisesType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000'
 
-const getProfileAction = createAsyncThunk<ProfilRespond, string>(
-  "AUTH_SLICE/getProfile",
+const getLogoutAction = createAsyncThunk<ProfilRespond, string>(
+  "AUTH_SLICE/getLogout",
   async (token) => {
     try {
-      const res = await fetch(`${SERVER_URL}/profile/`, {
+      const res = await fetch(`${SERVER_URL}/logout/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -21,4 +21,4 @@ const getProfileAction = createAsyncThunk<ProfilRespond, string>(
     }
   }
 );
-export default  getProfileAction;
+export default getLogoutAction;

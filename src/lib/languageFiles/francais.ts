@@ -89,6 +89,9 @@ const languageFrancais: LanguageData = {
         unfollow: "Se Désabonner",
         upload: "Poster",
         send: "Envoyer",
+        logOut: "Se déconnecter",
+        imageUpload: "Poster une Image",
+        profile: "Mon Profile"
     },
     date:{
         year: {
@@ -146,14 +149,22 @@ const languageFrancais: LanguageData = {
         error: {
             imageNotFound: "Image introuvable",
             noResultFound: "Aucun résultat trouvé",
-            nameTooShort: "Nom trop court! (Min 3 Caractère)",
-            nameTooLong: "Nom trop long! (Max 50 Character)",
+            nameTooShort: "Nom trop court! (Min 3 Caractères)",
+            nameTooLong: "Nom trop long! (Max 50 Characters)",
             nameAlreadyExist: "Le nom existe déjà!",
             emaiInvalid: "Email invalide",
             emailAlreadyExist: "L'Email existe déjà!",
-            passwordTooShort: "Mot de passe trop court! (Min 8 caractères)",
+            passwordTooShort: "Mot de passe trop court! (Min 8 caractèress)",
             passwordMustHaveSPCharacter: "Le mot de passe doit avoir un caractère spécial!",
-            confPasswordNotIndentical: "Mot de passe non identique!"
+            confPasswordNotIndentical: "Mot de passe non identique!",
+            titleTooShort: "Titre trop court! (Min 3 Character)",
+            titleTooLong: "Titre trop long! (Max 50 Character)",
+            DescriptionTooLong: "Description trop long! (Max 1000 Caractères)",
+            tooManyTags: "Trop de tags! (Max 100 Tags)",
+            imageTooLarge: "Image trop lourd! (Max 50 Mo)",
+            imageWrongExtntion: "Type d’image non pris en charge! (Doit être: .jpg, .jpeg, .png, .webp)",
+            imageMissing: "Image est manquante!",
+            imageError: "Erreur de traitement d’image..."
         }
     },
     utilities: {

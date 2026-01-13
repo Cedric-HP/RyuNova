@@ -6,12 +6,25 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { usePathname } from 'next/navigation'
-import { useGlobalContext } from "./Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
+import useHandleLogRegPopUp from "@/lib/tools/handleLogRegPopUp";
 
 const Footer: FC = () => {
     const pathname = usePathname()
-    const { language } = useGlobalContext()
+
+    // Reducers
+    const { accessToken } = useSelector(
+        (store: RootState) => store.auth
+    )
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
+
+    // Handle LorReg Popup
+     const { handleLogReg } = useHandleLogRegPopUp()
+
     return (
         <>  
             <footer>
@@ -29,46 +42,46 @@ const Footer: FC = () => {
                         </div>
                     </section>
                     <section className="footer-link">
-                        <h3 className="spacing-letter-big">{languageList[language].titles.content}</h3>
+                        <h3 className="spacing-letter-big">{languageList[currentLanguage].titles.content}</h3>
                         <ul  className="footer-link-list">
                             <li>
                                 <Link className="link push-action" href={pathname === "/" ? "#image" : "/search?search=&type=image&sort=view&tag=#nav"}>
-                                    {languageList[language].titles.gallery}
+                                    {languageList[currentLanguage].titles.gallery}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={pathname === "/" ? "#article" : "/search?search=&type=article&sort=view&tag=#nav"}>
-                                    {languageList[language].contentType.article.plural}
+                                    {languageList[currentLanguage].contentType.article.plural}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/#nav"}>
-                                    {languageList[language].titles.events}
+                                    {languageList[currentLanguage].titles.events}
                                 </Link>
                             </li>
                         </ul>
                     </section>
                     <section className="footer-link">
-                        <h3 className="spacing-letter-big">{languageList[language].titles.legalInformation}</h3>
+                        <h3 className="spacing-letter-big">{languageList[currentLanguage].titles.legalInformation}</h3>
                         <ul className="footer-link-list">
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    {languageList[language].titles.termsOfService}
+                                    {languageList[currentLanguage].titles.termsOfService}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    {languageList[language].titles.privacyPolicy}
+                                    {languageList[currentLanguage].titles.privacyPolicy}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    {languageList[language].titles.copyrightNotification}
+                                    {languageList[currentLanguage].titles.copyrightNotification}
                                 </Link>
                             </li>
                             <li>
                                 <Link className="link push-action" href={"/"}>
-                                    {languageList[language].titles.intellectualPropertyRights}
+                                    {languageList[currentLanguage].titles.intellectualPropertyRights}
                                 </Link>
                             </li>
                         </ul>
@@ -86,7 +99,13 @@ const Footer: FC = () => {
                                 </Link>
                             </li>
                         </ul>
-                        <button className="button-cta button-normal">{languageList[language].button.signUp}</button>
+                        {accessToken === "" ? 
+                        <button 
+                            className="button-cta button-normal"
+                            onClick={()=>handleLogReg("reg")}
+                            onKeyDown={()=>handleLogReg("reg")}
+                        >{languageList[currentLanguage].button.signUp}</button>
+                        : <></>}
                     </section>
                 </div>
                 <span id="signature">©2025 MOUCHON Cédric</span>

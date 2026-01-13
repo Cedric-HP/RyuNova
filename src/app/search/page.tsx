@@ -13,14 +13,18 @@ import ArticlePreview from "../components/main_components/ArticlePreview";
 import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
 import UserList from "../components/main_components/UserList";
 import { numberReducerFormat, tagFormat } from "@/lib/tools/stringTools";
-import { useGlobalContext } from "../components/Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 
 const Search: FC = () => {
 
-    // Context and router
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
 
-    const { language } = useGlobalContext()
+    // Router
     
     const router = useRouter()
 
@@ -161,19 +165,19 @@ const Search: FC = () => {
                         <input
                             name="tag"
                             type="search" 
-                            placeholder={languageList[language].placeHolders.tagsPlaceholder}
+                            placeholder={languageList[currentLanguage].placeHolders.tagsPlaceholder}
                             onChange={handleTagInput}
                             value={tagInput}
                         />
                         <button className="push-action" type="submit">
-                            {languageList[language].button.apply}
+                            {languageList[currentLanguage].button.apply}
                         </button>
                     </form>
                     <form className="search-bar" onSubmit={handleSearch}>
                         <input
                             name="search"
                             type="search" 
-                            placeholder={languageList[language].placeHolders.search}
+                            placeholder={languageList[currentLanguage].placeHolders.search}
                             onChange={handleSearchInput}
                             defaultValue={(search === undefined || search === null) ? "" : String(currentSearch)}
                         />
@@ -188,31 +192,31 @@ const Search: FC = () => {
 
                     {/* Sort Section */}
                     <div id="sorter">
-                        <p>{languageList[language].button.sortBy} :</p>
+                        <p>{languageList[currentLanguage].button.sortBy} :</p>
                         <button 
                         className={`link push-action ${currentSort === "view" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("view")}
                         >
-                            {languageList[language].contentType.view.singular}
+                            {languageList[currentLanguage].contentType.view.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "like" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("like")}
                         >
-                            {languageList[language].contentType.like.singular}
+                            {languageList[currentLanguage].contentType.like.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "date" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("date")}
                         >
-                            {languageList[language].contentType.date.singular}
+                            {languageList[currentLanguage].contentType.date.singular}
                         </button>
                         {currentType === "user" ? <>
                         <button 
                         className={`link push-action ${currentSort === "follower" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentSort("follower")}
                         >
-                            {languageList[language].contentType.follower.singular}
+                            {languageList[currentLanguage].contentType.follower.singular}
                         </button>
                         </> : <></>
                         }
@@ -220,24 +224,24 @@ const Search: FC = () => {
 
                     {/* Type Section */}
                     <div id="type">
-                        <p>{languageList[language].button.type} :</p>
+                        <p>{languageList[currentLanguage].button.type} :</p>
                         <button 
                         className={`link push-action ${currentType === "image" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("image")}
                         >
-                            {languageList[language].contentType.image.singular}
+                            {languageList[currentLanguage].contentType.image.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentType === "article" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("article")}
                         >
-                            {languageList[language].contentType.article.singular}
+                            {languageList[currentLanguage].contentType.article.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentType === "user" ? "sort-selected" : ""}`}
                         onClick={()=>setCurrentType("user")}
                         >
-                            {languageList[language].contentType.user.singular}
+                            {languageList[currentLanguage].contentType.user.singular}
                         </button>
                     </div>
                 </div>
@@ -251,12 +255,12 @@ const Search: FC = () => {
                 <div id="result-info">
                     <span>{ currentType === "user" ? 
                         (userResultList.length > 1 ? 
-                            languageList[language].contentType.result.plural : 
-                            languageList[language].contentType.result.singular
+                            languageList[currentLanguage].contentType.result.plural : 
+                            languageList[currentLanguage].contentType.result.singular
                         ) :
                         (resultList.length > 1 ? 
-                            languageList[language].contentType.result.plural : 
-                            languageList[language].contentType.result.singular
+                            languageList[currentLanguage].contentType.result.plural : 
+                            languageList[currentLanguage].contentType.result.singular
                         )
                         } : {currentType === "user" ? 
                         numberReducerFormat(userResultList.length) : 
@@ -264,8 +268,8 @@ const Search: FC = () => {
                     </span>
                     {currentTag !== "" ? <>
                     <span>{currentTag.split("_").length > 1 ? 
-                        languageList[language].contentType.tag.plural :
-                        languageList[language].contentType.tag.singular
+                        languageList[currentLanguage].contentType.tag.plural :
+                        languageList[currentLanguage].contentType.tag.singular
                         } : {String(currentTag).replaceAll("_", " ")}
                     </span>
                     </> : <></>}
@@ -282,7 +286,7 @@ const Search: FC = () => {
                         <UserList userList={userSorter(userResultList, currentSort)}/>
                 </> : <></>}
                 { ( (resultList.length === 0 && currentType !== "user") || (userResultList.length === 0 && currentType === "user") )  ? <>
-                    <h3 id="no-result" className="spacing-letter-big glow">{languageList[language].message.error.noResultFound}</h3>
+                    <h3 id="no-result" className="spacing-letter-big glow">{languageList[currentLanguage].message.error.noResultFound}</h3>
                 </> : <></>}
             </section>
         </>

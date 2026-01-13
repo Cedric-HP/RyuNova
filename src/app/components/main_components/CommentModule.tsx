@@ -5,8 +5,9 @@ import { CommentData } from "@/lib/types/contenteType";
 import ReplyLike from "./ReplyLike";
 import { commentSorter } from "@/lib/tools/FilterSorter";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 type Iprops = {
     authorId: number
     commentList: CommentData[],
@@ -16,7 +17,10 @@ type Iprops = {
 
 const CommentModule: FC<Iprops>  = ( {authorId = -1, commentList = [], size= 50, userAvatar="/"} ) => {
 
-    const { language } = useGlobalContext()
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
     const [currentSort, setCurrentSort] = useState<"like"|"date">("like")
     const [sortedList, setSortedList] = useState<CommentData[]>(commentList)
 
@@ -32,11 +36,11 @@ const CommentModule: FC<Iprops>  = ( {authorId = -1, commentList = [], size= 50,
         <>  
             <section className="comment-section">
                 <div className="info-sort-button">
-                    <h3><span>{numberReducerFormat(commentList.length)}</span>{commentList.length > 1 ? languageList[language].contentType.comment.plural : languageList[language].contentType.comment.singular}</h3>
+                    <h3><span>{numberReducerFormat(commentList.length)}</span>{commentList.length > 1 ? languageList[currentLanguage].contentType.comment.plural : languageList[currentLanguage].contentType.comment.singular}</h3>
                     <div className="comment-sort-button">
-                        <p>{languageList[language].button.sortBy} :</p>
-                        <button className={`link link-button push-action ${currentSort === "like" ? "sort-selected" : ""}`} onClick={()=>setCurrentSort("like")}>{languageList[language].contentType.like.singular}</button>
-                        <button className={`link link-button push-action ${currentSort === "date" ? "sort-selected" : ""}`} onClick={()=>setCurrentSort("date")}>{languageList[language].contentType.date.singular}</button>
+                        <p>{languageList[currentLanguage].button.sortBy} :</p>
+                        <button className={`link link-button push-action ${currentSort === "like" ? "sort-selected" : ""}`} onClick={()=>setCurrentSort("like")}>{languageList[currentLanguage].contentType.like.singular}</button>
+                        <button className={`link link-button push-action ${currentSort === "date" ? "sort-selected" : ""}`} onClick={()=>setCurrentSort("date")}>{languageList[currentLanguage].contentType.date.singular}</button>
                     </div>
                 </div>
                 <ReplyLike id={authorId} type="image" url={userAvatar} like={0} displayLike={false} allowToggleReplyDisplay={false}/>

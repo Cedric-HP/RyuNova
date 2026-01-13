@@ -7,8 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { defaultComment } from "@/lib/tools/DefaultValues";
 import Avatar from "../small_components/Avatar";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 type Iprops = {
     id: number,
     size: number,
@@ -17,8 +18,11 @@ type Iprops = {
 }
 
 const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]} ) => {
-
-    const { language } = useGlobalContext()
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
+    
     const commenData: CommentData = commentList.find((item)=> item.id === id) || defaultComment
     const [displayReplies, setDisplayReplies] = useState<boolean>(false)
     
@@ -76,8 +80,8 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                             <>
                                 <p>
                                     {commenData.replyList.length > 1 ?  
-                                        `${languageList[language].button.hide.plural} ${languageList[language].contentType.reply.plural}` : 
-                                        `${languageList[language].button.hide.singular} ${languageList[language].contentType.reply.singular}`
+                                        `${languageList[currentLanguage].button.hide.plural} ${languageList[currentLanguage].contentType.reply.plural}` : 
+                                        `${languageList[currentLanguage].button.hide.singular} ${languageList[currentLanguage].contentType.reply.singular}`
                                     }
                                 </p>
                                 <FontAwesomeIcon icon={faAngleUp} />
@@ -87,8 +91,8 @@ const Comment: FC<Iprops>  = ( {id= -1, size= 50, userAvatar="/", commentList=[]
                                 <span>{commenData.replyList.length}</span>
                                 <p>
                                     {commenData.replyList.length > 1 ?  
-                                        languageList[language].contentType.reply.plural : 
-                                        languageList[language].contentType.reply.singular
+                                        languageList[currentLanguage].contentType.reply.plural : 
+                                        languageList[currentLanguage].contentType.reply.singular
                                     }
                                 </p>
                                 <FontAwesomeIcon icon={faAngleDown} />

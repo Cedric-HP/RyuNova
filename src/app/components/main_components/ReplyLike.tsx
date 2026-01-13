@@ -4,8 +4,9 @@ import "../../../styles/components/main_components/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 import Avatar from "../small_components/Avatar";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 const userName = "HYPERNOVA GBX"
 type Iprops = {
     id: number,
@@ -17,7 +18,11 @@ type Iprops = {
 }
 
 const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLike= false, like= 0, allowToggleReplyDisplay= false} ) => {
-    const { language } = useGlobalContext()
+    
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
     const textareaElement = useRef<HTMLSpanElement | null>(null)
 
     const [displayReply, setTDisplayReply] = useState<boolean>(type === "user" ? false : true)
@@ -26,7 +31,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
     const [isPlaceholder, setIsPlaceholder] = useState(true)
     const [testLike, setTestLike] = useState<boolean>(false)
 
-    const PLACEHOLDER = useMemo(()=> languageList[language].button.addComment + "...", [language])
+    const PLACEHOLDER = useMemo(()=> languageList[currentLanguage].button.addComment + "...", [currentLanguage])
 
     const imageSize = useMemo(()=> { 
         return type === "user" ? 30 : displayButton ? 50 : 30
@@ -130,7 +135,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                         {testLike ? `${numberReducerFormat(like + 1)}` : `${numberReducerFormat(like)}`}
                     </span>
                 </button>
-                <button className="comment-button link push-action" onClick={()=> handleToggleDisplayReply(true)}>{languageList[language].button.respond}</button>
+                <button className="comment-button link push-action" onClick={()=> handleToggleDisplayReply(true)}>{languageList[currentLanguage].button.respond}</button>
             </div>
             </> : <></>}
             {/* Reply / Add Comment Section*/}
@@ -157,14 +162,14 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                             className="button-normal button-cta-reverse push-action" 
                             onClick={()=> handleCancel()}
                         >
-                            {languageList[language].button.cancel}
+                            {languageList[currentLanguage].button.cancel}
                         </button>
                         <button 
                             className="button-normal button-cta push-action" 
                             disabled={commentInput.replaceAll("\n" ,"") === "" ? true : false} 
                             onClick={()=> handleSend()}
                         >
-                            {type === "user" ? languageList[language].button.respond : languageList[language].button.addComment}
+                            {type === "user" ? languageList[currentLanguage].button.respond : languageList[currentLanguage].button.addComment}
                         </button>
                     </div>
                     </>:<></>}

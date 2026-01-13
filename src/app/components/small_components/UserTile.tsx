@@ -3,9 +3,10 @@ import "../../../styles/components/main_components/comment_style.scss"
 import Link from "next/link";
 import { type FC } from "react";
 import Avatar from "./Avatar";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
 import FollowButton from "./FollowButton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 
 type Iprops = {
     userId: number,
@@ -17,7 +18,9 @@ type Iprops = {
 
 const UserTile: FC<Iprops>  = ( {userId= -1, name = "title", followers = 0, url = "url", size = 50} ) => {
 
-    const { language } = useGlobalContext()
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
 
     return (
         <>  
@@ -31,8 +34,8 @@ const UserTile: FC<Iprops>  = ( {userId= -1, name = "title", followers = 0, url 
                     <div className="user-info">
                         <h3>{name}</h3>
                         <p><span>{numberReducerFormat(followers)}</span> {followers > 1 ? 
-                        languageList[language].contentType.follower.plural :
-                        languageList[language].contentType.follower.singular
+                        languageList[currentLanguage].contentType.follower.plural :
+                        languageList[currentLanguage].contentType.follower.singular
                         }</p>
                     </div>
                 </div>

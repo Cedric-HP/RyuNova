@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { generateColor } from "@/lib/tools/generators";
+import { ImageUrl } from "@/lib/tools/stringTools";
 import { type FC } from "react";
 type Iprops = {
     url: string,
     name: string,
-    size: number,
+    size: 30 | 50 | 55 | 75 | 200,
 }
 
 const Avatar: FC<Iprops>  = ( {url="", name= "", size=50} ) => {
@@ -12,7 +13,7 @@ const Avatar: FC<Iprops>  = ( {url="", name= "", size=50} ) => {
     return ( (url !== "" && url !== "/") ? 
         <img 
             className="avatar" 
-            src={url} alt={`${name}'s Avatar`} 
+            src={ImageUrl(url, "thumbnail", size)} alt={`${name}'s Avatar`} 
             height={size}
             style={{
                 height: size,

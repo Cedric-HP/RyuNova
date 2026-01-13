@@ -6,7 +6,6 @@ import "../../../styles/components/fullscreen_components/fullscreen-display.scss
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
 import { InputStateInput } from "@/lib/types/utilitisesType";
 import SpanInputFetchState from "../small_components/SpanInputFetchState";
@@ -15,6 +14,7 @@ import useIsTyping from "@/lib/tools/useIsTyping";
 import postImageAction from "@/lib/reducers/authSliceReducer/actions/image/postImageAction";
 import resetPostImageStateAction from "@/lib/reducers/authSliceReducer/actions/image/resetPostImageStateAction";
 import { tagFormat } from "@/lib/tools/stringTools";
+import { useRouter } from "next/navigation";
 
 const FullScreenImageUpload: FC  = () => {
 
@@ -22,16 +22,25 @@ const FullScreenImageUpload: FC  = () => {
     const { accessToken, imageUpload  } = useSelector(
         (store: RootState) => store.auth
     )
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
     const dispatch: AppDispatch = useDispatch()
 
-    // Language Context
-    const { language } = useGlobalContext()
+    useEffect(()=>{
+        if (accessToken === "") {
+            dispatch(setFullScreenAction("need-to-login"))
+        }
+    },[])
+
+    // Router
+    const router = useRouter()
 
     // Use IsTyping
     const {isTyping, handleTyping} = useIsTyping()
 
     // PLACEHOLDER
-    const PLACEHOLDER = useMemo(()=> languageList[language].placeHolders.description , [language])
+    const PLACEHOLDER = useMemo(()=> languageList[currentLanguage].placeHolders.description , [currentLanguage])
     const [isPlaceholder, setIsPlaceholder] = useState(true)
     const textareaElement = useRef<HTMLSpanElement | null>(null)
     
@@ -59,7 +68,6 @@ const FullScreenImageUpload: FC  = () => {
 
     // Preview URL
     const [previewUrl, setPreviewUrl] = useState<string>("/")
-    const [previewType, setPreviewType] = useState<string>("")
 
     // Handle Placeholder
 
@@ -96,33 +104,67 @@ const FullScreenImageUpload: FC  = () => {
     }
 
     // Input handler
+    // Title
     const handleTitleInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setTitleInput(String(e.currentTarget.value))
         handleTyping("name")
     }
 
+    // Description
     const handleDescriptionInput = (e: React.ChangeEvent<HTMLInputElement >)=>{
         const input = String(e.target.innerHTML).replaceAll("<br>", "\n")
-        setDescriptionInput(input)
+        if (input === "\n") setDescriptionInput("")
+        else setDescriptionInput(input)
         handleTyping("description")
     }
 
+    // Image
     const handleImageInput = async (e: React.ChangeEvent<HTMLInputElement >) => {
         try {
              if (e.target.files && e.target.files[0] !== null){
-                if (e.target.files[0].size > 50000000)
-                    throw "File is too large!"
-                // if (e.target.files[0].type)   
-                    setPreviewType(e.target.files[0].type)
-                    return setImageInput(e.target.files[0])
+                if (!e.target.files[0]) {
+                    setImageError(languageList[currentLanguage].message.error.imageMissing)
+                    throw "error_handled"
+                }  
+                if (e.target.files[0].size > 50000000){
+                    setImageError(languageList[currentLanguage].message.error.imageTooLarge)
+                    throw "error_handled"
+                }
+                   
+                if (
+                    e.target.files[0].type === null || 
+                    (e.target.files[0].type !== "image/png" &&
+                     e.target.files[0].type !== "image/jpg" &&
+                     e.target.files[0].type !== "image/jpeg" &&
+                     e.target.files[0].type !== "image/webp"   
+                    )) {
+                    setImageError(languageList[currentLanguage].message.error.imageWrongExtntion)
+                    throw "error_handled"
+                }  
+                return setImageInput(e.target.files[0])
                 
             } 
-        } catch (error) {
+        } catch (err) {
             setImageInput("error")
             setIsImageValid("invalid")
-            setImageError(String(error))
+            if (err !== "error_handled")
+                setImageError(languageList[currentLanguage].message.error.imageError)
         }
     }
+
+    // Handle Tag Input
+    const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
+        setTagInput(String(e.currentTarget.value))
+        handleTyping("tag")
+    }
+    
+    useEffect(()=>{
+        if (!isTyping.state && isTyping.type === "tag") {
+            const newTags = tagFormat(tagInput)
+            setCurrentTag(newTags)
+            setTagInput(newTags.replaceAll("_", " "))
+        }
+    }, [isTyping.state, isTyping.type, tagInput])
 
     // Preview Handle
     useEffect(()=>{
@@ -141,20 +183,6 @@ const FullScreenImageUpload: FC  = () => {
         
     },[imageInput])
 
-    // Handle Tag Input
-    const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
-        setTagInput(String(e.currentTarget.value))
-        handleTyping("tag")
-    }
-    
-    useEffect(()=>{
-        if (!isTyping.state && isTyping.type === "tag") {
-            const newTags = tagFormat(tagInput)
-            setCurrentTag(newTags)
-            setTagInput(newTags.replaceAll("_", " "))
-        }
-    }, [isTyping.state, isTyping.type, tagInput])
-
     // Use Effect to Validate inputs
     // Title
     useEffect(()=>{
@@ -165,16 +193,16 @@ const FullScreenImageUpload: FC  = () => {
         }
         if (titleInput.length < 3 && !isTyping.state) {
             setIsTitleValid("invalid")
-            setTitleError(languageList[language].message.error.nameTooShort)
+            setTitleError(languageList[currentLanguage].message.error.titleTooShort)
             return
         }
         if (titleInput.length > 50 && !isTyping.state) {
             setIsTitleValid("invalid")
-            setTitleError(languageList[language].message.error.nameTooLong)
+            setTitleError(languageList[currentLanguage].message.error.titleTooLong)
             return
         }
         setIsTitleValid("valid")
-    },[isTyping.state, language, titleInput])
+    },[currentLanguage, isTyping.state, titleInput])
 
     // Description
     useEffect(()=>{
@@ -184,8 +212,8 @@ const FullScreenImageUpload: FC  = () => {
             return
         }
         setIsDescriptionValid("invalid")
-        setDescriptionError("TOO LONG")
-    },[descriptionInput.length])
+        setDescriptionError(languageList[currentLanguage].message.error.DescriptionTooLong)
+    },[currentLanguage, descriptionInput.length])
 
     // Image
     useEffect(()=>{
@@ -194,6 +222,10 @@ const FullScreenImageUpload: FC  = () => {
             setImageError("") 
             return
         }
+        if (imageInput === "error") {
+            setIsImageValid("invalid")
+            return
+        }  
         setIsImageValid("valid")
     },[imageInput, previewUrl])
 
@@ -205,8 +237,8 @@ const FullScreenImageUpload: FC  = () => {
             return
         }
         setIsTagsValid("invalid")
-        setTagsError("Too Many Tags!")
-    },[currentTag, imageInput, previewUrl])
+        setTagsError(languageList[currentLanguage].message.error.tooManyTags)
+    },[currentLanguage, currentTag, imageInput, previewUrl])
 
 
     // Use Effect to allow submission when all inputs are valid
@@ -252,39 +284,44 @@ const FullScreenImageUpload: FC  = () => {
         handleImageUpload(formData);
     },[currentTag, descriptionInput, handleImageUpload, imageUpload.imageCategory])
 
-    // Use Effect that handles respond Register Submit
+    // Use Effect that handles respond
     useEffect(()=>{
         if (imageUpload.imageUploadValid.state === "valid") {
             setTimeout(()=>{
                 resetFormInput()
                 dispatch(resetPostImageStateAction())
                 dispatch(setFullScreenAction(""))
+                router.push(`/image/${imageUpload.imageId}`)
             },2000)
             return
         }    
-    },[dispatch, imageUpload.imageUploadValid.state])
+    },[dispatch, imageUpload.imageId, imageUpload.imageUploadValid.state, router])
 
     return ( 
         <>
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <div className="full-screen-popup full-screen-image-upload">
-                {/* Register Section */}
-                <p>{previewUrl}</p>
-                <p>{previewType}</p>
+                {/* Image Upload Section */}
                 <h2 className="spacing-letter-big glow">
                     {imageUpload.imageCategory === "image" ?
-                    languageList[language].titles.imageUpload.uploadImage :
+                    languageList[currentLanguage].titles.imageUpload.uploadImage :
                     imageUpload.imageCategory === "avatar" ?
-                    languageList[language].titles.imageUpload.uploadAvatar:
-                    languageList[language].titles.imageUpload.uploadBanner}
+                    languageList[currentLanguage].titles.imageUpload.uploadAvatar:
+                    languageList[currentLanguage].titles.imageUpload.uploadBanner}
                 </h2>
                 <div className="image-upload-preview">
                     {previewUrl !== "/" ?
-                    <img src={previewUrl} alt="Preview"/> : 
-                    <div className="image-upload-preview-placholder"></div>}
+                    <img src={previewUrl} alt="Preview" height={300}/> : 
+                    <div className="image-upload-preview-placholder">
+                        <div className="image-upload-preview-corner-1"></div>
+                        <div className="image-upload-preview-corner-2"></div>
+                        <div className="image-upload-preview-corner-3"></div>
+                        <div className="image-upload-preview-corner-4"></div>
+                        <h3>Image Preview</h3>
+                    </div>}
                 </div>
                 <form action="Image-Upload" onSubmit={handleSubmitImage}>
-                    <div className={`input-container ${isImageValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isImageValid === "invalid" ? "input-container-error" : ""}`}>
                         <input 
                             name="image" 
                             className={`base-input file-input
@@ -305,7 +342,7 @@ const FullScreenImageUpload: FC  = () => {
                     </div>
                     {imageUpload.imageCategory === "image" ?
                     <>
-                    <div className={`input-container ${isTitleValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isTitleValid === "invalid" ? "input-container-error" : ""}`}>
                         <input 
                             name="title" 
                             className={`base-input 
@@ -323,11 +360,11 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <p>{titleError}</p>
                     </div> 
-                    <div className={`input-container textarea-container${isDescriptionValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container textarea-container${isDescriptionValid === "invalid" ? "input-container-error" : ""}`}>
                         <span 
                             ref={textareaElement}
                             id={`textarea_image`} 
-                            className={`textarea ${isPlaceholder ? "placeholder" : ""} 
+                            className={`textarea base-input ${(isPlaceholder && descriptionInput === "") ? "placeholder" : ""} 
                                 ${isDescriptionValid === "valid" ? "input-valid" : 
                                 isDescriptionValid === "invalid" ? "input-invalid" : ""}`}
                             role="textbox"  
@@ -344,14 +381,14 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <p>{descriptionError}</p>
                     </div>
-                    <div className={`input-container ${isTagsValid === "invalid" ? "input-logreg-container-error" : ""}`}>
+                    <div className={`input-container ${isTagsValid === "invalid" ? "input-container-error" : ""}`}>
                         <input
                             name="tags"
                             type="text"
                             className={`base-input 
                                 ${isTagsValid === "valid" ? "input-valid" : 
                                 isTagsValid === "invalid" ? "input-invalid" : ""}`} 
-                            placeholder={languageList[language].placeHolders.tagsPlaceholder}
+                            placeholder={languageList[currentLanguage].placeHolders.tagsPlaceholder}
                             onChange={handleTagInput}
                             value={tagInput}
                             disabled={(imageUpload.fetch.fetchState === "feching" || imageUpload.imageUploadValid.state === "valid")}
@@ -375,7 +412,7 @@ const FullScreenImageUpload: FC  = () => {
                             className={`button-normal button-cta 
                             ${canSubmit ? "push-action" : "button-disable"}`} 
                             disabled={!canSubmit}
-                        >{languageList[language].button.send}</button>
+                        >{languageList[currentLanguage].button.send}</button>
                     </div>}</>}
                     {imageUpload.imageUploadValid.state === "invalid" ? 
                     <>

@@ -114,7 +114,7 @@ const formatDate = (date: Date | string | number): string =>{
 
 // Image Url
 
-const ImageUrl = (url: string, type: "full" | "thumbnail" ,size: ThumbnailSizeInput) =>{
+const ImageUrl = (url: string, type: "full" | "thumbnail" ,size?: ThumbnailSizeInput) =>{
   if (type ==="full")
     return (SERVER_URL + "/" + url).replaceAll("\\", '/')
   return (SERVER_URL + "/" + url.replace("full\\", `thumbnail\\${size}_`)).replaceAll("\\", '/').slice(0, -3) + "webp"

@@ -62,7 +62,10 @@ type LanguageButton = {
   follow: string,
   unfollow: string,
   upload: string,
-  send: string
+  send: string,
+  logOut: string,
+  imageUpload: string,
+  profile: string
 }
 
 type LanguageDate = {
@@ -122,6 +125,14 @@ type LanguageErrorMessage = {
   passwordTooShort: string,
   passwordMustHaveSPCharacter: string,
   confPasswordNotIndentical: string,
+  titleTooShort: string,
+  titleTooLong: string,
+  DescriptionTooLong: string,
+  tooManyTags: string,
+  imageTooLarge: string,
+  imageWrongExtntion: string,
+  imageMissing: string,
+  imageError: string
 }
 
 type LanguageUtilities = {

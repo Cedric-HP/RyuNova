@@ -1,6 +1,6 @@
-import { AuthSliceReducerType, RegisterFetchType } from "@/lib/types/utilitisesType"
+import { AuthSliceReducerType, ImageCategoryInput, RegisterFetchType } from "@/lib/types/utilitisesType"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { defaultUserData } from "@/lib/tools/DefaultValues"
+import { defaultContent, defaultUser, defaultUserData } from "@/lib/tools/DefaultValues"
 import postRegisterAction from "./actions/logReg/postRegisterAction"
 import setRegisterFetchStateIdleAction from "./actions/logReg/setRegisterFetchStateIdleAction"
 import checkDuplicateAction from "./actions/logReg/checkDuplicateAction"
@@ -11,6 +11,9 @@ import postLoginAction from "./actions/logReg/postLoginAction"
 import getProfileAction from "./actions/user/getProfileAction"
 import postImageAction from "./actions/image/postImageAction"
 import resetPostImageStateAction from "./actions/image/resetPostImageStateAction"
+import getLogoutAction from "./actions/logReg/getLogoutAction"
+import getImageAction from "./actions/image/getImageAction"
+import getUserAction from "./actions/user/getUserAction"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
@@ -53,6 +56,12 @@ const initialState: AuthSliceReducerType = {
             fetchState: "idle"
         }
     },
+    logout: {
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        }
+    },
     imageUpload: {
         fetch: {
             error: "",
@@ -65,7 +74,23 @@ const initialState: AuthSliceReducerType = {
           message: "",
           error: ""
         }
-    }
+    },
+    getImage: {
+        exist: false,
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        },
+    },
+    getUser: {
+        exist: false,
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        },
+    },
+    currentImage: defaultContent,
+    currentUser: defaultUser,
 }
 
 const authSlice = createSlice({
@@ -79,12 +104,17 @@ const authSlice = createSlice({
         },
         setTokenAction: (state, action:  PayloadAction<string>)=>{
             state.accessToken = action.payload
+        },
+        setImageUploadCategoryAction: (state, action: PayloadAction<ImageCategoryInput >) =>{
+            state.imageUpload.imageCategory = action.payload;
         }
     },
 
     extraReducers: (builder) => {
         builder
 
+        // Log Reg Section
+        //-----------------------------------------------------
         // Register Case
         .addCase(resetRegisterStateAction, (state)=>{
             state.register.nameValid.valid = "idle"
@@ -157,7 +187,29 @@ const authSlice = createSlice({
             state.login.fetch.error = action.error.message || "Fail to Fetch";
         })
 
-        // Name and Email checkDuplicate
+        // LogOut Case
+        .addCase(getLogoutAction.pending, (state) => {
+            state.logout.fetch.fetchState= "feching";
+        })
+        .addCase(getLogoutAction.fulfilled, (state, action) => {
+            state.logout.fetch.fetchState = "done";
+            if (action.payload.state) {
+                state.authorized = false
+                state.accessToken = ""
+            }
+            else {
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
+            }
+        })
+        .addCase(getLogoutAction.rejected, (state, action) => {
+            state.logout.fetch.fetchState = "error";
+            state.logout.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Name and Email checkDuplicate Case
         .addCase(checkDuplicateAction.pending, (state) => {
             state.register.fetch.fetchState= "feching";
         })
@@ -185,7 +237,9 @@ const authSlice = createSlice({
             state.register.fetch.error = action.error.message || "Fail to Fetch";
         })
 
-        // Get Profile
+        // User Section
+        //-----------------------------------------------------
+        // Get Profile Case
         .addCase(getProfileAction.pending, (state) => {
             state.profile.fetch.fetchState= "feching";
         })
@@ -206,7 +260,32 @@ const authSlice = createSlice({
             state.profile.fetch.error = action.error.message || "Fail to Fetch";
         })
 
-        // Post Image
+        // Get User Case
+        .addCase(getUserAction.pending, (state) => {
+            state.getUser.fetch.fetchState= "feching";
+            state.getUser.exist = false;
+            state.currentImage = defaultContent
+        })
+        .addCase(getUserAction.fulfilled, (state, action) => {
+            state.getUser.fetch.fetchState = "done";
+            if (action.payload.state) {
+                state.getUser.exist = true;
+                state.currentUser = action.payload.data
+            }
+            else {
+                state.currentUser = defaultUser
+                state.getUser.exist = false;
+            }
+        })
+        .addCase(getUserAction.rejected, (state, action) => {
+            state.getUser.fetch.fetchState = "error";
+            state.getUser.exist = false;
+            state.getUser.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Image Section
+        //-----------------------------------------------------
+        // Post Image Case
         .addCase(resetPostImageStateAction, (state)=>{
             state.imageUpload.imageUploadValid.state = "idle"
             state.imageUpload.imageUploadValid.message = ""
@@ -244,8 +323,31 @@ const authSlice = createSlice({
             state.imageUpload.fetch.fetchState = "error";
             state.imageUpload.fetch.error = action.error.message || "Fail to Fetch";
         })
+
+        // Get Image Case
+        .addCase(getImageAction.pending, (state) => {
+            state.getImage.fetch.fetchState= "feching";
+            state.getImage.exist = false;
+            state.currentImage = defaultContent
+        })
+        .addCase(getImageAction.fulfilled, (state, action) => {
+            state.getImage.fetch.fetchState = "done";
+            if (action.payload.state) {
+                state.currentImage = action.payload.data
+                state.getImage.exist = true;
+            }
+            else {
+                state.getImage.exist = false;
+                state.currentImage = defaultContent
+            }
+        })
+        .addCase(getImageAction.rejected, (state, action) => {
+            state.getImage.fetch.fetchState = "error";
+            state.getImage.exist = false;
+            state.getImage.fetch.error = action.error.message || "Fail to Fetch";
+        })
     }
 })
 
-export const { setRegisterFetchTypeAction, setTokenAction } = authSlice.actions;
+export const { setRegisterFetchTypeAction, setTokenAction, setImageUploadCategoryAction } = authSlice.actions;
 export default authSlice.reducer

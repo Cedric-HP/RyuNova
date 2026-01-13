@@ -89,6 +89,9 @@ const languageEnglish: LanguageData = {
         unfollow: "Unfollow",
         upload: "Upload",
         send: "Send",
+        logOut: "Log Out",
+        imageUpload: "Upload an Image",
+        profile: "My Profile"
     },
     date:{
         year: {
@@ -153,7 +156,15 @@ const languageEnglish: LanguageData = {
             emailAlreadyExist: "Email already exist!",
             passwordTooShort: "Password too short! (Min 8 Character)",
             passwordMustHaveSPCharacter: "Password must have special character!",
-            confPasswordNotIndentical: "Password not identical!"
+            confPasswordNotIndentical: "Password not identical!",
+            titleTooShort: "Title too short! (Min 3 Character)",
+            titleTooLong: "Title too long! (Max 50 Character)",
+            DescriptionTooLong: "Description too long! (Max 1000 Character)",
+            tooManyTags: "Too many tags! (Max 100 Tags)",
+            imageTooLarge: "Image too large! (Max 50 Mo)",
+            imageWrongExtntion: "Image type not supported! (Must be: .jpg, .jpeg, .png, .webp)",
+            imageMissing: "Image is missing!",
+            imageError: "Image process error..."
         }
     },
     utilities: {

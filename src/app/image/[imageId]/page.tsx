@@ -2,7 +2,7 @@
 import { useEffect, useState, type FC } from "react";
 // import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fecthFinderComment, fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
 import "../../../styles/pages/image.scss"
 import { UserData } from "@/lib/types/contenteType";
@@ -10,52 +10,100 @@ import UserTile from "@/app/components/small_components/UserTile";
 import ImageDescription from "@/app/components/main_components/ImageDescription";
 import CommentModule from "@/app/components/main_components/CommentModule";
 import { defaultUser } from "@/lib/tools/DefaultValues";
-import { numberReducerFormat } from "@/lib/tools/stringTools";
-import { useGlobalContext } from "@/app/components/Navbar";
+import { ImageUrl, numberReducerFormat } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/reducers/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
 import setCurrentImageAction from "@/lib/reducers/utilitisesReducer/actions/setCurrentImageAction";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-
-const userAvatar: string = "/image/pictures/avatar/GBX_LOGO_Head_PNG.png"
+import getImageAction from "@/lib/reducers/authSliceReducer/actions/image/getImageAction";
+import getUserAction from "@/lib/reducers/authSliceReducer/actions/user/getUserAction";
 
 const LogingRegister: FC = () => {
-
-    const dispatch: AppDispatch = useDispatch()
     
-    const { language } = useGlobalContext()
+    // Reducers
+    const { currentImage, getImage, userData, currentUser, getUser} = useSelector(
+        (store: RootState) => store.auth
+    )
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
+    const dispatch: AppDispatch = useDispatch()
 
+    // Router
+    const router = useRouter()
+
+    // Param Image ID
     const { imageId } = useParams();
 
-    const content = useFetch(Number(imageId), "image")
+    // const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)
     const [testLike, setTestLike] = useState<boolean>(false)
-    const conmmentList = fecthFinderComment(content?.commentList || [])
+    const conmmentList = fecthFinderComment(currentImage.commentList || [])
 
-    // Use Effect that simule e fecth
+    // // Use Effect that simule e fecth
+
+    // useEffect(()=>{
+    //     if(content !== undefined) {
+    //         dispatch(setCurrentImageAction(content))
+    //         const author = fecthFinderUser(content.authorId)
+    //         if (author !== undefined)
+    //             setAuthorData(author)
+    //     }
+    // },[content, dispatch]) 
+
+    // Use Effect to get The Image Data
 
     useEffect(()=>{
-        if(content !== undefined) {
-            dispatch(setCurrentImageAction(content))
-            const author = fecthFinderUser(content.authorId)
-            if (author !== undefined)
-                setAuthorData(author)
+        if ((imageId && parseInt(imageId[0]) < 1) || imageId === undefined){
+            router.push('/image/1')
+            return
         }
-    },[content, dispatch]) 
+        if (
+            parseInt(imageId[0]) !== currentImage.id && 
+            (getImage.fetch.fetchState !== "error" && getImage.fetch.fetchState !== "feching")){
+            dispatch(getImageAction(parseInt(imageId[0])))
+        }
+    },[currentImage.id, dispatch, getImage.fetch.fetchState, imageId, router])
 
-    // Use Effect that changes the z-index of the main element when fullscreen is on
+    useEffect(()=>{
+        if (getImage.fetch.fetchState === "done" && currentImage.id !== -1) {
+            if (currentImage.authorId === userData.id)
+                return setAuthorData({
+                articles: userData.articles.length,
+                avatarUrl: userData.avatarUrl,
+                bannerUrl: userData.bannerUrl,
+                createdAt: userData.createdAt,
+                description: userData.description,
+                followers: userData.followers,
+                id: userData.id,
+                images: userData.images.length,
+                likes: userData.likes,
+                name: userData.name,
+                views: userData.views
+            })
+            if (currentImage.authorId === currentUser.id)
+                return setAuthorData(currentUser)
+            if (getUser.fetch.fetchState !== "feching" && getUser.fetch.fetchState !== "error" && (getUser.exist || (!getUser.exist && getUser.fetch.fetchState === "done")))
+                dispatch(getUserAction(currentImage.authorId))
+        }
+    },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views])
     
+    useEffect(()=>{
+
+    },[])
+
     return (
-        <>  
+        <> 
             {
-            content !== undefined ? <>
+             getImage.fetch.fetchState === "done" ? 
+                currentImage.id !== -1 ? <>
                 <section className="image-section">
-                    <img className="image-normal" src={content.url} alt={`${content.title}_by_${content.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
+                    <img className="image-normal" src={ImageUrl(currentImage.url, "thumbnail", 750)} alt={`${currentImage.title}_by_${currentImage.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
                 </section>
                 <hr className="section-separator"/>
                 <section className="description">
-                    <h1>{content.title}</h1>
+                    <h1>{currentImage.title}</h1>
                     <div className="author-section">
                         <UserTile 
                             userId={authorData.id} 
@@ -75,18 +123,25 @@ const LogingRegister: FC = () => {
                             >
                                 <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/>
                             </svg>
-                            <span>{testLike ? `${numberReducerFormat(content.likes +1)}` : `${numberReducerFormat(content.likes)}` }</span>
+                            <span>{testLike ? `${numberReducerFormat(currentImage.likes +1)}` : `${numberReducerFormat(currentImage.likes)}` }</span>
                         </button>
                     </div>
-                    <ImageDescription views={content.views} date={content.createdAt} description={content.description} tags={content.tags}/>
+                    <ImageDescription views={currentImage.views} date={currentImage.createdAt} description={currentImage.description} tags={currentImage.tags}/>
                 </section>
-                <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userAvatar}/>
+                <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userData.avatarUrl}/>
             </> : <>
                 <section className="no-image-found">
-                    <h1>{languageList[language].message.error.imageNotFound}</h1>
+                    <h1>{languageList[currentLanguage].message.error.imageNotFound}</h1>
                     <p>Image id : {imageId}</p>
                 </section>
-            </>
+            </> :
+            getImage.fetch.fetchState === "error" ?
+            <section>
+                <p>Error: {getImage.fetch.error}</p>
+            </section> :
+            <section className="loading">
+                <p>Loading</p>
+            </section>
             } 
         </>
     )

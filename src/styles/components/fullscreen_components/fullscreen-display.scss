@@ -133,6 +133,7 @@
         right: 20px;
     }
     h2{ 
+        text-align: center;
         min-width: 300px;
         font-size: 2rem;
         font-family: "Michroma", sans-serif;
@@ -177,10 +178,6 @@
                 right: 0;
             }
         }
-        .input-container-error{
-            animation: error-appear 0.2s 1 both;
-            max-height: 70px;
-        }
         .button-container{
             display: flex;
             flex-direction: column;
@@ -196,6 +193,58 @@
     }
 }
 .full-screen-image-upload{
+    .image-upload-preview{
+        height: 300px;
+        max-height: 300px;
+        width: auto;
+        .img{
+            object-fit: contain;
+        }
+        .image-upload-preview-placholder{
+            cursor: default;
+            height: 300px;
+            width: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .image-upload-preview-corner-1,
+            .image-upload-preview-corner-2,
+            .image-upload-preview-corner-3,
+            .image-upload-preview-corner-4{
+                position: absolute;
+                height: 48px;
+                width: 48px;
+            }
+            .image-upload-preview-corner-1{
+                top: 0;
+                left: 0;
+                border-top: 2px solid #9f9fa7;
+                border-left: 2px solid #9f9fa7;
+            }
+            .image-upload-preview-corner-2{
+                top: 0;
+                right: 0;
+                border-top: 2px solid #9f9fa7;
+                border-right: 2px solid #9f9fa7;
+            }
+            .image-upload-preview-corner-3{
+                bottom: 0;
+                right: 0;
+                border-bottom: 2px solid #9f9fa7;
+                border-right: 2px solid #9f9fa7;
+            }
+            .image-upload-preview-corner-4{
+                bottom: 0;
+                left: 0;
+                border-bottom: 2px solid #9f9fa7;
+                border-left: 2px solid #9f9fa7;
+            }
+            h3{
+                color: #9f9fa7;
+            }
+        }
+    }
     .textarea-container {
         .textarea{
             border: 1px solid #EBECFA;
@@ -208,12 +257,25 @@
         min-width: 250px;
     }
     .file-input{
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         #file-upload-button{
             background-color: transparent;
         }
     }
+}
+.full-screen-need-to-login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p{
+        margin: 20px 70px 0 70px;
+    }
+}
+.input-container-error{
+    animation: error-appear 0.2s 1 both;
+    max-height: 70px!important;
 }
  @keyframes error-appear {
     0% {

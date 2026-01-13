@@ -1,4 +1,4 @@
-import { ContentData, ProfileData } from "./contenteType"
+import { ContentData, ProfileData, UserData } from "./contenteType"
 //-------------------------------------------------------------------------
 // Utilitises Type
 
@@ -48,6 +48,8 @@ type LogRegInput = "log" | "reg"
 type InputStateInput = "idle" | "valid" | "invalid"
 
 type ImageCategoryInput = "image" | "avatar" | "banner"
+
+type CustomSelectorsInput = "" | "language" | "user"
 //-------------------------------------------------------------------------
 // Fetch Input
 
@@ -84,7 +86,9 @@ type GlobalContextType = {
 type UtilitisesReducerType = {
     fullScreenDisplayed: FullScreenInput,
     logReg: LogRegInput,
+    currentLanguage: LanguageInput,
     currentImage: ContentData,
+    customSelectorDisplayed: CustomSelectorsInput
 }
 
 type AuthSliceReducerType = {
@@ -111,12 +115,25 @@ type AuthSliceReducerType = {
   profile: {
     fetch: FetchState,
   },
+  logout: {
+    fetch: FetchState,
+  },
   imageUpload: {
     imageUploadValid: ValidateFetch,
     imageId: number,
     imageCategory: ImageCategoryInput,
     fetch: FetchState,
-  }
+  },
+  getImage: {
+    exist: boolean,
+    fetch: FetchState
+  },
+  getUser: {
+    exist: boolean,
+    fetch: FetchState
+  },
+  currentImage: ContentData,
+  currentUser: UserData,
 }
 //-------------------------------------------------------------------------
 // Respond Type
@@ -173,6 +190,22 @@ type ImageUploadRespond = {
   message: string,
   error: string
 }
+
+type GetImageRespond = {
+  state: boolean,
+  code: number,
+  data: ContentData,
+  message: string,
+  error: string
+}
+
+type GetUserRespond = {
+  state: boolean,
+  code: number,
+  data: UserData,
+  message: string,
+  error: string
+}
 //-------------------------------------------------------------------------
 // Fetch State
 
@@ -214,5 +247,9 @@ export type {
   ImageUploadInput,
   ImageUploadRespond,
   ThumbnailSize,
-  ThumbnailSizeInput
+  ThumbnailSizeInput,
+  CustomSelectorsInput,
+  GetImageRespond,
+  GetUserRespond,
+  ImageCategoryInput
 }

@@ -3,8 +3,9 @@ import { useState, type FC } from "react";
 import LongTextDisplay from "./LongTextDisplay";
 import ReplyLike from "./ReplyLike";
 import { timeAgo } from "@/lib/tools/stringTools";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
 type Iprops = {
     id: number,
     userAvatar: string,
@@ -15,7 +16,10 @@ type Iprops = {
 }
 const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:00:00 AM", comment = "Comment here", like = 0, userAvatar="/"} ) => {
     
-    const { language } = useGlobalContext()
+    // Reducers
+    const { currentLanguage  } = useSelector(
+        (store: RootState) => store.utilitisesReducer
+    )
     const [displayFull, setTDisplayFull] = useState<boolean>(false)
     const commentLenght = comment.length
     
@@ -24,7 +28,7 @@ const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:
             <div className="user-tile comment-user">
                 <div className="user-info-row">
                     <h3>{name}</h3>
-                    <span>{timeAgo(date, language)}</span>
+                    <span>{timeAgo(date, currentLanguage)}</span>
                 </div>
                 {commentLenght > 200 ? <>
                 <LongTextDisplay text={comment} row={2} displayFull={displayFull}/>
@@ -33,8 +37,8 @@ const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:
                     onClick={()=>setTDisplayFull((prevState)=> !prevState)}
                 >
                     {displayFull ? 
-                        languageList[language].button.seeLess : 
-                        languageList[language].button.seeMore
+                        languageList[currentLanguage].button.seeLess : 
+                        languageList[currentLanguage].button.seeMore
                     }
                 </button>
                 </> : <>

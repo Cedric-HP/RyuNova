@@ -6,10 +6,11 @@ import "../../../styles/components/fullscreen_components/fullscreen-display.scss
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ImageUrl } from "@/lib/tools/stringTools";
 
 const FullScreenImage: FC  = () => {
     const { currentImage } = useSelector(
-        (store: RootState) => store.utilitisesReducer
+        (store: RootState) => store.auth
     )
     const dispatch: AppDispatch = useDispatch()
     const [fullScreenLimit, setFullScreenLimit] = useState<boolean>(true)
@@ -18,7 +19,7 @@ const FullScreenImage: FC  = () => {
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <img 
                 className={fullScreenLimit ? "image-full image-full-limit appear" : "image-full appear"} 
-                src={currentImage.url} 
+                src={ImageUrl(currentImage.url, "full")} 
                 alt={`${currentImage.title}_by_${currentImage.author}`} 
                 onClick={()=>setFullScreenLimit((prevState)=>!prevState)}
             />
