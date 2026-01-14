@@ -14,6 +14,10 @@ import resetPostImageStateAction from "./actions/image/resetPostImageStateAction
 import getLogoutAction from "./actions/logReg/getLogoutAction"
 import getImageAction from "./actions/image/getImageAction"
 import getUserAction from "./actions/user/getUserAction"
+import setGetUserFetchStateIdleActionAction from "./actions/user/setGetUserFetchStateIdleAction"
+import setGetImageFetchStateIdleAction from "./actions/image/setGetImageFetchStateIdleAction"
+import getFollowAction from "./actions/user/getFollowAction"
+import getAddContentViewAction from "./actions/content/getAddContentView"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
@@ -89,6 +93,13 @@ const initialState: AuthSliceReducerType = {
             fetchState: "idle"
         },
     },
+    getFollow:{
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        },
+        targetedUserId: -1
+    },
     currentImage: defaultContent,
     currentUser: defaultUser,
 }
@@ -107,6 +118,9 @@ const authSlice = createSlice({
         },
         setImageUploadCategoryAction: (state, action: PayloadAction<ImageCategoryInput >) =>{
             state.imageUpload.imageCategory = action.payload;
+        },
+        setFollowTargetUserId: (state, action: PayloadAction<number>) =>{
+            state.getFollow.targetedUserId = action.payload;
         }
     },
 
@@ -131,7 +145,7 @@ const authSlice = createSlice({
             state.register.fetch.fetchState = "idle"
         })
         .addCase(postRegisterAction.pending, (state) => {
-            state.register.fetch.fetchState= "feching";
+            state.register.fetch.fetchState= "fetching";
             state.register.fetch.error = "";
         })
         .addCase(postRegisterAction.fulfilled, (state, action) => {
@@ -163,13 +177,12 @@ const authSlice = createSlice({
             state.login.fetch.fetchState = "idle"
         })
         .addCase(postLoginAction.pending, (state) => {
-            state.login.fetch.fetchState= "feching";
+            state.login.fetch.fetchState= "fetching";
             state.login.fetch.error = "";
         })
         .addCase(postLoginAction.fulfilled, (state, action) => {
             state.login.fetch.fetchState = "done";
             if (action.payload.state) {
-                console.log(action.payload)
                 state.login.loginValid.state = "valid"
                 state.accessToken = action.payload.data.token
                 state.authorized = true
@@ -189,20 +202,13 @@ const authSlice = createSlice({
 
         // LogOut Case
         .addCase(getLogoutAction.pending, (state) => {
-            state.logout.fetch.fetchState= "feching";
+            state.logout.fetch.fetchState= "fetching";
         })
-        .addCase(getLogoutAction.fulfilled, (state, action) => {
+        .addCase(getLogoutAction.fulfilled, (state) => {
             state.logout.fetch.fetchState = "done";
-            if (action.payload.state) {
-                state.authorized = false
-                state.accessToken = ""
-            }
-            else {
-                if (action.payload.authorized === false) {
-                    state.authorized = false
-                    state.accessToken = ""
-                }
-            }
+            state.authorized = false
+            state.accessToken = ""
+            state.userData = defaultUserData
         })
         .addCase(getLogoutAction.rejected, (state, action) => {
             state.logout.fetch.fetchState = "error";
@@ -211,7 +217,7 @@ const authSlice = createSlice({
 
         // Name and Email checkDuplicate Case
         .addCase(checkDuplicateAction.pending, (state) => {
-            state.register.fetch.fetchState= "feching";
+            state.register.fetch.fetchState= "fetching";
         })
         .addCase(checkDuplicateAction.fulfilled, (state, action) => {
             state.register.fetch.fetchState = "done";
@@ -241,7 +247,7 @@ const authSlice = createSlice({
         //-----------------------------------------------------
         // Get Profile Case
         .addCase(getProfileAction.pending, (state) => {
-            state.profile.fetch.fetchState= "feching";
+            state.profile.fetch.fetchState= "fetching";
         })
         .addCase(getProfileAction.fulfilled, (state, action) => {
             state.profile.fetch.fetchState = "done";
@@ -261,10 +267,12 @@ const authSlice = createSlice({
         })
 
         // Get User Case
+        .addCase(setGetUserFetchStateIdleActionAction, (state)=>{
+            state.getUser.fetch.fetchState = "idle"
+        })
         .addCase(getUserAction.pending, (state) => {
-            state.getUser.fetch.fetchState= "feching";
+            state.getUser.fetch.fetchState= "fetching";
             state.getUser.exist = false;
-            state.currentImage = defaultContent
         })
         .addCase(getUserAction.fulfilled, (state, action) => {
             state.getUser.fetch.fetchState = "done";
@@ -273,7 +281,6 @@ const authSlice = createSlice({
                 state.currentUser = action.payload.data
             }
             else {
-                state.currentUser = defaultUser
                 state.getUser.exist = false;
             }
         })
@@ -281,6 +288,21 @@ const authSlice = createSlice({
             state.getUser.fetch.fetchState = "error";
             state.getUser.exist = false;
             state.getUser.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Get Follow Case
+        .addCase(getFollowAction.pending, (state) => {
+            state.getFollow.fetch.fetchState= "fetching";
+        })
+        .addCase(getFollowAction.fulfilled, (state, action) => {
+            state.getFollow.fetch.fetchState = "done";
+            if (action.payload.state) {
+                state.userData.following = action.payload.data.following
+            }
+        })
+        .addCase(getFollowAction.rejected, (state, action) => {
+            state.getFollow.fetch.fetchState = "error";
+            state.getFollow.fetch.error = action.error.message || "Fail to Fetch";
         })
 
         // Image Section
@@ -293,7 +315,7 @@ const authSlice = createSlice({
             state.imageUpload.fetch.error = ""
         })
         .addCase(postImageAction.pending, (state) => {
-            state.imageUpload.fetch.fetchState= "feching";
+            state.imageUpload.fetch.fetchState= "fetching";
         })
         .addCase(postImageAction.fulfilled, (state, action) => {
             state.imageUpload.fetch.fetchState = "done";
@@ -325,10 +347,12 @@ const authSlice = createSlice({
         })
 
         // Get Image Case
+        .addCase(setGetImageFetchStateIdleAction, (state)=>{
+            state.getImage.fetch.fetchState = "idle"
+        })
         .addCase(getImageAction.pending, (state) => {
-            state.getImage.fetch.fetchState= "feching";
+            state.getImage.fetch.fetchState= "fetching";
             state.getImage.exist = false;
-            state.currentImage = defaultContent
         })
         .addCase(getImageAction.fulfilled, (state, action) => {
             state.getImage.fetch.fetchState = "done";
@@ -346,8 +370,25 @@ const authSlice = createSlice({
             state.getImage.exist = false;
             state.getImage.fetch.error = action.error.message || "Fail to Fetch";
         })
+
+         // Content Section
+        //-----------------------------------------------------
+        .addCase(getAddContentViewAction.pending, (state) => {
+            console.log("pendding")
+        })
+        .addCase(getAddContentViewAction.fulfilled, (state, action) => {
+            console.log(action.payload)
+        })
+        .addCase(getAddContentViewAction.rejected, (state, action) => {
+            console.log(action.payload)
+        })
     }
 })
 
-export const { setRegisterFetchTypeAction, setTokenAction, setImageUploadCategoryAction } = authSlice.actions;
+export const { 
+    setRegisterFetchTypeAction, 
+    setTokenAction, 
+    setImageUploadCategoryAction,
+    setFollowTargetUserId 
+} = authSlice.actions;
 export default authSlice.reducer

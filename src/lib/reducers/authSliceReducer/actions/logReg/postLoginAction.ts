@@ -6,7 +6,7 @@ const postRegisterAction = createAsyncThunk<LoginRespond, LoginInput>(
   "AUTH_SLICE/postLogin",
   async ({ email, password }) => {
     try {
-      const res = await fetch(`${SERVER_URL}/login/`, {
+      const res = await fetch(`${SERVER_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

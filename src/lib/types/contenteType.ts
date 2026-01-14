@@ -49,7 +49,7 @@ type ProfileData = {
   articles: IdElement[],
   articleLiked: IdElement[],
   followers: number,
-  followed: IdElement[],
+  following: IdElement[],
   commentPosted: IdElement[],
   commentLiked: IdElement[],
   createdAt: string,

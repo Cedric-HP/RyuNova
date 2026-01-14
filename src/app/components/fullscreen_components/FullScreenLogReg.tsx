@@ -226,6 +226,11 @@ const FullScreenLogReg: FC  = () => {
                 setPasswordError(languageList[currentLanguage].message.error.passwordTooShort)
                 return
             }
+            if(passwordInput.length > 64 && !isTyping.state){
+                setIsPasswordValid("invalid")
+                setPasswordError(languageList[currentLanguage].message.error.passwordTooLong)
+                return
+            }
             if (!regularExpression.test(passwordInput) && !isTyping.state) {
                 setIsPasswordValid("invalid")
                 setPasswordError(languageList[currentLanguage].message.error.passwordMustHaveSPCharacter)
@@ -383,10 +388,10 @@ const FullScreenLogReg: FC  = () => {
                             type="email" 
                             placeholder="Email"
                             onChange={handleEmailInput}
-                            disabled={(login.fetch.fetchState === "feching" || login.loginValid.state === "valid")}
+                            disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
                         />
                         <SpanInputFetchState 
-                            state={ (register.fetch.fetchState === "feching" && register.fetchType === "email") ? "feching" : isEmailValid}
+                            state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
                             isTyping={isTyping}
                             type="email"  
                         />
@@ -401,7 +406,7 @@ const FullScreenLogReg: FC  = () => {
                             type="password" 
                             placeholder="Password"
                             onChange={handlePasswordInput}
-                            disabled={(login.fetch.fetchState === "feching" || login.loginValid.state === "valid")}
+                            disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
@@ -410,7 +415,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{passwordError}</p>
                     </div>
-                    {login.fetch.fetchState === "feching" ?
+                    {login.fetch.fetchState === "fetching" ?
                     <span>Loading</span> : 
                     <>{login.loginValid.state === "valid" ? 
                     <span>DONE</span>: 
@@ -449,10 +454,10 @@ const FullScreenLogReg: FC  = () => {
                             type="text" 
                             placeholder="Name"
                             onChange={handleNameInput}
-                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                            disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
-                            state={(register.fetch.fetchState === "feching" && register.fetchType === "name") ? "feching" : isNameValid} 
+                            state={(register.fetch.fetchState === "fetching" && register.fetchType === "name") ? "feching" : isNameValid} 
                             isTyping={isTyping} 
                             type="name"                           
                         />
@@ -467,10 +472,10 @@ const FullScreenLogReg: FC  = () => {
                             type="email" 
                             placeholder="Email"
                             onChange={handleEmailInput}
-                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                            disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
-                            state={ (register.fetch.fetchState === "feching" && register.fetchType === "email") ? "feching" : isEmailValid}
+                            state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
                             isTyping={isTyping}
                             type="email"  
                         />
@@ -485,7 +490,7 @@ const FullScreenLogReg: FC  = () => {
                             type="password" 
                             placeholder="Password"
                             onChange={handlePasswordInput}
-                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                            disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
@@ -503,7 +508,7 @@ const FullScreenLogReg: FC  = () => {
                             type="password" 
                             placeholder="Confirme Password"
                             onChange={handleConfPasswordInput}
-                            disabled={(register.fetch.fetchState === "feching" || register.registerValid.state === "valid")}
+                            disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isConfPasswordValid}
@@ -512,7 +517,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <p>{confPasswordError}</p>
                     </div>
-                    {register.fetchType === "register" && register.fetch.fetchState === "feching" ?
+                    {register.fetchType === "register" && register.fetch.fetchState === "fetching" ?
                     <span>Loading</span> : 
                     <>{ register.registerValid.state === "valid" ? 
                     <span>DONE</span>: 

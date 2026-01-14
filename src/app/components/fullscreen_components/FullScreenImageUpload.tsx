@@ -206,7 +206,7 @@ const FullScreenImageUpload: FC  = () => {
 
     // Description
     useEffect(()=>{
-        if (descriptionInput.length <= 1000) {
+        if (descriptionInput.length <= 2000) {
             setIsDescriptionValid("idle")
             setDescriptionError("")
             return
@@ -291,17 +291,19 @@ const FullScreenImageUpload: FC  = () => {
                 resetFormInput()
                 dispatch(resetPostImageStateAction())
                 dispatch(setFullScreenAction(""))
-                router.push(`/image/${imageUpload.imageId}`)
+                if (imageUpload.imageCategory === "image")
+                    router.push(`/image/${imageUpload.imageId}`)
             },2000)
             return
         }    
-    },[dispatch, imageUpload.imageId, imageUpload.imageUploadValid.state, router])
+    },[dispatch, imageUpload.imageCategory, imageUpload.imageId, imageUpload.imageUploadValid.state, router])
 
     return ( 
         <>
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <div className="full-screen-popup full-screen-image-upload">
                 {/* Image Upload Section */}
+                <p>{descriptionInput.length}/2000</p>
                 <h2 className="spacing-letter-big glow">
                     {imageUpload.imageCategory === "image" ?
                     languageList[currentLanguage].titles.imageUpload.uploadImage :
@@ -331,7 +333,7 @@ const FullScreenImageUpload: FC  = () => {
                             accept=".png, .jpg, .jpeg, .webp"
                             placeholder="Your Image"
                             onChange={handleImageInput}
-                            disabled={(imageUpload.fetch.fetchState === "feching" || imageUpload.imageUploadValid.state === "valid")}
+                            disabled={(imageUpload.fetch.fetchState === "fetching" || imageUpload.imageUploadValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isImageValid}
@@ -351,7 +353,7 @@ const FullScreenImageUpload: FC  = () => {
                             type="text" 
                             placeholder="Title"
                             onChange={handleTitleInput}
-                            disabled={(imageUpload.fetch.fetchState === "feching" || imageUpload.imageUploadValid.state === "valid")}
+                            disabled={(imageUpload.fetch.fetchState === "fetching" || imageUpload.imageUploadValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isTitleValid} 
@@ -368,7 +370,7 @@ const FullScreenImageUpload: FC  = () => {
                                 ${isDescriptionValid === "valid" ? "input-valid" : 
                                 isDescriptionValid === "invalid" ? "input-invalid" : ""}`}
                             role="textbox"  
-                            contentEditable={!(imageUpload.fetch.fetchState === "feching" || imageUpload.imageUploadValid.state === "valid")}
+                            contentEditable={!(imageUpload.fetch.fetchState === "fetching" || imageUpload.imageUploadValid.state === "valid")}
                             onFocus={()=>handleFocus(true)}
                             onBlur={()=>handleFocus(false)} 
                             onInput={handleDescriptionInput}
@@ -391,7 +393,7 @@ const FullScreenImageUpload: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.tagsPlaceholder}
                             onChange={handleTagInput}
                             value={tagInput}
-                            disabled={(imageUpload.fetch.fetchState === "feching" || imageUpload.imageUploadValid.state === "valid")}
+                            disabled={(imageUpload.fetch.fetchState === "fetching" || imageUpload.imageUploadValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isTagsValid}
@@ -402,7 +404,7 @@ const FullScreenImageUpload: FC  = () => {
                     </div>
                     </> : <></>}
                     
-                    {imageUpload.fetch.fetchState === "feching" ?
+                    {imageUpload.fetch.fetchState === "fetching" ?
                     <span>Loading</span> : 
                     <>{ imageUpload.imageUploadValid.state === "valid" ? 
                     <span>DONE</span>: 

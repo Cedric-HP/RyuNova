@@ -60,7 +60,7 @@ const defaultUserData: ProfileData = {
     images: [],
     imageLiked: [],
     followers: 0,
-    followed: [],
+    following: [],
     commentLiked: [],
     commentPosted: [],
     articles: [],

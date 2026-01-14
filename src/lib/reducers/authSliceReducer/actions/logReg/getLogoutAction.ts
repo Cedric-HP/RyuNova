@@ -6,7 +6,7 @@ const getLogoutAction = createAsyncThunk<ProfilRespond, string>(
   "AUTH_SLICE/getLogout",
   async (token) => {
     try {
-      const res = await fetch(`${SERVER_URL}/logout/`, {
+      const res = await fetch(`${SERVER_URL}/logout`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -133,7 +133,8 @@ const thumbnailSize: ThumbnailSize = {
     200: 200,
   },
   banner: {
-    500: 500
+    300: 300,
+    750: 750
   } 
 }
 

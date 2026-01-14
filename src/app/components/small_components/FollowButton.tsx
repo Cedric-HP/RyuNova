@@ -1,16 +1,18 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import languageList from "@/lib/language";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import { useDispatch, useSelector } from "react-redux";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
+import { setFollowTargetUserId } from "@/lib/reducers/authSliceReducer/authSlice";
+import getFollowAction from "@/lib/reducers/authSliceReducer/actions/user/getFollowAction";
 type Iprops = {
-    urserId: number,
+    userId: number,
 }
 
-const FollowButton: FC<Iprops>  = ( {urserId= -1} ) => {
+const FollowButton: FC<Iprops>  = ( {userId= -1} ) => {
     
     // Reducers
-    const { accessToken } = useSelector(
+    const { accessToken, userData, getFollow } = useSelector(
         (store: RootState) => store.auth
     )
     const { currentLanguage  } = useSelector(
@@ -18,17 +20,34 @@ const FollowButton: FC<Iprops>  = ( {urserId= -1} ) => {
     )
     const dispatch: AppDispatch = useDispatch()
     
-    const [testFollow, setTestFollow] = useState<boolean>(false)
+    const [isFollow, setIsFollow] = useState<boolean>(false)
     const handleFollow = () =>{
         if (accessToken === "")
             return dispatch(setFullScreenAction("need-to-login"))
-        setTestFollow((prevState)=>!prevState)
+            if(getFollow.fetch.fetchState !== "fetching") {
+                dispatch(setFollowTargetUserId(userId))
+                dispatch(getFollowAction({token: accessToken, targetUserId: userId}))
+            }
     }
+    useEffect(()=>{
+        const isfollowing = userData.following.find((item)=> item.id === userId)
+        if (isfollowing)
+            return setIsFollow(true)
+        setIsFollow(false)
+    },[accessToken, dispatch, getFollow.fetch.fetchState, userData.following, userId])
 
-    return ( 
-        <button className={`button-normal push-action ${testFollow ? "button-cta-reverse" : "button-cta"}`} onClick={handleFollow}>
-            {testFollow ? languageList[currentLanguage].button.unfollow : languageList[currentLanguage].button.follow}
-        </button>
+    return (
+        <>
+        {userData.id !== userId ?
+        <button 
+            className={`button-normal push-action ${isFollow ? "button-cta-reverse" : "button-cta"}`} 
+            onClick={handleFollow}
+            disabled={getFollow.targetedUserId === userId && getFollow.fetch.fetchState === "fetching" ? true : false}
+        >
+            {isFollow ? languageList[currentLanguage].button.unfollow : languageList[currentLanguage].button.follow}
+        </button>:
+        <></>}
+        </> 
     )
 }
 

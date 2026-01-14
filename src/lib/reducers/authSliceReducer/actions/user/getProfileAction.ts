@@ -6,7 +6,7 @@ const getProfileAction = createAsyncThunk<ProfilRespond, string>(
   "AUTH_SLICE/getProfile",
   async (token) => {
     try {
-      const res = await fetch(`${SERVER_URL}/profile/`, {
+      const res = await fetch(`${SERVER_URL}/profile`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

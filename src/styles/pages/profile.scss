@@ -62,8 +62,15 @@
 .user-hero-content-avatar{
     position: relative;
     .edit-button{
-        position: absolute;
-        top: 0;
         right: 0;
     }
+}
+.user-hero > .edit-button, .user-hero-content-avatar > .edit-button{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+.user-hero > .edit-button{
+    right: 0;
 }

@@ -20,9 +20,9 @@ import setLogRegAction from "@/lib/reducers/utilitisesReducer/actions/setLogRegA
 import getProfileAction from "@/lib/reducers/authSliceReducer/actions/user/getProfileAction";
 import useLocalStorage from "@/lib/tools/useLocalStorage";
 import { setTokenAction } from "@/lib/reducers/authSliceReducer/authSlice";
-import { ImageUrl, thumbnailSize } from "@/lib/tools/stringTools";
 import setCustomSelectorAction from "@/lib/reducers/utilitisesReducer/actions/setCustomSelectorAction";
 import CustomSelectorsDisplayComponent from "./customSelectors/CustomSelectorsDisplay";
+import Avatar from "./small_components/Avatar";
 
 type IProps = {
   children: ReactNode[] | ReactNode;
@@ -139,7 +139,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     onKeyDown={()=>handleLogReg("log")}
                                 >{languageList[currentLanguage].button.logIn}</button>
                             </> : <>
-                            {profile.fetch.fetchState === "feching" ? <></> : <>
+                            {profile.fetch.fetchState === "fetching" ? <></> : <>
                             {profile.fetch.fetchState === "done" ? 
                             <div id="user">
                                 <div id="notification-container">
@@ -148,13 +148,13 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     </div>
                                     <span id="notification-count" >99+</span>
                                 </div>
-                                <img 
-                                    src={ImageUrl(userData.avatarUrl, "thumbnail", thumbnailSize.avatar[55])} 
-                                    alt="Avatar"
+                                <div
                                     className="push-action"
                                     onClick={()=>dispatch(setCustomSelectorAction("user"))}
                                     onKeyDown={()=>dispatch(setCustomSelectorAction("user"))}  
-                                />
+                                >
+                                <Avatar url={userData.avatarUrl} name={userData.name} size={55}/>
+                                </div>
                             </div>
                             : <></>}
                             </>}

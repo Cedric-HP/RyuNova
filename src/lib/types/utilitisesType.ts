@@ -1,4 +1,4 @@
-import { ContentData, ProfileData, UserData } from "./contenteType"
+import { ContentData, IdElement, ProfileData, UserData } from "./contenteType"
 //-------------------------------------------------------------------------
 // Utilitises Type
 
@@ -25,7 +25,8 @@ type ThumbnailSize = {
     200: 200,
   },
   banner: {
-    500: 500
+    300: 300
+    750: 750
   } 
 }
 //-------------------------------------------------------------------------
@@ -41,7 +42,7 @@ type TypeInput = "image" | "article" | "user" | "comment"
 
 type FullScreenInput = "" | "image" | "log-reg" | "user-description" | "image-upload" | "need-to-login"
 
-type FetchingInput = "idle" | "feching" | "done" | "error"
+type FetchingInput = "idle" | "fetching" | "done" | "error"
 
 type LogRegInput = "log" | "reg"
 
@@ -72,6 +73,16 @@ type CheckDuplicateInput = {
 type ImageUploadInput = {
   token: string,
   formData: FormData
+}
+
+type FollowInput = {
+  token: string,
+  targetUserId: number
+}
+
+type ViewInput = {
+  contentId: number,
+  contentType: "image" | "comment"
 }
 //-------------------------------------------------------------------------
 // Context Type
@@ -130,6 +141,10 @@ type AuthSliceReducerType = {
   },
   getUser: {
     exist: boolean,
+    fetch: FetchState
+  },
+  getFollow: {
+    targetedUserId: number,
     fetch: FetchState
   },
   currentImage: ContentData,
@@ -206,6 +221,21 @@ type GetUserRespond = {
   message: string,
   error: string
 }
+
+type GetFollowRespond = {
+  state: boolean,
+  code: number,
+  data: {following: IdElement[]},
+  message: string,
+  error: string
+}
+
+type StantarRespond = {
+  state: boolean,
+  code: number,
+  message: string,
+  error: string
+}
 //-------------------------------------------------------------------------
 // Fetch State
 
@@ -223,6 +253,20 @@ type ValidateFetch = {
 // Fetch Type
 
 type RegisterFetchType = "" | "name" | "email" | "register"
+
+// LocalView
+
+type LocalViewList = LocalView[]
+
+type LocalView = {
+  userId: number,
+  image: ContentView[]
+}
+
+type ContentView = {
+  id: number,
+  lastViewAt: Date
+}
 
 export type {
   SorterInput, 
@@ -251,5 +295,11 @@ export type {
   CustomSelectorsInput,
   GetImageRespond,
   GetUserRespond,
-  ImageCategoryInput
+  ImageCategoryInput,
+  GetFollowRespond,
+  FollowInput,
+  LocalViewList,
+  LocalView,
+  StantarRespond,
+  ViewInput
 }

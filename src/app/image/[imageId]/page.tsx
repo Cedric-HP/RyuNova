@@ -1,9 +1,9 @@
 "use client"
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 // import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
 import { useParams, useRouter } from "next/navigation";
-import { fecthFinderComment, fecthFinderUser, useFetch } from "@/lib/tools/usefecth";
+import { fecthFinderComment } from "@/lib/tools/usefecth";
 import "../../../styles/pages/image.scss"
 import { UserData } from "@/lib/types/contenteType";
 import UserTile from "@/app/components/small_components/UserTile";
@@ -18,56 +18,64 @@ import setCurrentImageAction from "@/lib/reducers/utilitisesReducer/actions/setC
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import getImageAction from "@/lib/reducers/authSliceReducer/actions/image/getImageAction";
 import getUserAction from "@/lib/reducers/authSliceReducer/actions/user/getUserAction";
+import setGetImageFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/image/setGetImageFetchStateIdleAction";
+import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
+import { useView } from "@/lib/tools/useView";
 
 const LogingRegister: FC = () => {
     
     // Reducers
-    const { currentImage, getImage, userData, currentUser, getUser} = useSelector(
+    const { currentImage, getImage, userData, currentUser, getUser, profile, authorized} = useSelector(
         (store: RootState) => store.auth
     )
     const { currentLanguage  } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
     const dispatch: AppDispatch = useDispatch()
+    const {addView} = useView()
 
     // Router
     const router = useRouter()
 
     // Param Image ID
     const { imageId } = useParams();
+    const imageID: number = useMemo(()=>{
+            if (imageId)
+                if (parseInt(imageId[0]) !== undefined)
+                    return parseInt(imageId[0])
+            return 1
+        },[imageId])
 
     // const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)
     const [testLike, setTestLike] = useState<boolean>(false)
     const conmmentList = fecthFinderComment(currentImage.commentList || [])
-
-    // // Use Effect that simule e fecth
-
-    // useEffect(()=>{
-    //     if(content !== undefined) {
-    //         dispatch(setCurrentImageAction(content))
-    //         const author = fecthFinderUser(content.authorId)
-    //         if (author !== undefined)
-    //             setAuthorData(author)
-    //     }
-    // },[content, dispatch]) 
-
-    // Use Effect to get The Image Data
+    const [isInitialize, setIsInitialize] = useState<boolean>(false)
+    const [viewAdded, setViewAdded] = useState<boolean>(false)
 
     useEffect(()=>{
-        if ((imageId && parseInt(imageId[0]) < 1) || imageId === undefined){
-            router.push('/image/1')
+        if (getImage.fetch.fetchState !== "fetching" && !isInitialize) {
+            dispatch(setGetImageFetchStateIdleAction())
+            dispatch(setGetUserFetchStateIdleActionAction())
+            setIsInitialize(true)
+        }
+    },[dispatch, getImage.fetch.fetchState, isInitialize])
+
+    useEffect(()=>{
+        if ((imageID < 1) || imageID === undefined){
+            router.push('/')
             return
         }
         if (
-            parseInt(imageId[0]) !== currentImage.id && 
-            (getImage.fetch.fetchState !== "error" && getImage.fetch.fetchState !== "feching")){
-            dispatch(getImageAction(parseInt(imageId[0])))
+            imageID !== currentImage.id && 
+            getImage.fetch.fetchState === "idle"
+        ){
+            dispatch(getImageAction(imageID))
         }
-    },[currentImage.id, dispatch, getImage.fetch.fetchState, imageId, router])
+    },[currentImage.id, dispatch, getImage.exist, getImage.fetch.fetchState, imageID, imageId, router])
 
     useEffect(()=>{
-        if (getImage.fetch.fetchState === "done" && currentImage.id !== -1) {
+        if (getImage.fetch.fetchState === "done" && getImage.exist) {
             if (currentImage.authorId === userData.id)
                 return setAuthorData({
                 articles: userData.articles.length,
@@ -84,20 +92,25 @@ const LogingRegister: FC = () => {
             })
             if (currentImage.authorId === currentUser.id)
                 return setAuthorData(currentUser)
-            if (getUser.fetch.fetchState !== "feching" && getUser.fetch.fetchState !== "error" && (getUser.exist || (!getUser.exist && getUser.fetch.fetchState === "done")))
+            if (getUser.fetch.fetchState === "idle")
                 dispatch(getUserAction(currentImage.authorId))
         }
-    },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views])
-    
-    useEffect(()=>{
+    },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.exist, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, userData.articles.length, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views])
 
-    },[])
+    useEffect(()=>{
+        if (getImage.fetch.fetchState === "done" && getImage.exist && !viewAdded && 
+            (profile.fetch.fetchState !== "fetching") &&
+            (authorized && userData.id > 0) &&
+            currentImage.id > 0
+        ){
+            setViewAdded(true)
+            addView(userData.id, "image", currentImage.id)
+        }
+    },[addView, authorized, currentImage.id, getImage.exist, getImage.fetch.fetchState, profile.fetch.fetchState, userData.id, viewAdded])
 
     return (
         <> 
-            {
-             getImage.fetch.fetchState === "done" ? 
-                currentImage.id !== -1 ? <>
+            { getImage.exist && <>
                 <section className="image-section">
                     <img className="image-normal" src={ImageUrl(currentImage.url, "thumbnail", 750)} alt={`${currentImage.title}_by_${currentImage.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
                 </section>
@@ -129,20 +142,20 @@ const LogingRegister: FC = () => {
                     <ImageDescription views={currentImage.views} date={currentImage.createdAt} description={currentImage.description} tags={currentImage.tags}/>
                 </section>
                 <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userData.avatarUrl}/>
-            </> : <>
-                <section className="no-image-found">
-                    <h1>{languageList[currentLanguage].message.error.imageNotFound}</h1>
-                    <p>Image id : {imageId}</p>
-                </section>
-            </> :
-            getImage.fetch.fetchState === "error" ?
+            </>}
+            {!getImage.exist && getImage.fetch.fetchState === "done" && 
+            <section>
+                <h3>No Image Found</h3>
+                <p>ImageId : {imageID}</p>
+            </section>}
+            {getImage.fetch.fetchState === "error" &&
             <section>
                 <p>Error: {getImage.fetch.error}</p>
-            </section> :
+            </section>} 
+            {getImage.fetch.fetchState === "fetching" &&
             <section className="loading">
                 <p>Loading</p>
-            </section>
-            } 
+            </section>}
         </>
     )
 }

@@ -9,6 +9,7 @@ import getLogoutAction from "@/lib/reducers/authSliceReducer/actions/logReg/getL
 import languageList from "@/lib/language";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket, faUpload, faUser} from '@fortawesome/free-solid-svg-icons'
+import { setImageUploadCategoryAction } from "@/lib/reducers/authSliceReducer/authSlice";
 
 const CustomSelectorUserComponent: FC  = () => {
 
@@ -31,6 +32,7 @@ const CustomSelectorUserComponent: FC  = () => {
     }
     const handleImageUploadPopUp = () => {
         dispatch(setCustomSelectorAction(""))
+        dispatch(setImageUploadCategoryAction("image"))
         dispatch(setFullScreenAction("image-upload"))
     }
      const handleLogOut = () => {

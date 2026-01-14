@@ -13,7 +13,7 @@ type Iprops = {
     name: string,
     followers: number,
     url: string,
-    size: number,
+    size: 30 | 50 | 55 | 75 | 200,
 }
 
 const UserTile: FC<Iprops>  = ( {userId= -1, name = "title", followers = 0, url = "url", size = 50} ) => {
@@ -39,7 +39,7 @@ const UserTile: FC<Iprops>  = ( {userId= -1, name = "title", followers = 0, url 
                         }</p>
                     </div>
                 </div>
-                <FollowButton urserId={userId}/>
+                <FollowButton userId={userId}/>
             </div>
         </>
     )

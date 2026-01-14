@@ -123,6 +123,7 @@ type LanguageErrorMessage = {
   emaiInvalid: string,
   emailAlreadyExist: string,
   passwordTooShort: string,
+  passwordTooLong: string,
   passwordMustHaveSPCharacter: string,
   confPasswordNotIndentical: string,
   titleTooShort: string,

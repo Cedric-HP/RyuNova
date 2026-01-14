@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, type FC } from "react";
 import "../../../styles/pages/profile.scss"
 import { useParams, useRouter } from "next/navigation";
 import Avatar from "@/app/components/small_components/Avatar";
-import { numberReducerFormat } from "@/lib/tools/stringTools";
+import { ImageUrl, numberReducerFormat } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
 import LongTextDisplay from "@/app/components/main_components/LongTextDisplay";
 import FollowButton from "@/app/components/small_components/FollowButton";
@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare} from '@fortawesome/free-solid-svg-icons'
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { setImageUploadCategoryAction } from "@/lib/reducers/authSliceReducer/authSlice";
+import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
 const LogingRegister: FC = () => {
 
     // Reducers
@@ -38,7 +39,7 @@ const LogingRegister: FC = () => {
         if (userId)
             if (parseInt(userId[0]) !== undefined)
                 return parseInt(userId[0])
-        return -1
+        return 1
     },[userId])
     const [userProfilData, setUserProfileData] = useState<UserData>(defaultUser)
 
@@ -64,8 +65,7 @@ const LogingRegister: FC = () => {
             })
         if (userID === currentUser.id)
             return setUserProfileData(currentUser)
-        if (getUser.fetch.fetchState !== "feching" && getUser.fetch.fetchState !== "error") {
-            console.log("here")
+        if (userID !== currentUser.id && getUser.fetch.fetchState === "idle") {
             dispatch(getUserAction(userID))
         }  
     },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, router, userData.articles.length, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views, userID])
@@ -77,13 +77,22 @@ const LogingRegister: FC = () => {
         dispatch(setFullScreenAction("image-upload"))
     }
 
+    // Use effect to set GetUser Fetch State to "idle"
+    useEffect(()=>{
+        dispatch(setGetUserFetchStateIdleActionAction())
+    },[])
+
     return (
         <>  {userProfilData.id !== -1 ? 
             <>
             <section className="user-hero">
+                {userProfilData.id === userData.id ? <button 
+                            className="push-action edit-button edit-button-normal"
+                            onClick={()=>handleEditeAvatarBanner("banner")}
+                        ><FontAwesomeIcon icon={faPenToSquare} /></button> : <></>}
                 {userProfilData.bannerUrl !== "" ? <>
                 <div className="banner">
-                    <img src={userProfilData.bannerUrl} alt={`${userProfilData.name}'s banner`}/>
+                    <img src={ImageUrl(userProfilData.bannerUrl, "thumbnail", 750)} alt={`${userProfilData.name}'s banner`}/>
                     <div className="banner-filter"></div>
                 </div>
                 <div className="hero-height-1"></div>
@@ -122,7 +131,7 @@ const LogingRegister: FC = () => {
                         </span>
                         <LongTextDisplay text={userProfilData.description} displayFull={false} row={2}/>
                         <div className="user-hero-main-buttons">
-                            <FollowButton urserId={userProfilData.id}/>
+                            <FollowButton userId={userProfilData.id}/>
                         </div>
                     </div>
                 </div>
