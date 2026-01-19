@@ -9,10 +9,11 @@ import languageList from "@/lib/language";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/reducers/store";
 import useHandleLogRegPopUp from "@/lib/tools/handleLogRegPopUp";
+import { AvatarSizeInput } from "@/lib/types/utilitisesType";
 type Iprops = {
     authorId: number
     commentList: CommentData[],
-    size:  30 | 50 | 55 | 75 | 200,
+    size: AvatarSizeInput,
     userAvatar: string,
 }
 

@@ -34,6 +34,8 @@ type ThumbnailSize = {
 
 type ThumbnailSizeInput = 30 | 50 | 55 | 75 | 200 | 400 | 500 | 750
 
+type AvatarSizeInput = 30 | 50 | 55 | 75 | 200
+
 type LanguageInput = "en" | "fr"
 
 type SorterInput = "view" | "like" | "date" | "follower"
@@ -301,5 +303,6 @@ export type {
   LocalViewList,
   LocalView,
   StantarRespond,
-  ViewInput
+  ViewInput,
+  AvatarSizeInput
 }

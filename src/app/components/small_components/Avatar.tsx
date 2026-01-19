@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { generateColor } from "@/lib/tools/generators";
 import { ImageUrl } from "@/lib/tools/stringTools";
+import { AvatarSizeInput } from "@/lib/types/utilitisesType";
 import { type FC } from "react";
 type Iprops = {
     url: string,
     name: string,
-    size: 30 | 50 | 55 | 75 | 200,
+    size: AvatarSizeInput,
 }
 
 const Avatar: FC<Iprops>  = ( {url="", name= "", size=50} ) => {

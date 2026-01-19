@@ -10,9 +10,10 @@ import Avatar from "../small_components/Avatar";
 import languageList from "@/lib/language";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/reducers/store";
+import { AvatarSizeInput } from "@/lib/types/utilitisesType";
 type Iprops = {
     id: number,
-    size:  30 | 50 | 55 | 75 | 200,
+    size: AvatarSizeInput,
     userAvatar: string,
     commentList: CommentData[]
 }
