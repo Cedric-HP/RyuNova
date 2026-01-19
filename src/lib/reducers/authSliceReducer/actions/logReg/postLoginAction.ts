@@ -1,6 +1,6 @@
 import { LoginInput, LoginRespond } from "@/lib/types/utilitisesType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000'
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
 
 const postRegisterAction = createAsyncThunk<LoginRespond, LoginInput>(
   "AUTH_SLICE/postLogin",
