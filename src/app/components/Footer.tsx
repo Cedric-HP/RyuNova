@@ -35,7 +35,7 @@ const Footer: FC = () => {
                         <div className="name-logo">
                             <Link href={pathname === "/" ? "#nav" : "/#nav"}>
                                 <div className="logo">
-                                    <img src="/image/logo.webp" alt="Logo" height={75}/>
+                                    <img src="/image/icons/Logo.webp" alt="Logo" height={75}/>
                                 </div>
                                 <h1 className="glow">RyuNova</h1>
                             </Link>
