@@ -303,7 +303,7 @@ const FullScreenImageUpload: FC  = () => {
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <div className="full-screen-popup full-screen-image-upload">
                 {/* Image Upload Section */}
-                <p>{descriptionInput.length}/2000</p>
+                {/* <p>{descriptionInput.length}/2000</p> */}
                 <h2 className="spacing-letter-big glow">
                     {imageUpload.imageCategory === "image" ?
                     languageList[currentLanguage].titles.imageUpload.uploadImage :
@@ -319,7 +319,7 @@ const FullScreenImageUpload: FC  = () => {
                         <div className="image-upload-preview-corner-2"></div>
                         <div className="image-upload-preview-corner-3"></div>
                         <div className="image-upload-preview-corner-4"></div>
-                        <h3>Image Preview</h3>
+                        <h3>{`Apperçu de l'image`}</h3>
                     </div>}
                 </div>
                 <form action="Image-Upload" onSubmit={handleSubmitImage}>

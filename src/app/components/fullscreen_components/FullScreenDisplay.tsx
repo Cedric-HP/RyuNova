@@ -8,11 +8,14 @@ import FullScreenImageUpload from "./FullScreenImageUpload";
 import FullScreenNeedToLogIn from "./FullScreenNeedToLogIn";
 
 const FullScreenComponent: FC  = () => {
+
+    // Reducer
     const { fullScreenDisplayed } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
     const [appear, setAppear] = useState<string>("")
 
+    // Hide the component if fullScreenDisplayed is set to empty
     useEffect(()=>{
         if(fullScreenDisplayed !== "")  
             setAppear("full-screen-appear")
@@ -27,6 +30,10 @@ const FullScreenComponent: FC  = () => {
             {fullScreenDisplayed === "user-description" ? <></> : <></>}
             {fullScreenDisplayed === "image-upload" ? <FullScreenImageUpload/>  : <></>}
             {fullScreenDisplayed === "need-to-login" ? <FullScreenNeedToLogIn/>  : <></>}
+            {/* {fullScreenDisplayed === "user-update" ? <FullScreenUserUpdate/>  : <></>} */}
+            {/* {fullScreenDisplayed === "user-delete" ? <FullScreenUserDelete/>  : <></>} */}
+            {/* {fullScreenDisplayed === "image-update" ? <FullScreenImageUpdate/>  : <></>} */}
+            {/* {fullScreenDisplayed === "image-delete" ? <FullScreenImageDelete/>  : <></>} */}
         </div>
     )
 }

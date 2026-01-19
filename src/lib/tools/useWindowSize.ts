@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WindowSize } from "../types/contenteType";
+import { WindowSize } from "../types/utilitisesType";
 
 const useWindowSize = () => {
     // Initialize state with undefined width/height so server and client renders match

@@ -386,7 +386,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isEmailValid === "valid" ? "input-valid" : 
                                 isEmailValid === "invalid" ? "input-invalid" : ""}`} 
                             type="email" 
-                            placeholder="Email"
+                            placeholder={languageList[currentLanguage].placeHolders.email}
                             onChange={handleEmailInput}
                             disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
                         />
@@ -404,7 +404,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isPasswordValid === "valid" ? "input-valid" : 
                                 isPasswordValid === "invalid" ? "input-invalid" : ""}`} 
                             type="password" 
-                            placeholder="Password"
+                            placeholder={languageList[currentLanguage].placeHolders.password}
                             onChange={handlePasswordInput}
                             disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
                         />
@@ -424,7 +424,7 @@ const FullScreenLogReg: FC  = () => {
                             className="link link-button" 
                             onClick={()=> dispatch(setLogRegAction("reg"))}
                             onKeyDown={()=> dispatch(setLogRegAction("reg"))}
-                        >SignUp</button>
+                        >{languageList[currentLanguage].button.signUp}</button>
                         <button 
                             type="submit" 
                             className={`button-normal button-cta 
@@ -452,7 +452,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isNameValid === "valid" ? "input-valid" : 
                                 isNameValid === "invalid" ? "input-invalid" : ""}`} 
                             type="text" 
-                            placeholder="Name"
+                            placeholder={languageList[currentLanguage].placeHolders.name}
                             onChange={handleNameInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
@@ -470,7 +470,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isEmailValid === "valid" ? "input-valid" : 
                                 isEmailValid === "invalid" ? "input-invalid" : ""}`} 
                             type="email" 
-                            placeholder="Email"
+                            placeholder={languageList[currentLanguage].placeHolders.email}
                             onChange={handleEmailInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
@@ -488,7 +488,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isPasswordValid === "valid" ? "input-valid" : 
                                 isPasswordValid === "invalid" ? "input-invalid" : ""}`} 
                             type="password" 
-                            placeholder="Password"
+                            placeholder={languageList[currentLanguage].placeHolders.password}
                             onChange={handlePasswordInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
@@ -506,7 +506,7 @@ const FullScreenLogReg: FC  = () => {
                                 ${isConfPasswordValid === "valid" ? "input-valid" : 
                                 isConfPasswordValid === "invalid" ? "input-invalid" : ""}`} 
                             type="password" 
-                            placeholder="Confirme Password"
+                            placeholder={languageList[currentLanguage].placeHolders.confirmPassword}
                             onChange={handleConfPasswordInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
                         />
@@ -526,7 +526,7 @@ const FullScreenLogReg: FC  = () => {
                             className="link link-button" 
                             onClick={()=> dispatch(setLogRegAction("log"))}
                             onKeyDown={()=> dispatch(setLogRegAction("log"))}
-                        >Login</button>
+                        >{languageList[currentLanguage].button.logIn}</button>
                         <button 
                             type="submit" 
                             className={`button-normal button-cta 

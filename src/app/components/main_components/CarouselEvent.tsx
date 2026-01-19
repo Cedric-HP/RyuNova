@@ -14,6 +14,7 @@ type ClassSelected = "carousel-slide slide-selected" | "carousel-slide slide-sel
 const slideBaseSize = 350;
 const slideSpacing = 30;
 const slideShift = slideBaseSize + slideSpacing
+
 const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
 
     const container = useRef<HTMLDivElement | null>(null)
@@ -21,6 +22,7 @@ const CarouselEvent: FC<Iprops>  = ({slidesPast = [], slidesFutur = []}) => {
     const [currentSelected, setCurrentSelected] = useState<number>(0)
     const [translateContainer, setTranslateContainer] = useState<number>(0)
     const [classSelected, setClassSelected] = useState<ClassSelected>("carousel-slide slide-selected slide-selected-transition")
+    
     const changeCurrentSelected = (id: number) => {
         if((currentSelected + id) < 0) return
         if((currentSelected + id) > ((slides.length - 1))) return

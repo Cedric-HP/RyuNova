@@ -1,6 +1,7 @@
 import languageList from "../language"
 import { LanguageInput, ThumbnailSize, ThumbnailSizeInput } from "../types/utilitisesType"
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:4000'
+
 // String Tool Section
 
 const stringReducer = (rawString: string, maxLenght: number) => {
@@ -14,7 +15,7 @@ const stringCuter = (rawString: string, pattern: string) => {
     return rawString.split(pattern)
 }
 
-// Long Text Size Calculator depending on sreen size
+// Long Text Size Calculator depending on container size
 
 const handleLongTextSize = (textRow: number, containerWidth: number, fontSize: number) => {
   return Math.floor( ( containerWidth  / fontSize) * textRow )
@@ -117,7 +118,9 @@ const formatDate = (date: Date | string | number): string =>{
 const ImageUrl = (url: string, type: "full" | "thumbnail" ,size?: ThumbnailSizeInput) =>{
   if (type ==="full")
     return (SERVER_URL + "/" + url).replaceAll("\\", '/')
-  return (SERVER_URL + "/" + url.replace("full\\", `thumbnail\\${size}_`)).replaceAll("\\", '/').slice(0, -3) + "webp"
+  // If it is a thumbnail : api/full/imagename.jpg => api/thumbnail/size_imagename.webp
+  const newUrl = (SERVER_URL + "/" + url.replace("full\\", `thumbnail\\${size}_`)).replaceAll("\\", '/')
+  return newUrl.substring(0, newUrl.lastIndexOf('.')) + ".webp"
 }
 
 const thumbnailSize: ThumbnailSize = {
@@ -147,20 +150,20 @@ const tagFormat = (tagInput: string) => {
       .replaceAll("=", " ")
       .replaceAll("#", " ")
       .trim()
-      .replace(/\s\s+/g, ' ')
-      .normalize("NFD").replace(/\p{Diacritic}/gu, "")
+      .replace(/\s\s+/g, ' ')  
+      .normalize("NFD").replace(/\p{Diacritic}/gu, "") // Remove all accents
       .toLowerCase()
-    const rawTagList = trimedImput.split(" ").filter((item)=> item.length >= 3 && item.length <= 50)
+    const rawTagList = trimedImput.split(" ").filter((item)=> item.length >= 3 && item.length <= 50) // Tag length: min 3, max 50
     const filteredTagList: string[] = []
     rawTagList.forEach((item)=>{
-      if(!filteredTagList.includes(item) && item !== "")
+      if(!filteredTagList.includes(item) && item !== "") // Prevent duplicates
         filteredTagList.push(item)
     })
     let newTags = ""
     filteredTagList.forEach((item)=>{
       newTags += item + "_"
     })
-    return newTags.slice(0, -1)
+    return newTags.slice(0, -1) // Return a string : "tag1_tag2_tag3"
 }
 
 export {

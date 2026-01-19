@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/reducers/store";
 type Iprops = {
     id: number,
-    size: number,
+    size:  30 | 50 | 55 | 75 | 200,
     userAvatar: string,
     commentList: CommentData[]
 }
