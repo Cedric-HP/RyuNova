@@ -2,9 +2,9 @@ import { LanguageData } from "../types/languageType"
 
 const languageEnglish: LanguageData = {
     titles:{
-        content: "コンテンツ",
-        copyrightNotification: "著作権通知",
-        events: "イベント",
+        content: "CONTENT",
+        copyrightNotification: "Copyright Notification",
+        events: "Events",
         featuredArticles: "Featured Articles",
         featuredPicturesGallery: "Featured Pictures Gallery",
         gallery: "Gallery",
@@ -15,7 +15,12 @@ const languageEnglish: LanguageData = {
         legalInformation: "LEGAL INFORMATION",
         privacyPolicy: "Privacy Policy",
         termsOfService: "Terms Of Service",
-        upcommingAstronomicalEvents: "Upcoming astronomical events"
+        upcommingAstronomicalEvents: "Upcoming astronomical events",
+        imageUpload: {
+            uploadAvatar: "Change your Avatar",
+            uploadBanner: "Change your Banner",
+            uploadImage: "Post an Image"
+        }
     },
     contentType:{
         article: {
@@ -81,7 +86,12 @@ const languageEnglish: LanguageData = {
         signUp: "Sign Up",
         sortBy: "Sort By",
         type: "Type",
-        unfollow: "Unfollow"
+        unfollow: "Unfollow",
+        upload: "Upload",
+        send: "Send",
+        logOut: "Log Out",
+        imageUpload: "Upload an Image",
+        profile: "My Profile"
     },
     date:{
         year: {
@@ -118,7 +128,14 @@ const languageEnglish: LanguageData = {
     },
     placeHolders:{
         search: "Search",
-        tagsPlaceholder: "Tags (Separate tags with spaces)"
+        tagsPlaceholder: "Tags (Separate tags with spaces)",
+        name: "Name",
+        email: "Email",
+        password: "Password",
+        confirmPassword: "Confirm Password",
+        chooseAnImage: "Choose an image",
+        description: "Description",
+        title: "Title"
     },
     alt:{
         button: "Button",
@@ -131,7 +148,24 @@ const languageEnglish: LanguageData = {
         },
         error: {
             imageNotFound: "Image not found",
-            noResultFound: "No result found"
+            noResultFound: "No result found",
+            nameTooShort: "Name too short! (Min 3 Character)",
+            nameTooLong: "Name too long! (Max 50 Character)",
+            nameAlreadyExist: "Name already exist!",
+            emaiInvalid: "Email invalid",
+            emailAlreadyExist: "Email already exist!",
+            passwordTooShort: "Password too short! (Min 8 Character)",
+            passwordTooLong: "Password too long! (Max 64 Character)",
+            passwordMustHaveSPCharacter: "Password must have special character!",
+            confPasswordNotIndentical: "Password not identical!",
+            titleTooShort: "Title too short! (Min 3 Character)",
+            titleTooLong: "Title too long! (Max 50 Character)",
+            DescriptionTooLong: "Description too long! (Max 2000 Character)",
+            tooManyTags: "Too many tags! (Max 100 Tags)",
+            imageTooLarge: "Image too large! (Max 50 Mo)",
+            imageWrongExtntion: "Image type not supported! (Must be: .jpg, .jpeg, .png, .webp)",
+            imageMissing: "Image is missing!",
+            imageError: "Image process error..."
         }
     },
     utilities: {
