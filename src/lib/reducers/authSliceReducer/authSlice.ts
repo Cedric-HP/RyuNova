@@ -18,6 +18,8 @@ import setGetUserFetchStateIdleActionAction from "./actions/user/setGetUserFetch
 import setGetImageFetchStateIdleAction from "./actions/image/setGetImageFetchStateIdleAction"
 import getFollowAction from "./actions/user/getFollowAction"
 import getAddContentViewAction from "./actions/content/getAddContentView"
+import getSearchAction from "./actions/content/getSearchAction"
+import setGetSearchFetchStateIdleAction from "./actions/content/setGetSearchFetchStateIdleAction"
 
 const initialState: AuthSliceReducerType = {
     accessToken: "",
@@ -99,6 +101,23 @@ const initialState: AuthSliceReducerType = {
             fetchState: "idle"
         },
         targetedUserId: -1
+    },
+    getSearch: {
+        respond: {
+            page: 0,
+            pageSize: 0,
+            totalResults: 0,
+            totalPages: 0,
+            results: {
+                image: [],
+                article: [],
+                user: []
+            }
+        },
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        },
     },
     currentImage: defaultContent,
     currentUser: defaultUser,
@@ -373,6 +392,7 @@ const authSlice = createSlice({
 
          // Content Section
         //-----------------------------------------------------
+        // Add View Case
         .addCase(getAddContentViewAction.pending, (state) => {
             console.log("pendding")
         })
@@ -382,6 +402,40 @@ const authSlice = createSlice({
         .addCase(getAddContentViewAction.rejected, (state, action) => {
             console.log(action.payload)
         })
+
+        // // Get Search Case
+        .addCase(setGetSearchFetchStateIdleAction, (state)=>{
+            state.getSearch.fetch.fetchState = "idle"
+        })
+        .addCase(getSearchAction.pending, (state) => {
+            state.getSearch.fetch.fetchState= "fetching";
+        })
+        .addCase(getSearchAction.fulfilled, (state, action) => {
+            if (action.payload.state) {
+                state.getSearch.fetch.fetchState = "done";
+                state.getSearch.respond.page = action.payload.page
+                state.getSearch.respond.pageSize = action.payload.pageSize
+                state.getSearch.respond.totalPages = action.payload.totalPages
+                state.getSearch.respond.totalResults = action.payload.totalResults
+                state.getSearch.respond.results = action.payload.results
+                console.log(action.payload)
+            }
+            else {
+                state.getSearch.fetch.fetchState = "error";
+                state.getSearch.respond.page = 0
+                state.getSearch.respond.pageSize = 0
+                state.getSearch.respond.totalPages = 0
+                state.getSearch.respond.totalResults = 0
+                state.getSearch.respond.results = {image:[],user:[],article:[]}
+                state.getSearch.fetch.error = action.payload.error
+                console.log(action.payload)
+            }
+        })
+        .addCase(getSearchAction.rejected, (state, action) => {
+            state.getSearch.fetch.fetchState = "error";
+            state.getSearch.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
     }
 })
 

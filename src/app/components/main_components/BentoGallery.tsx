@@ -3,6 +3,7 @@ import "../../../styles/components/main_components/bento_gallery.scss"
 import { ContentData } from "../../../lib/types/contenteType";
 import { useRouter } from 'next/navigation'
 import ViewLikeBundle from "../small_components/ViewLikeBundle";
+import { ImageUrl } from "@/lib/tools/stringTools";
 /* eslint-disable @next/next/no-img-element */
 type Iprops = {
     elementList: ContentData[]
@@ -25,7 +26,7 @@ const BentoGallery: FC<Iprops>  = ({elementList = []}) => {
                         onClick={()=>router.push(`/image/${item.id}/#nav`)}
                     >
                         <div className="bento-image">
-                            <img src={item.url} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
+                            <img src={ImageUrl(item.url, "thumbnail", 400)} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
                         </div>
                         <div className="bento-text-and-filter">
                             <h3>{item.title}</h3>

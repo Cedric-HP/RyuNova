@@ -40,11 +40,11 @@ const LogingRegister: FC = () => {
     // Param Image ID
     const { imageId } = useParams();
     const imageID: number = useMemo(()=>{
-            if (imageId)
-                if (parseInt(imageId[0]) !== undefined)
-                    return parseInt(imageId[0])
-            return 1
-        },[imageId])
+        if (imageId)
+            if (parseInt(String(imageId)) !== undefined)
+                return parseInt(String(imageId))
+         return 1
+    },[imageId])
 
     // const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)

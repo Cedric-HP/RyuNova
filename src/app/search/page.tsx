@@ -4,7 +4,7 @@ import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
 import { ContentData, UserData } from "@/lib/types/contenteType";
-import {  SorterInput, TypeInput } from "@/lib/types/utilitisesType";
+import {  OrderInput, SorterInput, TypeInput } from "@/lib/types/utilitisesType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
@@ -14,8 +14,10 @@ import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/l
 import UserList from "../components/main_components/UserList";
 import { numberReducerFormat, tagFormat } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/reducers/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
+import getSearchAction from "@/lib/reducers/authSliceReducer/actions/content/getSearchAction";
+import setGetSearchFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/content/setGetSearchFetchStateIdleAction";
 
 const Search: FC = () => {
 
@@ -23,73 +25,112 @@ const Search: FC = () => {
     const { currentLanguage  } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
+    const { getSearch } = useSelector(
+        (store: RootState) => store.auth
+    )
+    const dispatch: AppDispatch = useDispatch()
 
     // Router
-    
     const router = useRouter()
 
     // Search Params and Pathname set
-
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
     //Search Param
-
     const search = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('search')
     }, [pathname, searchParams])
 
     //Tag Param
-
     const tag = useMemo( ()=> {
         if (pathname === "/search")
             return searchParams.get('tag')
     }, [pathname, searchParams])
 
-    //Type Param
+    //Page Param
+    const page = useMemo( ()=> {
+        if (pathname === "/search"){
+            const rawPage = searchParams.get('page')
+            if (rawPage !== null)
+                return parseInt(rawPage)
+            return 0
+        }
+    }, [pathname, searchParams])
 
+
+    //Type Param
     const type: TypeInput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('type')
             if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}/#nav`)
+                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}&order=DESC&page=${page}/#nav`)
                 return "image"
             } 
             return input
         }
         return "image"
-    }, [pathname, router, search, searchParams, tag])
+    }, [page, pathname, router, search, searchParams, tag])
 
     //Sort Param
-
     const sort: SorterInput = useMemo( ()=> {
         if (pathname === "/search") {
             const input = searchParams.get('sort')
             if ( (input !== "view" && input !== "like" && input !== "date" && input !== "follower") || input === undefined || (input === "follower" && type !== "user")) {
-                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}/#nav`)
+                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}&order=DESC&page=${page}/#nav`)
                 return "view"
             } 
             return input
         }
         return "view"
-    }, [pathname, router, search, searchParams, tag, type])
+    }, [page, pathname, router, search, searchParams, tag, type])
+
+    //Order Param
+    const order: OrderInput = useMemo( ()=> {
+        if (pathname === "/search") {
+            const input = searchParams.get('order')
+            if ( (input !== "DESC" && input !== "ASC") || input === undefined) {
+                router.push(`/search?search=${search}&type=${type}&sort=${sort}&tag=${tag}&order=DESC&page=${page}/#nav`)
+                return "DESC"
+            } 
+            return input
+        }
+        return "DESC"
+    }, [page, pathname, router, search, searchParams, sort, tag, type])
 
     // State Declaration
-
+    // Last Params
     const [lastType, setLastType] = useState<TypeInput>(type)
     const [lastSort, setLastSort] = useState<SorterInput>(sort)
+    const [lastOrder, setLastOrder] = useState<OrderInput>(order)
+
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
     const [currentType, setCurrentType] = useState<TypeInput>(type)
     const [currentSort, setCurrentSort] = useState<SorterInput>(sort)
     const [currentTag, setCurrentTag] = useState<string>(tag || "")
+    const [currentOrder, setCurrentOrder] = useState<OrderInput>(order)
+    const [currentPage, setCurrentPage] = useState<number>(page || 0)
+
     const [searchInput, setSearchInput] = useState<string>(search || "")
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
-    const [resultList, setResultList] = useState<ContentData[]>([])
-    const [userResultList, setUserResultList] = useState<UserData[]>([])
+
+    // isMounted
+    const [isMounted, setIsMounted] = useState<boolean>(false);
+
+    // didFirstFetch
+    const [didFirstFetch, setDidFirstFetch] = useState<boolean>(false);
+
+    // asChange
+    const [asChange, setAsChange] = useState<boolean>(false)
+
+    // Use Effect to reset getSaerch Fetsh State
+    useEffect(()=>{
+        if (getSearch.fetch.fetchState === "done")
+            setTimeout(()=>dispatch(setGetSearchFetchStateIdleAction()),1000)
+    },[dispatch, getSearch.fetch.fetchState])
 
     // Use Effect to correctly set the current type and sort
-
     useEffect(()=>{
         if(lastType !== type) {
             setCurrentType(type)
@@ -99,24 +140,32 @@ const Search: FC = () => {
             setCurrentSort(sort)
             setLastSort(sort)
         }
-    },[lastSort, lastType, sort, type])
+        if(lastOrder !== order) {
+            setCurrentOrder(order)
+            setLastOrder(order)
+        }
+    },[lastOrder, lastSort, lastType, order, sort, type])
 
+    // Input Handler
+    // Search
     const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setSearchInput(String(e.currentTarget.value).trim())
         e.preventDefault()
     }
 
-    const handleSearch = useCallback( (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setCurrentSearch(searchInput)
-        if(pathname !== "/search")
-            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
-    },[currentSearch, currentSort, currentTag, currentType, pathname, router, searchInput])
-
+    // Tag
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setTagInput(String(e.currentTarget.value))
     }
 
+    // Set Current Handler
+    // Search
+    const handleSearch = useCallback( (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setCurrentSearch(searchInput)
+    },[searchInput])
+
+    // Tag
     const handleTag = useCallback ((event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newTags = tagFormat(tagInput)
@@ -124,34 +173,57 @@ const Search: FC = () => {
         setTagInput(newTags.replaceAll("_", " "))
     }, [tagInput])
 
+    // Sort
+    const handleSort = useCallback((newSort: SorterInput)=>{
+        if (newSort === currentSort) {
+            setCurrentOrder((prevState)=> prevState === "DESC" ? "ASC" : "DESC")
+        }   
+        else {
+            console.log(newSort)
+            setCurrentOrder("DESC")
+            setCurrentSort(newSort)
+        }
+    },[currentSort])
+
     // Use Effect to change the route automatically based on dependencies
-
     useEffect(()=>{
-        if (pathname === "/search" && (
+        if (pathname === "/search" && 
+            isMounted && 
+            getSearch.fetch.fetchState === "idle" && (
                 currentSearch !== search || 
-                currentSort !== sort || 
                 currentTag !== tag || 
-                (currentType !== type && lastType === type) 
+                (currentType !== type && lastType === type) ||
+                (currentSort !== sort && lastSort === sort) ||
+                (currentOrder !== order && lastOrder === order) ||
+                currentPage !== page ||
+                currentOrder !== order
             )) {
-            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}`)
+            setAsChange(true)
+            router.push(`/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}&order=${currentOrder}&page=${currentPage}`)
         }
-    },[currentSearch, currentSort, currentTag, currentType, lastType, pathname, router, search, sort, tag, type])
-
-    // Use Effect which simulates a fetch based on the type and dependencies
+    },[asChange, currentOrder, currentPage, currentSearch, currentSort, currentTag, currentType, dispatch, getSearch.fetch.fetchState, isMounted, lastOrder, lastSort, lastType, order, page, pathname, router, search, sort, tag, type])
 
     useEffect(()=>{
-        switch(currentType) {
-            case "image":
-                setResultList( filterHandler( imageBentoList, currentSearch, currentTag) )
-                break
-            case "article":
-                setResultList( filterHandler( articleList, currentSearch, currentTag) )
-                break
-            case "user":
-                setUserResultList( filterUserHandler(userListTest, currentSearch))
-                break
-        }
-    },[currentSearch, currentTag, currentType])
+        if (isMounted)
+            if ( (asChange && getSearch.fetch.fetchState === "idle") || !didFirstFetch) {
+                dispatch(getSearchAction({
+                    search: currentSearch,
+                    type: currentType,
+                    sort: currentSort,
+                    tag: currentTag,
+                    user: -1,
+                    order: currentOrder,
+                    page: currentPage
+                }))
+                setAsChange(false)
+                if (!didFirstFetch)
+                    setDidFirstFetch(true)
+            }
+    },[asChange, currentOrder, currentPage, currentSearch, currentSort, currentTag, currentType, didFirstFetch, dispatch, getSearch.fetch.fetchState, isMounted])
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
         <>  
@@ -195,26 +267,26 @@ const Search: FC = () => {
                         <p>{languageList[currentLanguage].button.sortBy} :</p>
                         <button 
                         className={`link push-action ${currentSort === "view" ? "sort-selected" : ""}`}
-                        onClick={()=>setCurrentSort("view")}
+                        onClick={()=>handleSort("view")}
                         >
                             {languageList[currentLanguage].contentType.view.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "like" ? "sort-selected" : ""}`}
-                        onClick={()=>setCurrentSort("like")}
+                        onClick={()=>handleSort("like")}
                         >
                             {languageList[currentLanguage].contentType.like.singular}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "date" ? "sort-selected" : ""}`}
-                        onClick={()=>setCurrentSort("date")}
+                        onClick={()=>handleSort("date")}
                         >
                             {languageList[currentLanguage].contentType.date.singular}
                         </button>
                         {currentType === "user" ? <>
                         <button 
                         className={`link push-action ${currentSort === "follower" ? "sort-selected" : ""}`}
-                        onClick={()=>setCurrentSort("follower")}
+                        onClick={()=>handleSort("follower")}
                         >
                             {languageList[currentLanguage].contentType.follower.singular}
                         </button>
@@ -254,17 +326,16 @@ const Search: FC = () => {
                 {/* Result Info */}
                 <div id="result-info">
                     <span>{ currentType === "user" ? 
-                        (userResultList.length > 1 ? 
+                        (getSearch.respond.totalResults > 1 ? 
                             languageList[currentLanguage].contentType.result.plural : 
                             languageList[currentLanguage].contentType.result.singular
                         ) :
-                        (resultList.length > 1 ? 
+                        (getSearch.respond.totalResults > 1 ? 
                             languageList[currentLanguage].contentType.result.plural : 
                             languageList[currentLanguage].contentType.result.singular
                         )
-                        } : {currentType === "user" ? 
-                        numberReducerFormat(userResultList.length) : 
-                        numberReducerFormat(resultList.length)}
+                        } : {
+                        numberReducerFormat(getSearch.respond.totalResults)}
                     </span>
                     {currentTag !== "" ? <>
                     <span>{currentTag.split("_").length > 1 ? 
@@ -277,17 +348,22 @@ const Search: FC = () => {
 
                 {/* Result list */}
                 {currentType === "image" ? <>
-                    <BentoGallery elementList={contentSorter( resultList, currentSort )}/>
+                    <BentoGallery elementList={getSearch.respond.results.image}/>
                 </> : <></>}
                 {currentType === "article" ? <>
-                    <ArticlePreview elementList={contentSorter( resultList, currentSort )}/>
+                    <ArticlePreview elementList={getSearch.respond.results.article}/>
                 </> : <></>}
                 {currentType === "user" ? <>
-                        <UserList userList={userSorter(userResultList, currentSort)}/>
+                        <UserList userList={getSearch.respond.results.user}/>
                 </> : <></>}
-                { ( (resultList.length === 0 && currentType !== "user") || (userResultList.length === 0 && currentType === "user") )  ? <>
+                { getSearch.respond.totalResults === 0 && getSearch.fetch.fetchState !== "error" ? <>
                     <h3 id="no-result" className="spacing-letter-big glow">{languageList[currentLanguage].message.error.noResultFound}</h3>
                 </> : <></>}
+
+                {/* Error */}
+                {getSearch.fetch.fetchState === "error" ? 
+                <p>{getSearch.fetch.error}</p> : <></>}
+                <p>{getSearch.fetch.fetchState}</p>
             </section>
         </>
     )

@@ -40,6 +40,8 @@ type LanguageInput = "en" | "fr"
 
 type SorterInput = "view" | "like" | "date" | "follower"
 
+type OrderInput = "ASC" | "DESC"
+
 type TypeInput = "image" | "article" | "user" | "comment"
 
 type FullScreenInput = "" | "image" | "log-reg" | "user-description" | "image-upload" | "need-to-login"
@@ -85,6 +87,16 @@ type FollowInput = {
 type ViewInput = {
   contentId: number,
   contentType: "image" | "comment"
+}
+
+type SearchInput = {
+  search: string,
+  type: TypeInput,
+  sort: SorterInput,
+  tag: string,
+  user: number,
+  page: number
+  order: OrderInput,
 }
 //-------------------------------------------------------------------------
 // Context Type
@@ -149,9 +161,24 @@ type AuthSliceReducerType = {
     targetedUserId: number,
     fetch: FetchState
   },
+  getSearch: {
+    respond: {
+      page: number,
+      pageSize: number,
+      totalResults: number,
+      totalPages: number,
+      results: {
+        image: ContentData[],
+        article: ContentData[],
+        user: UserData[]
+      }
+    },
+    fetch: FetchState
+  },
   currentImage: ContentData,
   currentUser: UserData,
 }
+
 //-------------------------------------------------------------------------
 // Respond Type
 
@@ -232,6 +259,22 @@ type GetFollowRespond = {
   error: string
 }
 
+type GetSearchRespond = {
+  state: boolean,
+  code: number,
+  page: number,
+  pageSize: number,
+  totalResults: number,
+  totalPages: number,
+  results: {
+    image: ContentData[],
+    article: ContentData[],
+    user: UserData[]
+  }
+  message: string,
+  error: string
+}
+
 type StantarRespond = {
   state: boolean,
   code: number,
@@ -304,5 +347,8 @@ export type {
   LocalView,
   StantarRespond,
   ViewInput,
-  AvatarSizeInput
+  AvatarSizeInput,
+  OrderInput,
+  SearchInput,
+  GetSearchRespond
 }
