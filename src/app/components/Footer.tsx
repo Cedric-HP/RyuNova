@@ -15,7 +15,7 @@ const Footer: FC = () => {
     const pathname = usePathname()
 
     // Reducers
-    const { accessToken } = useSelector(
+    const { authorized } = useSelector(
         (store: RootState) => store.auth
     )
     const { currentLanguage  } = useSelector(
@@ -99,7 +99,7 @@ const Footer: FC = () => {
                                 </Link>
                             </li>
                         </ul>
-                        {accessToken === "" ? 
+                        {authorized !== true ? 
                         <button 
                             className="button-cta button-normal"
                             onClick={()=>handleLogReg("reg")}

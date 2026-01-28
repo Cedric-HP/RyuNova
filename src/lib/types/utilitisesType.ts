@@ -1,10 +1,10 @@
-import { ContentData, IdElement, ProfileData, UserData } from "./contenteType"
+import { CommentData, ContentData, ProfileData, UserData } from "./contenteType"
 //-------------------------------------------------------------------------
 // Utilitises Type
 
 type WindowSize = {
-  width: number | undefined,
-  height: number | undefined,
+  width: number,
+  height: number,
 }
 
 type IsTyping = {
@@ -38,7 +38,7 @@ type AvatarSizeInput = 30 | 50 | 55 | 75 | 200
 
 type LanguageInput = "en" | "fr"
 
-type SorterInput = "view" | "like" | "date" | "follower"
+type SorterInput = "view" | "like" | "date" | "follow"
 
 type OrderInput = "ASC" | "DESC"
 
@@ -55,6 +55,13 @@ type InputStateInput = "idle" | "valid" | "invalid"
 type ImageCategoryInput = "image" | "avatar" | "banner"
 
 type CustomSelectorsInput = "" | "language" | "user"
+
+type CommentContentTypeInput = "image" | "article"
+
+type AuthorizedInput = true | false | "idle"
+
+type ContentInput = "image" | "comment" | "article"
+
 //-------------------------------------------------------------------------
 // Fetch Input
 
@@ -86,7 +93,7 @@ type FollowInput = {
 
 type ViewInput = {
   contentId: number,
-  contentType: "image" | "comment"
+  contentType: "image" | "article"
 }
 
 type SearchInput = {
@@ -97,6 +104,28 @@ type SearchInput = {
   user: number,
   page: number
   order: OrderInput,
+}
+
+type CommentSearchInput = {
+  id: number,
+  type: ContentInput,
+  sort: "date" | "like",
+  limit: number
+}
+
+type CommentPostInput = {
+  token: string,
+  contentId: number,
+  contentType: CommentContentTypeInput,
+  targetCommentId: number,
+  comment: string,
+  isReply: boolean
+}
+
+type LikePostInput = {
+  token: string,
+  id: number,
+  type: ContentInput
 }
 //-------------------------------------------------------------------------
 // Context Type
@@ -112,13 +141,12 @@ type UtilitisesReducerType = {
     fullScreenDisplayed: FullScreenInput,
     logReg: LogRegInput,
     currentLanguage: LanguageInput,
-    currentImage: ContentData,
     customSelectorDisplayed: CustomSelectorsInput
 }
 
 type AuthSliceReducerType = {
   accessToken: string,
-  authorized: boolean,
+  authorized: AuthorizedInput,
   userData: ProfileData,
   register: {
     nameValid: {
@@ -175,8 +203,33 @@ type AuthSliceReducerType = {
     },
     fetch: FetchState
   },
+  getComment: {
+    doPush: boolean,
+    type: CommentContentTypeInput,
+    respond: {
+      page: number,
+      pageSize: number,
+      totalComment: number,
+    },
+    fetch: FetchState
+  }
+  postComment: {
+    type: CommentContentTypeInput
+    fetch: FetchState
+  },
+  postLike: {
+    fetch: FetchState
+  },
   currentImage: ContentData,
+  currentArticle: ContentData,
   currentUser: UserData,
+}
+
+// Action
+
+type SetCommentType = {
+  type: CommentContentTypeInput,
+  reducer: "post" | "get"
 }
 
 //-------------------------------------------------------------------------
@@ -254,7 +307,11 @@ type GetUserRespond = {
 type GetFollowRespond = {
   state: boolean,
   code: number,
-  data: {following: IdElement[]},
+  authorized: boolean,
+  data: {
+    method: "add" | "remove",
+    targetUserId: number
+  },
   message: string,
   error: string
 }
@@ -271,6 +328,37 @@ type GetSearchRespond = {
     article: ContentData[],
     user: UserData[]
   }
+  message: string,
+  error: string
+}
+
+type GetCommentRespond = {
+  state: boolean,
+  code: number,
+  page: number,
+  pageSize: number,
+  totalcomments: number,
+  results: CommentData[],
+  message: string,
+  error: string
+}
+
+type PostCommentRespond = {
+  state: boolean,
+  code: number,
+  authorized: boolean,
+  data: CommentData,
+  message: string,
+  error: string
+}
+
+type PostLikeRespond = {
+  state: boolean,
+  code: number,
+  authorized: boolean,
+  method: "add" | "remove",
+  type: ContentInput,
+  targetContentId: number,
   message: string,
   error: string
 }
@@ -350,5 +438,13 @@ export type {
   AvatarSizeInput,
   OrderInput,
   SearchInput,
-  GetSearchRespond
+  GetSearchRespond,
+  CommentContentTypeInput,
+  GetCommentRespond,
+  PostCommentRespond,
+  CommentSearchInput,
+  CommentPostInput,
+  SetCommentType,
+  LikePostInput,
+  PostLikeRespond
 }

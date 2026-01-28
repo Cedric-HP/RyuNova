@@ -1,48 +1,56 @@
 "use client"
-import { TypeInput } from "@/lib/types/utilitisesType";
+import { CommentContentTypeInput } from "@/lib/types/utilitisesType";
 import "../../../styles/components/main_components/comment_style.scss"
 import { useCallback, useEffect, useMemo, useRef, useState, type FC } from "react";
-import { numberReducerFormat } from "@/lib/tools/stringTools";
 import Avatar from "../small_components/Avatar";
 import languageList from "@/lib/language";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/reducers/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
+import postCommentAction from "@/lib/reducers/authSliceReducer/actions/content/postCommentAction";
+import LikeButton from "../small_components/LikeButton";
+import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 const userName = "HYPERNOVA GBX"
 type Iprops = {
-    id: number,
-    type: TypeInput,
-    url: string,
+    contentId: number,
+    targetComment: number,
+    contentType: CommentContentTypeInput,
     like: number,
     displayLike: boolean,
     allowToggleReplyDisplay: boolean
 }
 
-const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLike= false, like= 0, allowToggleReplyDisplay= false} ) => {
-    
+const ReplyLike: FC<Iprops>  = ( {contentId= -1, displayLike= false, like= 0, allowToggleReplyDisplay= false, contentType="image", targetComment=0} ) => {
+
     // Reducers
     const { currentLanguage  } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
+    const { userData, postComment, accessToken, authorized  } = useSelector(
+        (store: RootState) => store.auth
+    )
+    const dispatch: AppDispatch = useDispatch()
     const textareaElement = useRef<HTMLSpanElement | null>(null)
 
-    const [displayReply, setTDisplayReply] = useState<boolean>(type === "user" ? false : true)
-    const [displayButton, setTDisplayButton] = useState<boolean>(type === "user" ? true : false)
+    const [displayReply, setTDisplayReply] = useState<boolean>(!allowToggleReplyDisplay)
+    const [displayButton, setTDisplayButton] = useState<boolean>(allowToggleReplyDisplay)
     const [commentInput, setCommentInput] = useState<string>("")
     const [isPlaceholder, setIsPlaceholder] = useState(true)
-    const [testLike, setTestLike] = useState<boolean>(false)
 
     const PLACEHOLDER = useMemo(()=> languageList[currentLanguage].button.addComment + "...", [currentLanguage])
 
     const imageSize = useMemo(()=> { 
-        return type === "user" ? 30 : displayButton ? 50 : 30
-    },[displayButton, type])
+        return allowToggleReplyDisplay ? 30 : displayButton ? 50 : 30
+    },[allowToggleReplyDisplay, displayButton])
 
     const handleToggleDisplayReply = useCallback((set: boolean)=>{
         if(!allowToggleReplyDisplay)
             setTDisplayReply(true)
-        else
+        else {
+            if (authorized !== true)
+                return dispatch(setFullScreenAction("need-to-login"))
             setTDisplayReply(set)
-    },[allowToggleReplyDisplay])
+        }     
+    },[allowToggleReplyDisplay, authorized, dispatch])
 
     const handleToggleDisplayButton = useCallback((set: boolean)=>{
         if(allowToggleReplyDisplay)
@@ -57,21 +65,28 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
     },[PLACEHOLDER, allowToggleReplyDisplay])
 
     const removeSpanContent = useCallback(() => {
-        if (displayButton && type !== "user") {
+        if (displayButton && !allowToggleReplyDisplay) {
             setIsPlaceholder(true)
         }    
         else {
             setIsPlaceholder(false)
         }
         setCommentInput("")         
-    },[displayButton, type])
+    },[allowToggleReplyDisplay, displayButton])
 
     const handleSend = useCallback(()=>{
-        console.log({input: commentInput})
-        handleToggleDisplayReply(false)
-        handleToggleDisplayButton(false)
-        removeSpanContent()
-    },[commentInput, handleToggleDisplayButton, handleToggleDisplayReply, removeSpanContent])
+        dispatch(postCommentAction({
+            comment: commentInput, 
+            contentId: contentId, 
+            contentType: 
+            contentType, 
+            isReply: allowToggleReplyDisplay, 
+            targetCommentId: targetComment,
+            token: accessToken}))
+            handleToggleDisplayReply(false)
+            handleToggleDisplayButton(false)
+            removeSpanContent()
+    },[accessToken, allowToggleReplyDisplay, commentInput, contentId, contentType, dispatch, handleToggleDisplayButton, handleToggleDisplayReply, removeSpanContent, targetComment])
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement >)=>{
         const input = String(e.target.innerHTML).replaceAll("<br>", "\n")
@@ -97,44 +112,17 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
     },[PLACEHOLDER, isPlaceholder])
 
     useEffect(()=>{
-        if (displayButton && type === "user")
+        if (displayButton && allowToggleReplyDisplay)
             setIsPlaceholder(false)
-    },[displayButton, type])
+    },[allowToggleReplyDisplay, displayButton])
+
     return (
         <>
         <div className="like-reply-section">
             {/* Like Section */}
             {displayLike ? <>
                 <div className="like-reply">
-                <button className="comment-button comment-like" onClick={()=> setTestLike((prevstate)=>!prevstate)}>
-                    {testLike ? <>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                    >
-                        <path d="M2 11a2 2 0 0 1 2-2h3v12H4a2 2 0 0 1-2-2v-8z"/>
-                        <path d="M9 9V4a2 2 0 1 1 4 0v5h5.5a2 2 0 0 1 2 2.4l-1.3 6.5a2 2 0 0 1-2 1.6H9V9z"/>
-                    </svg>
-                    </> : <>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path d="M14 4c0-1.1-.9-2-2-2s-2 .9-2 2v5"/>
-                        <path d="M10 9h7.5a2 2 0 0 1 2 2.4l-1.2 6.5a2 2 0 0 1-2 1.6H8"/>
-                        <path d="M6 9H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/>
-                    </svg>
-                    </>}
-                    <span>
-                        {testLike ? `${numberReducerFormat(like + 1)}` : `${numberReducerFormat(like)}`}
-                    </span>
-                </button>
+                <LikeButton targetId={targetComment} type={"comment"} likeNumber={like}/>
                 <button className="comment-button link push-action" onClick={()=> handleToggleDisplayReply(true)}>{languageList[currentLanguage].button.respond}</button>
             </div>
             </> : <></>}
@@ -142,12 +130,12 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
             {displayReply ? <>
             <div className="reply">
                 <div className="avatar-image" style={{width: imageSize, height: imageSize, maxHeight: imageSize, maxWidth: imageSize}}>
-                    <Avatar url={url} name={userName} size={imageSize}/>
+                    <Avatar url={userData.avatarUrl} name={userName} size={imageSize}/>
                 </div>
                 <div className="reply-main">
                     <span 
                         ref={textareaElement}
-                        id={`textarea_${id}_${type}`} 
+                        id={`textarea_${contentId}_${contentType}`} 
                         className={`textarea ${isPlaceholder ? "placeholder" : ""}`}
                         role="textbox" 
                         onFocus={()=>handleToggleDisplayButton(true)} 
@@ -169,7 +157,7 @@ const ReplyLike: FC<Iprops>  = ( {id= -1, type = "image", url = "url", displayLi
                             disabled={commentInput.replaceAll("\n" ,"") === "" ? true : false} 
                             onClick={()=> handleSend()}
                         >
-                            {type === "user" ? languageList[currentLanguage].button.respond : languageList[currentLanguage].button.addComment}
+                            {allowToggleReplyDisplay ? languageList[currentLanguage].button.respond : languageList[currentLanguage].button.addComment}
                         </button>
                     </div>
                     </>:<></>}

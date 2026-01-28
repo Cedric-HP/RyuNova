@@ -6,16 +6,18 @@ import { timeAgo } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/reducers/store";
+import { CommentContentTypeInput } from "@/lib/types/utilitisesType";
 type Iprops = {
-    id: number,
-    userAvatar: string,
+    contentId: number,
+    commentId: number,
     name: string,
     date: string,
     comment: string,
     like: number,
+    contentType: CommentContentTypeInput,
 }
-const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:00:00 AM", comment = "Comment here", like = 0, userAvatar="/"} ) => {
-    
+const CommentInfo: FC<Iprops>  = ( {commentId= -1, contentId= -1, name = "deleted User", date = "1/1/2000, 0:00:00 AM", comment = "Comment here", like = 0, contentType="image"} ) => {
+
     // Reducers
     const { currentLanguage  } = useSelector(
         (store: RootState) => store.utilitisesReducer
@@ -46,7 +48,7 @@ const CommentInfo: FC<Iprops>  = ( {id= -1, name = "title", date = "1/1/2000, 0:
                         <p>{comment}</p>
                     </div>
                 </>}
-                <ReplyLike id={id} type="user" url={userAvatar} like={like} displayLike={true} allowToggleReplyDisplay={true} />
+                <ReplyLike contentId={contentId} targetComment={commentId} like={like} displayLike={true} allowToggleReplyDisplay={true} contentType={contentType}/>
             </div>
         </>
     )

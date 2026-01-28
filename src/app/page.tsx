@@ -8,7 +8,7 @@ import BentoGallery from "./components/main_components/BentoGallery";
 import ArticlePreview from "./components/main_components/ArticlePreview";
 import CarouselEvent from "./components/main_components/CarouselEvent";
 import { EventList } from "@/lib/types/contenteType";
-import { articleList, imageBentoList } from "@/lib/testContent";
+import { articleList } from "@/lib/testContent";
 import { contentSorter } from "@/lib/tools/FilterSorter";
 import { useRouter } from 'next/navigation'
 import languageList from "@/lib/language";
@@ -58,7 +58,7 @@ const iconSize = 75;
 export default function Home() {
 
   // Reducer
-  const { accessToken } = useSelector(
+  const { accessToken, getSearch } = useSelector(
       (store: RootState) => store.auth
   )
   const { currentLanguage  } = useSelector(
@@ -98,7 +98,7 @@ export default function Home() {
         <Link href={"/search?search=&type=image&sort=view&tag=stars#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-stars-7127150.svg" alt="Stars" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=gallaxy#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=galaxy#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-galaxy-3544621.svg" alt="Gallaxy" height={iconSize} width={iconSize} />
         </Link>
         <Link href={"/search?search=&type=image&sort=view&tag=planet#nav"} className="tag-logo push-action">
@@ -116,7 +116,7 @@ export default function Home() {
       {/* Gallery Section */}
       <section id="gallery">
         <h2 className="glow spacing-letter-big">{languageList[currentLanguage].titles.featuredPicturesGallery}</h2>
-        <BentoGallery elementList={contentSorter(imageBentoList, "like" )}/>
+        <BentoGallery elementList={getSearch.respond.results.image}/>
         <button 
           className="button-cta-reverse button-normal push-action" 
           onClick={()=>router.push(`search?search=&type=image&sort=view&tag=#nav`)}

@@ -379,7 +379,7 @@ const FullScreenLogReg: FC  = () => {
                 {/* Login Section */}
                 <h2 className="spacing-letter-big glow">{languageList[currentLanguage].button.logIn}</h2>
                 <form action="LogIn" onSubmit={handleSubmitLogin}>
-                    <div className={`input-container ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="email" 
                             className={`base-input 
@@ -389,15 +389,18 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.email}
                             onChange={handleEmailInput}
                             disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
+                            value={emailInput}
                         />
                         <SpanInputFetchState 
                             state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
                             isTyping={isTyping}
                             type="email"  
                         />
-                        <p>{emailError}</p>
+                        <div className={`input-error-section ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{emailError}</p>
+                        </div>
                     </div>
-                    <div className={`input-container ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="password" 
                             className={`base-input 
@@ -407,13 +410,16 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.password}
                             onChange={handlePasswordInput}
                             disabled={(login.fetch.fetchState === "fetching" || login.loginValid.state === "valid")}
+                            value={passwordInput}
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
                             isTyping={isTyping}
                             type="password"  
                         />
-                        <p>{passwordError}</p>
+                        <div className={`input-error-section ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{passwordError}</p>
+                        </div>
                     </div>
                     {login.fetch.fetchState === "fetching" ?
                     <span>Loading</span> : 
@@ -445,7 +451,7 @@ const FullScreenLogReg: FC  = () => {
                 {/* Register Section */}
                 <h2 className="spacing-letter-big glow">{languageList[currentLanguage].button.signUp}</h2>
                 <form action="Register" onSubmit={handleSubmitRegister}>
-                    <div className={`input-container ${isNameValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="name" 
                             className={`base-input 
@@ -455,15 +461,18 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.name}
                             onChange={handleNameInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
+                            value={nameInput}
                         />
                         <SpanInputFetchState 
                             state={(register.fetch.fetchState === "fetching" && register.fetchType === "name") ? "feching" : isNameValid} 
                             isTyping={isTyping} 
                             type="name"                           
                         />
-                        <p>{nameError}</p>
+                        <div className={`input-error-section ${isNameValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{nameError}</p>
+                        </div>
                     </div>
-                    <div className={`input-container ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="email" 
                             className={`base-input 
@@ -473,15 +482,18 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.email}
                             onChange={handleEmailInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
+                            value={emailInput}
                         />
                         <SpanInputFetchState 
                             state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
                             isTyping={isTyping}
                             type="email"  
                         />
-                        <p>{emailError}</p>
+                        <div className={`input-error-section ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{emailError}</p>
+                        </div>
                     </div>
-                    <div className={`input-container ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="password" 
                             className={`base-input 
@@ -491,15 +503,18 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.password}
                             onChange={handlePasswordInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
+                            value={passwordInput}
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
                             isTyping={isTyping}
                             type="password"  
                         />
-                        <p>{passwordError}</p>
+                        <div className={`input-error-section ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{passwordError}</p>
+                        </div>
                     </div>
-                    <div className={`input-container ${isConfPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="confirmePassword" 
                             className={`base-input 
@@ -509,13 +524,15 @@ const FullScreenLogReg: FC  = () => {
                             placeholder={languageList[currentLanguage].placeHolders.confirmPassword}
                             onChange={handleConfPasswordInput}
                             disabled={(register.fetch.fetchState === "fetching" || register.registerValid.state === "valid")}
+                            value={confPasswordInput}
                         />
                         <SpanInputFetchState 
                             state={isConfPasswordValid}
                             isTyping={isTyping}
                             type="confPassword"  
                         />
-                        <p>{confPasswordError}</p>
+                        <div className={`input-error-section ${isConfPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                        </div>
                     </div>
                     {register.fetchType === "register" && register.fetch.fetchState === "fetching" ?
                     <span>Loading</span> : 

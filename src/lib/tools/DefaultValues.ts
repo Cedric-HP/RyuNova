@@ -7,10 +7,12 @@ const defaultComment: CommentData = {
     comment: "",
     createdAt: "",
     likes: 0,
-    replyList: [],
     url: "",
     userName: "",
-    isReply: false
+    isReply: false,
+    targetCommentId: 0,
+    totalReply: 0,
+    parentReply: 0
 }
 
 const defaultUser: UserData = {
@@ -38,7 +40,9 @@ const defaultContent: ContentData = {
     tags: [],
     title: "",
     url: "",
-    views: 0
+    views: 0,
+    totalComment: 0,
+    parentComment: 0
 }
 
 const globalContextDefaultValue: GlobalContextType = {

@@ -30,11 +30,11 @@ const FollowButton: FC<Iprops>  = ( {userId= -1} ) => {
             }
     }
     useEffect(()=>{
-        const isfollowing = userData.following.find((item)=> item.id === userId)
+        const isfollowing = userData.following.find((item)=> item === userId)
         if (isfollowing)
             return setIsFollow(true)
         setIsFollow(false)
-    },[accessToken, dispatch, getFollow.fetch.fetchState, userData.following, userId])
+    },[dispatch, getFollow.fetch.fetchState, userData.following, userId])
 
     return (
         <>

@@ -25,7 +25,6 @@ export const useView = () => {
     }
 
     const addView  = (userId: number, contentType: "image", contentId: number) => {
-        console.log(localViewList)
         const newList = checkLocalViewUser(userId)
         if (!newList) return 
         const userViews = newList.find((item)=>item.userId === userId)

@@ -1,4 +1,4 @@
-import { AuthSliceReducerType, ImageCategoryInput, RegisterFetchType } from "@/lib/types/utilitisesType"
+import { AuthSliceReducerType, ImageCategoryInput, RegisterFetchType, SetCommentType } from "@/lib/types/utilitisesType"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { defaultContent, defaultUser, defaultUserData } from "@/lib/tools/DefaultValues"
 import postRegisterAction from "./actions/logReg/postRegisterAction"
@@ -17,13 +17,14 @@ import getUserAction from "./actions/user/getUserAction"
 import setGetUserFetchStateIdleActionAction from "./actions/user/setGetUserFetchStateIdleAction"
 import setGetImageFetchStateIdleAction from "./actions/image/setGetImageFetchStateIdleAction"
 import getFollowAction from "./actions/user/getFollowAction"
-import getAddContentViewAction from "./actions/content/getAddContentView"
 import getSearchAction from "./actions/content/getSearchAction"
 import setGetSearchFetchStateIdleAction from "./actions/content/setGetSearchFetchStateIdleAction"
-
+import postCommentAction from "./actions/content/postCommentAction"
+import getCommentAction from "./actions/content/getCommentAction"
+import postLikeAction from "./actions/content/postLikeAction"
 const initialState: AuthSliceReducerType = {
     accessToken: "",
-    authorized: true,
+    authorized: "idle",
     userData: defaultUserData,
     register: {
         nameValid: {
@@ -119,8 +120,35 @@ const initialState: AuthSliceReducerType = {
             fetchState: "idle"
         },
     },
+    getComment: {
+        type: "image",
+        doPush: false,
+        respond: {
+            page: 0,
+            pageSize: 0,
+            totalComment: 0
+        },
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        }
+    },
+    postComment: {
+        type: "image",
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        }
+    },
+    postLike: {
+        fetch: {
+            error: "",
+            fetchState: "idle"
+        }
+    },
     currentImage: defaultContent,
     currentUser: defaultUser,
+    currentArticle: defaultContent
 }
 
 const authSlice = createSlice({
@@ -140,6 +168,14 @@ const authSlice = createSlice({
         },
         setFollowTargetUserId: (state, action: PayloadAction<number>) =>{
             state.getFollow.targetedUserId = action.payload;
+        },
+        setCommentType: (state, action: PayloadAction<SetCommentType>) => {
+            if (action.payload.reducer === "post")
+                state.postComment.type = action.payload.type
+            else state.getComment.type = action.payload.type
+        },
+        setDoPushAction: (state, action: PayloadAction<boolean>)=> {
+            state.getComment.doPush = action.payload
         }
     },
 
@@ -204,7 +240,6 @@ const authSlice = createSlice({
             if (action.payload.state) {
                 state.login.loginValid.state = "valid"
                 state.accessToken = action.payload.data.token
-                state.authorized = true
             }
             else {
                 state.login.loginValid.state = "invalid"
@@ -272,6 +307,7 @@ const authSlice = createSlice({
             state.profile.fetch.fetchState = "done";
             if (action.payload.state) {
                 state.userData = action.payload.data
+                state.authorized = true
             }
             else {
                 if (action.payload.authorized === false) {
@@ -316,7 +352,19 @@ const authSlice = createSlice({
         .addCase(getFollowAction.fulfilled, (state, action) => {
             state.getFollow.fetch.fetchState = "done";
             if (action.payload.state) {
-                state.userData.following = action.payload.data.following
+                if (action.payload.data.method === "add") {
+                    state.userData.following.push(action.payload.data.targetUserId)
+                }
+                else{
+                    const newFollowList = state.userData.following.filter((item)=> item !== action.payload.data.targetUserId)
+                    state.userData.following = newFollowList
+                }
+            }
+            else {
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
             }
         })
         .addCase(getFollowAction.rejected, (state, action) => {
@@ -349,11 +397,15 @@ const authSlice = createSlice({
                         break
                     case "image":
                         state.imageUpload.imageId = action.payload.data.id
-                        state.userData.images.push({id: action.payload.data.id}) 
+                        state.userData.images.push(action.payload.data.id) 
                 }
             }
             else {
                 state.imageUpload.imageUploadValid.state = "invalid"
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
                 if(action.payload.message)
                     state.imageUpload.imageUploadValid.message = action.payload.message
                 if (action.payload.error)
@@ -393,15 +445,12 @@ const authSlice = createSlice({
          // Content Section
         //-----------------------------------------------------
         // Add View Case
-        .addCase(getAddContentViewAction.pending, (state) => {
-            console.log("pendding")
-        })
-        .addCase(getAddContentViewAction.fulfilled, (state, action) => {
-            console.log(action.payload)
-        })
-        .addCase(getAddContentViewAction.rejected, (state, action) => {
-            console.log(action.payload)
-        })
+        // .addCase(getAddContentViewAction.pending, (state) => {
+        // })
+        // .addCase(getAddContentViewAction.fulfilled, (state, action) => {
+        // })
+        // .addCase(getAddContentViewAction.rejected, (state, action) => {
+        // })
 
         // // Get Search Case
         .addCase(setGetSearchFetchStateIdleAction, (state)=>{
@@ -418,7 +467,6 @@ const authSlice = createSlice({
                 state.getSearch.respond.totalPages = action.payload.totalPages
                 state.getSearch.respond.totalResults = action.payload.totalResults
                 state.getSearch.respond.results = action.payload.results
-                console.log(action.payload)
             }
             else {
                 state.getSearch.fetch.fetchState = "error";
@@ -428,12 +476,158 @@ const authSlice = createSlice({
                 state.getSearch.respond.totalResults = 0
                 state.getSearch.respond.results = {image:[],user:[],article:[]}
                 state.getSearch.fetch.error = action.payload.error
-                console.log(action.payload)
             }
         })
         .addCase(getSearchAction.rejected, (state, action) => {
             state.getSearch.fetch.fetchState = "error";
             state.getSearch.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Post Comment Case
+        .addCase(postCommentAction.pending, (state) => {
+            state.postComment.fetch.fetchState= "fetching";
+        })
+        .addCase(postCommentAction.fulfilled, (state, action) => {
+            if (action.payload.state) {
+                state.postComment.fetch.fetchState = "done";
+                switch(state.postComment.type) {
+                    // case "article":
+                    //     if (action.payload.data.isReply) {
+                    //         const targetComment = state.currentArticle.commentList.find((item)=> item.id === action.payload.data.targetCommentId)
+                    //         if (targetComment) {
+                    //             if (targetComment.totalReply !== 0)
+                    //                 targetComment.totalReply += 1
+                    //         }
+                    //     }
+                    //     state.currentArticle.commentList.push(action.payload.data)
+                    //     state.currentArticle.totalComment += 1
+                    //     break
+                    case "image":
+                        if (action.payload.data.isReply) {
+                            const targetComment = state.currentImage.commentList.find((item)=> item.id === action.payload.data.targetCommentId)
+                            if (targetComment) {
+                                targetComment.totalReply += 1
+                                targetComment.parentReply += 1
+                            }
+                        }
+                        state.postComment.fetch.fetchState= "idle"
+                        state.currentImage.commentList.push(action.payload.data)
+                        state.currentImage.totalComment += 1
+                        break
+                }
+            }
+            else {
+                state.postComment.fetch.fetchState = "error"
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
+                if (action.payload.error)
+                    state.postComment.fetch.error = action.payload.error
+            }
+        })
+        .addCase(postCommentAction.rejected, (state, action) => {
+            state.postComment.fetch.fetchState = "error";
+            state.postComment.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Get Comment Case
+        .addCase(getCommentAction.pending, (state) => {
+            state.getComment.fetch.fetchState= "fetching";
+        })
+        .addCase(getCommentAction.fulfilled, (state, action) => {
+            if (action.payload.state) {
+                state.getComment.fetch.fetchState = "done";
+                switch(state.getComment.type){
+                    case "image":
+                        if (action.payload.results[0]){
+                            if (action.payload.results[0].targetCommentId !== 0){
+                                const targetComment = state.currentImage.commentList.find((item)=> item.id === action.payload.results[0].targetCommentId)
+                                if (targetComment) {
+                                    targetComment.totalReply = action.payload.totalcomments
+                                }
+                            }
+                        }
+                        if (state.getComment.doPush){
+                             action.payload.results.forEach((item)=> state.currentImage.commentList.push(item)) 
+                        }
+                        else {
+                            state.currentImage.commentList = action.payload.results
+                        } 
+                        break
+                    // case "article":
+                    //     if (state.getComment.targetCommentId !== 0){
+                    //         const targetComment = state.currentArticle.commentList.find((item)=> item.id === state.getComment.targetCommentId)
+                    //         if (targetComment) {
+                    //             targetComment.totalReply = action.payload.totalcomments
+                    //         }
+                    //         action.payload.results.forEach((item)=> state.currentArticle.commentList.push(item))
+                    //     }
+                    //     else {
+                    //         state.currentArticle.commentList = action.payload.results
+                    //         state.currentArticle.totalComment = action.payload.totalcomments
+                    //     } 
+                    //     break
+                }
+            }
+            else {
+                state.getComment.fetch.fetchState = "error";
+                if (state.getComment.type === "image")
+                    state.currentImage.commentList = []
+                // else state.currentArticle.commentList = []
+            }
+        })
+        .addCase(getCommentAction.rejected, (state, action) => {
+            state.getComment.fetch.fetchState = "error";
+            state.getComment.fetch.error = action.error.message || "Fail to Fetch";
+        })
+
+        // Posr Like Case
+        .addCase(postLikeAction.pending, (state) => {
+            state.postLike.fetch.fetchState= "fetching";
+        })
+        .addCase(postLikeAction.fulfilled, (state, action) => {
+            state.postLike.fetch.fetchState = "done";
+            if (action.payload.state) {
+                let listKey: "imageLiked" | "articleLiked" | "commentLiked" = "imageLiked"
+                let currentContent: "currentImage" | "currentArticle" = "currentImage"
+                let addRemove = 1
+                if (action.payload.type === "comment")
+                    listKey = "commentLiked"
+                if (action.payload.type === "article") {
+                    listKey = "articleLiked"
+                    currentContent = "currentArticle"
+                }
+                if (action.payload.method === "add") {
+                    state.userData[listKey].push(action.payload.targetContentId)
+                }
+                else if (action.payload.method === "remove"){
+                    const newLikeList = state.userData[listKey].filter((item)=>item !== action.payload.targetContentId)
+                    state.userData[listKey] = newLikeList
+                    addRemove = -1
+                }
+                if (action.payload.type !== "comment"){
+                    state[currentContent].likes += addRemove
+                }
+                else {
+                    const commentTargetedImage = state.currentImage.commentList.find((item)=> item.id === action.payload.targetContentId)
+                    if (commentTargetedImage)
+                        commentTargetedImage.likes += addRemove
+                    const commentTargetedarticle = state.currentArticle.commentList.find((item)=> item.id === action.payload.targetContentId)
+                    if (commentTargetedarticle)
+                        commentTargetedarticle.likes += addRemove
+                }
+            }
+            else{
+                if (action.payload.authorized === false) {
+                    state.authorized = false
+                    state.accessToken = ""
+                }
+            }
+        })
+        .addCase(postLikeAction.rejected, (state, action) => {
+            state.postLike.fetch.fetchState = "error";
+            state.postLike.fetch.error = action.error.message || "Fail to Fetch";
         })
 
     }
@@ -443,6 +637,9 @@ export const {
     setRegisterFetchTypeAction, 
     setTokenAction, 
     setImageUploadCategoryAction,
-    setFollowTargetUserId 
+    setFollowTargetUserId,
+    setCommentType,
+    setDoPushAction 
 } = authSlice.actions;
 export default authSlice.reducer
+

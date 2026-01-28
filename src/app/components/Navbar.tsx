@@ -71,7 +71,7 @@ const Navbar: FC<IProps> = ({ children }) => {
 
     // Use Effect to Handle Local Token and get profile
     useEffect(()=>{
-        if (accessToken === "" && localToken !== "" && isMounted && authorized) {
+        if (accessToken === "" && localToken !== "" && isMounted && authorized === "idle") {
             dispatch(setTokenAction(localToken))
         }
         if (accessToken !== "") {
@@ -99,6 +99,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 <h1 className="glow">RyuNova</h1>
                             </Link>
                         </div>
+                        {windowSize.width > 1400 ?
                         <div id="nav-part">
                             <ul id="link-list">
                                 <li>
@@ -132,19 +133,24 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     <CircleFlag countryCode={languageList[currentLanguage].utilities.flagKey} height={20}/>
                                 </button>
                             </div>
-                            {accessToken === "" ? <>
+                            {authorized !== true ? <>
                                 <button 
                                      className="button-cta-reverse button-normal push-action"
                                     onClick={()=>handleLogReg("log")}
                                     onKeyDown={()=>handleLogReg("log")}
                                 >{languageList[currentLanguage].button.logIn}</button>
                             </> : <>
-                            {profile.fetch.fetchState === "fetching" ? <></> : <>
+                            {profile.fetch.fetchState === "fetching" ? <p>Loading</p> : <>
                             {profile.fetch.fetchState === "done" ? 
                             <div id="user">
                                 <div id="notification-container">
                                     <div id="notification-moon">
-                                        <img className="push-action" src="/image/icons/moon-notif.png" alt="Bell Notification" height={15}/>
+                                        <img 
+                                            className="push-action" 
+                                            src="/image/icons/moon-notif.png" 
+                                            alt="Bell Notification" 
+                                            height={15}
+                                        />
                                     </div>
                                     <span id="notification-count" >99+</span>
                                 </div>
@@ -155,11 +161,8 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 >
                                 <Avatar url={userData.avatarUrl} name={userData.name} size={55}/>
                                 </div>
-                            </div>
-                            : <></>}
-                            </>}
-                            </>}
-                        </div>
+                            </div> : <></>} </>} </>}
+                        </div> : <></>}
                     </section>
                     
                     <section id="search-nav">
@@ -189,7 +192,9 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </form>
-                     </> :<></>}
+                     </> :<>
+                     
+                     </>}
                     </section>
                 </nav>
             </header>

@@ -15,6 +15,9 @@ import postImageAction from "@/lib/reducers/authSliceReducer/actions/image/postI
 import resetPostImageStateAction from "@/lib/reducers/authSliceReducer/actions/image/resetPostImageStateAction";
 import { tagFormat } from "@/lib/tools/stringTools";
 import { useRouter } from "next/navigation";
+import { FileUploader } from "react-drag-drop-files";
+
+const fileTypes = ["JPG", "PNG", "JPEG", "WEBP"];
 
 const FullScreenImageUpload: FC  = () => {
 
@@ -46,6 +49,10 @@ const FullScreenImageUpload: FC  = () => {
     
     // useStates Section
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
+
+    // File Enter
+    const [fileEnter, setFileEnter] = useState<boolean>(false);
+    const [file, setFile] = useState<string>("");
 
     // Input Valid States
     const [isTitleValid, setIsTitleValid] = useState<InputStateInput>("idle")
@@ -117,6 +124,11 @@ const FullScreenImageUpload: FC  = () => {
         else setDescriptionInput(input)
         handleTyping("description")
     }
+
+    // Image
+    const handleChangeDrop = (uploadedFile) => {
+        setImageInput(uploadedFile)
+    };
 
     // Image
     const handleImageInput = async (e: React.ChangeEvent<HTMLInputElement >) => {
@@ -323,7 +335,11 @@ const FullScreenImageUpload: FC  = () => {
                     </div>}
                 </div>
                 <form action="Image-Upload" onSubmit={handleSubmitImage}>
-                    <div className={`input-container ${isImageValid === "invalid" ? "input-container-error" : ""}`}>
+                    <FileUploader 
+            	        handleChange={handleChangeDrop} 
+                        name="file" 
+                        types={fileTypes} />
+                    <div className="input-container">
                         <input 
                             name="image" 
                             className={`base-input file-input
@@ -340,11 +356,13 @@ const FullScreenImageUpload: FC  = () => {
                             isTyping={isTyping}
                             type="password"  
                         />
-                        <p>{imageError}</p>
+                        <div className={`input-error-section ${isImageValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{imageError}</p>
+                        </div>
                     </div>
                     {imageUpload.imageCategory === "image" ?
                     <>
-                    <div className={`input-container ${isTitleValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input 
                             name="title" 
                             className={`base-input 
@@ -360,9 +378,11 @@ const FullScreenImageUpload: FC  = () => {
                             isTyping={isTyping} 
                             type="text"                           
                         />
-                        <p>{titleError}</p>
+                        <div className={`input-error-section ${isTitleValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{titleError}</p>
+                        </div>
                     </div> 
-                    <div className={`input-container textarea-container${isDescriptionValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container textarea-container">
                         <span 
                             ref={textareaElement}
                             id={`textarea_image`} 
@@ -381,9 +401,11 @@ const FullScreenImageUpload: FC  = () => {
                             isTyping={isTyping}
                             type="email"  
                         />
-                        <p>{descriptionError}</p>
+                        <div className={`input-error-section ${isDescriptionValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{descriptionError}</p>
+                        </div>
                     </div>
-                    <div className={`input-container ${isTagsValid === "invalid" ? "input-container-error" : ""}`}>
+                    <div className="input-container">
                         <input
                             name="tags"
                             type="text"
@@ -400,7 +422,9 @@ const FullScreenImageUpload: FC  = () => {
                             isTyping={isTyping}
                             type="email"  
                         />
-                        <p>{tagsError}</p>
+                        <div className={`input-error-section ${isTagsValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{tagsError}</p>
+                        </div>
                     </div>
                     </> : <></>}
                     

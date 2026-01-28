@@ -3,14 +3,11 @@
 import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
-import { ContentData, UserData } from "@/lib/types/contenteType";
 import {  OrderInput, SorterInput, TypeInput } from "@/lib/types/utilitisesType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
-import { articleList, imageBentoList, userListTest } from "@/lib/testContent";
 import BentoGallery from "../components/main_components/BentoGallery";
 import ArticlePreview from "../components/main_components/ArticlePreview";
-import { contentSorter, filterHandler, filterUserHandler, userSorter } from "@/lib/tools/FilterSorter";
 import UserList from "../components/main_components/UserList";
 import { numberReducerFormat, tagFormat } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
@@ -37,67 +34,77 @@ const Search: FC = () => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    //Search Param
-    const search = useMemo( ()=> {
-        if (pathname === "/search")
-            return searchParams.get('search')
+    // Search Param
+    const search = useMemo(() => {
+        return pathname === "/search" ? searchParams.get("search") : null
     }, [pathname, searchParams])
 
-    //Tag Param
-    const tag = useMemo( ()=> {
-        if (pathname === "/search")
-            return searchParams.get('tag')
+    // Tag Param
+    const tag = useMemo(() => {
+        return pathname === "/search" ? searchParams.get("tag") : null
     }, [pathname, searchParams])
 
-    //Page Param
-    const page = useMemo( ()=> {
-        if (pathname === "/search"){
-            const rawPage = searchParams.get('page')
-            if (rawPage !== null)
-                return parseInt(rawPage)
-            return 0
-        }
+    // Page Param
+    const page = useMemo(() => {
+        if (pathname !== "/search") return 0
+        const rawPage = searchParams.get("page")
+        return rawPage ? Number.parseInt(rawPage) || 0 : 0
     }, [pathname, searchParams])
 
+    // Type Param
+    const type: TypeInput = useMemo(() => {
+        const input = searchParams.get("type")
+        return input === "image" || input === "article" || input === "user"
+        ? input
+        : "image"
+    }, [searchParams])
 
-    //Type Param
-    const type: TypeInput = useMemo( ()=> {
-        if (pathname === "/search") {
-            const input = searchParams.get('type')
-            if ( (input !== "image" && input !== "article" && input !== "user" ) || input === undefined) {
-                router.push(`/search?search=${search}&type=image&sort=view&tag=${tag}&order=DESC&page=${page}/#nav`)
-                return "image"
-            } 
-            return input
-        }
-        return "image"
-    }, [page, pathname, router, search, searchParams, tag])
-
-    //Sort Param
-    const sort: SorterInput = useMemo( ()=> {
-        if (pathname === "/search") {
-            const input = searchParams.get('sort')
-            if ( (input !== "view" && input !== "like" && input !== "date" && input !== "follower") || input === undefined || (input === "follower" && type !== "user")) {
-                router.push(`/search?search=${search}&type=${type}&sort=view&tag=${tag}&order=DESC&page=${page}/#nav`)
-                return "view"
-            } 
-            return input
-        }
+    // Sort Param
+    const sort: SorterInput = useMemo(() => {
+        const input = searchParams.get("sort")
+        if (input === "view" || input === "like" || input === "date") return input
+        if (input === "follow" && type === "user") return input
         return "view"
-    }, [page, pathname, router, search, searchParams, tag, type])
+    }, [searchParams, type])
 
-    //Order Param
-    const order: OrderInput = useMemo( ()=> {
-        if (pathname === "/search") {
-            const input = searchParams.get('order')
-            if ( (input !== "DESC" && input !== "ASC") || input === undefined) {
-                router.push(`/search?search=${search}&type=${type}&sort=${sort}&tag=${tag}&order=DESC&page=${page}/#nav`)
-                return "DESC"
-            } 
-            return input
+    // Order Param
+    const order: OrderInput = useMemo(() => {
+        const input = searchParams.get("order")
+        return input === "ASC" || input === "DESC" ? input : "DESC"
+    }, [searchParams])
+
+    // Use Effect to correct Params
+    useEffect(() => {
+        if (pathname !== "/search") return
+
+        const params = new URLSearchParams(searchParams.toString())
+
+        let hasChanged = false
+
+        if (params.get("type") !== type) {
+            params.set("type", type)
+            hasChanged = true
         }
-        return "DESC"
-    }, [page, pathname, router, search, searchParams, sort, tag, type])
+
+        if (params.get("sort") !== sort) {
+            params.set("sort", sort)
+            hasChanged = true
+        }
+
+        if (params.get("order") !== order) {
+            params.set("order", order)
+            hasChanged = true
+        }
+
+        if (!params.get("page")) {
+            params.set("page", String(page))
+            hasChanged = true
+        }
+
+        if (hasChanged) {
+            router.replace(`/search?${params.toString()}#nav`)
+        }
+    }, [pathname, searchParams, type, sort, order, page, router])
 
     // State Declaration
     // Last Params
@@ -105,6 +112,7 @@ const Search: FC = () => {
     const [lastSort, setLastSort] = useState<SorterInput>(sort)
     const [lastOrder, setLastOrder] = useState<OrderInput>(order)
 
+    // Current Params
     const [currentSearch, setCurrentSearch] = useState<string>(search || "")
     const [currentType, setCurrentType] = useState<TypeInput>(type)
     const [currentSort, setCurrentSort] = useState<SorterInput>(sort)
@@ -112,6 +120,7 @@ const Search: FC = () => {
     const [currentOrder, setCurrentOrder] = useState<OrderInput>(order)
     const [currentPage, setCurrentPage] = useState<number>(page || 0)
 
+    // Inputs
     const [searchInput, setSearchInput] = useState<string>(search || "")
     const [tagInput, setTagInput] = useState<string>(String(tag).replaceAll("_", " ") || "")
 
@@ -179,7 +188,6 @@ const Search: FC = () => {
             setCurrentOrder((prevState)=> prevState === "DESC" ? "ASC" : "DESC")
         }   
         else {
-            console.log(newSort)
             setCurrentOrder("DESC")
             setCurrentSort(newSort)
         }
@@ -285,8 +293,8 @@ const Search: FC = () => {
                         </button>
                         {currentType === "user" ? <>
                         <button 
-                        className={`link push-action ${currentSort === "follower" ? "sort-selected" : ""}`}
-                        onClick={()=>handleSort("follower")}
+                        className={`link push-action ${currentSort === "follow" ? "sort-selected" : ""}`}
+                        onClick={()=>handleSort("follow")}
                         >
                             {languageList[currentLanguage].contentType.follower.singular}
                         </button>
@@ -361,9 +369,8 @@ const Search: FC = () => {
                 </> : <></>}
 
                 {/* Error */}
-                {getSearch.fetch.fetchState === "error" ? 
-                <p>{getSearch.fetch.error}</p> : <></>}
-                <p>{getSearch.fetch.fetchState}</p>
+                {getSearch.fetch.fetchState === "error" && 
+                <p>{getSearch.fetch.error}</p>}
             </section>
         </>
     )

@@ -26,7 +26,7 @@ const BentoGallery: FC<Iprops>  = ({elementList = []}) => {
                         onClick={()=>router.push(`/image/${item.id}/#nav`)}
                     >
                         <div className="bento-image">
-                            <img src={ImageUrl(item.url, "thumbnail", 400)} alt={`${item.title}_by_${item.author}`} height={100} loading="lazy"/>
+                            <img src={ImageUrl(item.url, "thumbnail", 400)} alt={`${item.title}_by_${item.author}`} height={300} loading="lazy"/>
                         </div>
                         <div className="bento-text-and-filter">
                             <h3>{item.title}</h3>

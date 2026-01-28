@@ -5,8 +5,8 @@ const useWindowSize = () => {
     // Initialize state with undefined width/height so server and client renders match
     // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
     const [windowSize, setWindowSize] = useState<WindowSize>({
-        width: undefined,
-        height: undefined,
+        width: 0,
+        height: 0,
     });
 
     useEffect(() => {
@@ -14,9 +14,10 @@ const useWindowSize = () => {
         // Handler to call on window resize
         const handleResize = () => {
             // Set window width/height to state
+            
             setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight,
+                width: window.innerWidth || 0,
+                height: window.innerHeight || 0,
             });
         }
     

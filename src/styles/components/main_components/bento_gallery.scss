@@ -67,10 +67,9 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        text-shadow: 0 0 7px black;
-        svg{
-            filter: drop-shadow(0 0 7px black);
-        }
+        box-shadow: 0 0 12px 12px rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
     }
     &:hover {
         opacity: 1;

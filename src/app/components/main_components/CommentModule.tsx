@@ -1,79 +1,109 @@
 import "../../../styles/components/main_components/comment_style.scss"
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import Comment from "./Comment";
 import { CommentData } from "@/lib/types/contenteType";
 import ReplyLike from "./ReplyLike";
-import { commentSorter } from "@/lib/tools/FilterSorter";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/reducers/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/reducers/store";
 import useHandleLogRegPopUp from "@/lib/tools/handleLogRegPopUp";
-import { AvatarSizeInput } from "@/lib/types/utilitisesType";
+import { AvatarSizeInput, CommentContentTypeInput } from "@/lib/types/utilitisesType";
+import getCommentAction from "@/lib/reducers/authSliceReducer/actions/content/getCommentAction";
+import { setCommentType, setDoPushAction } from "@/lib/reducers/authSliceReducer/authSlice";
 type Iprops = {
-    authorId: number
-    commentList: CommentData[],
+    contentId: number
     size: AvatarSizeInput,
-    userAvatar: string,
+    contentType: CommentContentTypeInput
 }
 
-const CommentModule: FC<Iprops>  = ( {authorId = -1, commentList = [], size= 50, userAvatar="/"} ) => {
+const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="image" } ) => {
 
     // Reducers
-    const { authorized } = useSelector(
+    const { authorized, currentImage, getComment } = useSelector(
         (store: RootState) => store.auth
     )
     const { currentLanguage  } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
+    const dispatch: AppDispatch = useDispatch()
+    const currentContent = useMemo(()=> contentType === "image" ? currentImage : currentImage,[contentType, currentImage])
 
     // Sort State
     const [currentSort, setCurrentSort] = useState<"like"|"date">("like")
-    const [sortedList, setSortedList] = useState<CommentData[]>(commentList)
+    const [sortedList, setSortedList] = useState<CommentData[]>([])
+
+    // Limite
+    const [limit, setLimit] = useState<number>(1)
+
+    // doPush
+    const [doPush, setDoPush] = useState<boolean>(false)
 
     // Handle LorReg Popup
     const { handleLogReg } = useHandleLogRegPopUp()
 
-    // Use Effect to sort the comment list
+    // Use Effect to filter comment
+    useEffect(()=>{
+        setSortedList(currentContent.commentList.filter((item)=> item.isReply === false))
+    },[currentContent.commentList])
+
+    const handleSort = (sort: "date" | "like") => {
+        setCurrentSort(sort)
+        setDoPush(false)
+        setLimit(1)
+    }
+
+    const handleLimit = () => {
+        setDoPush(true)
+        setLimit((prevState)=> prevState + 1)
+    }
 
     useEffect(()=>{
-        const newFilteredSortedList = commentSorter(commentList.filter((item)=> item.isReply === false), currentSort)
-        if (newFilteredSortedList !== undefined)
-            setSortedList(newFilteredSortedList)
-    },[commentList, currentSort])
+        dispatch(setDoPushAction(doPush))
+    },[dispatch, doPush])
+
+    useEffect(()=>{
+        switch(contentType) {
+            case"article":
+                break
+            case "image":
+                dispatch(setCommentType({reducer: "get", type:"image"}))
+                dispatch(getCommentAction({sort: currentSort, id: currentContent.id, limit: limit, type: contentType}))
+        }
+    },[contentType, currentContent.id, currentSort, dispatch, limit])
 
     return (
         <>  
             <section className="comment-section">
                 <div className="info-sort-button">
                     <h3>
-                        <span>{numberReducerFormat(commentList.length)}</span>
-                        {commentList.length > 1 ? languageList[currentLanguage].contentType.comment.plural : 
+                        <span>{numberReducerFormat(currentImage.totalComment)}</span>
+                        {currentImage.totalComment > 1 ? languageList[currentLanguage].contentType.comment.plural : 
                         languageList[currentLanguage].contentType.comment.singular}
                     </h3>
                     <div className="comment-sort-button">
                         <p>{languageList[currentLanguage].button.sortBy} :</p>
                         <button 
                             className={`link link-button push-action ${currentSort === "like" ? "sort-selected" : ""}`} 
-                            onClick={()=>setCurrentSort("like")}>{languageList[currentLanguage].contentType.like.singular}
+                            onClick={()=>handleSort("like")}>{languageList[currentLanguage].contentType.like.singular}
                         </button>
                         <button 
                             className={`link link-button push-action ${currentSort === "date" ? "sort-selected" : ""}`} 
-                            onClick={()=>setCurrentSort("date")}>{languageList[currentLanguage].contentType.date.singular}
+                            onClick={()=>handleSort("date")}>{languageList[currentLanguage].contentType.date.singular}
                         </button>
                     </div>
                 </div>
-                {authorized ? 
+                {authorized === true ? 
                 <ReplyLike 
-                    id={authorId} 
-                    type="image" 
-                    url={userAvatar} 
+                    contentId={currentContent.id}
+                    contentType={contentType} 
+                    targetComment={0}
                     like={0} 
                     displayLike={false} 
                     allowToggleReplyDisplay={false}
                 /> : 
                 <button 
-                    className="button-cta-reverse button-big push-action" 
+                    className="button-cta-reverse button-normal push-action" 
                     onClick={()=>handleLogReg("log")}
                     onKeyDown={()=>handleLogReg("log")}
                 >{languageList[currentLanguage].button.logIn}</button>
@@ -81,15 +111,21 @@ const CommentModule: FC<Iprops>  = ( {authorId = -1, commentList = [], size= 50,
                 <div className="comment-list">
                     {sortedList.map((item, index)=> 
                             <Comment 
-                                id={item.id} 
-                                size={size}  
-                                commentList={commentList} 
-                                userAvatar={userAvatar} 
+                                size={size}
+                                contentType={contentType}  
+                                commentData={item} 
                                 key={`Comment_id:${item.id}_${index}`}
+                                currentContent={currentContent}
                             />
                         )
                     }
                 </div>
+                {getComment.fetch.fetchState === "fetching" &&
+                <p>Loading</p>}
+                {(currentContent.parentComment > currentContent.commentList.filter((item)=> !item.isReply).length && getComment.fetch.fetchState !== "fetching") &&
+                 <button className="push-action reply-show-button button-simple" onClick={handleLimit}>
+                    {languageList[currentLanguage].button.seeMore}
+                </button>}
             </section>
         </>
     )

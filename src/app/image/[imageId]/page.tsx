@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState, type FC } from "react";
 // import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
 import { useParams, useRouter } from "next/navigation";
-import { fecthFinderComment } from "@/lib/tools/usefecth";
 import "../../../styles/pages/image.scss"
 import { UserData } from "@/lib/types/contenteType";
 import UserTile from "@/app/components/small_components/UserTile";
@@ -21,6 +20,7 @@ import getUserAction from "@/lib/reducers/authSliceReducer/actions/user/getUserA
 import setGetImageFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/image/setGetImageFetchStateIdleAction";
 import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
 import { useView } from "@/lib/tools/useView";
+import LikeButton from "@/app/components/small_components/LikeButton";
 
 const LogingRegister: FC = () => {
     
@@ -49,7 +49,6 @@ const LogingRegister: FC = () => {
     // const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)
     const [testLike, setTestLike] = useState<boolean>(false)
-    const conmmentList = fecthFinderComment(currentImage.commentList || [])
     const [isInitialize, setIsInitialize] = useState<boolean>(false)
     const [viewAdded, setViewAdded] = useState<boolean>(false)
 
@@ -124,24 +123,11 @@ const LogingRegister: FC = () => {
                             followers={authorData.followers} 
                             url={authorData.avatarUrl} size={75}
                         />
-                        <button className={`button-like ${testLike ? "liked" : ""}`} onClick={()=> setTestLike((prevstate)=>!prevstate)}>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill={testLike ? "currentColor" : "none"}
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/>
-                            </svg>
-                            <span>{testLike ? `${numberReducerFormat(currentImage.likes +1)}` : `${numberReducerFormat(currentImage.likes)}` }</span>
-                        </button>
+                        <LikeButton likeNumber={currentImage.likes} targetId={currentImage.id} type="image"/>
                     </div>
                     <ImageDescription views={currentImage.views} date={currentImage.createdAt} description={currentImage.description} tags={currentImage.tags}/>
                 </section>
-                <CommentModule authorId={authorData.id} commentList={conmmentList} size={50} userAvatar={userData.avatarUrl}/>
+                <CommentModule contentId={currentImage.id} contentType="image" size={50} />
             </>}
             {!getImage.exist && getImage.fetch.fetchState === "done" && 
             <section>
@@ -161,4 +147,8 @@ const LogingRegister: FC = () => {
 }
 
 export default LogingRegister
+
+
+
+
 

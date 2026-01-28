@@ -1,9 +1,5 @@
 // Content Types
 
-type IdElement = {
-  id: number
-}
-
 type TagElement = {
   name: string,
 }
@@ -18,8 +14,10 @@ type ContentData = {
   views: number,
   likes: number,
   createdAt: string,
-  commentList: IdElement[],
-  tags: TagElement[]
+  commentList: CommentData[],
+  tags: TagElement[],
+  totalComment: number,
+  parentComment: number
 }
 
 type UserData = {
@@ -44,14 +42,14 @@ type ProfileData = {
   bannerUrl: string,
   views: number,
   likes: number,
-  images: IdElement[],
-  imageLiked: IdElement[],
-  articles: IdElement[],
-  articleLiked: IdElement[],
+  images: number[],
+  imageLiked: number[],
+  articles: number[],
+  articleLiked: number[],
   followers: number,
-  following: IdElement[],
-  commentPosted: IdElement[],
-  commentLiked: IdElement[],
+  following: number[],
+  commentPosted: number[],
+  commentLiked: number[],
   createdAt: string,
 }
 
@@ -67,10 +65,12 @@ type CommentData = {
   userName: string,
   url: string,
   comment: string,
+  targetCommentId: number,
   likes: number,
   createdAt: string,
-  replyList: IdElement[],
   isReply: boolean,
+  totalReply: number,
+  parentReply: number
 }
 
 export type {
@@ -79,6 +79,5 @@ export type {
   UserData, 
   CommentData,
   ProfileData,
-  TagElement,
-  IdElement
+  TagElement
 }

@@ -11,7 +11,6 @@ const initialState: UtilitisesReducerType = {
     fullScreenDisplayed: "",
     logReg: "log",
     currentLanguage: "en",
-    currentImage: defaultContent,
     customSelectorDisplayed: ""
 }
 
@@ -20,9 +19,6 @@ const utilitisesReducer = createReducer<UtilitisesReducerType>(
     (builder) => {
         builder.addCase(setFullScreenAction, (state, action) => {
             state.fullScreenDisplayed = action.payload
-        })
-        .addCase(setCurrentImageAction, (state, action) => {
-            state.currentImage = action.payload
         })
         .addCase(setLogRegAction, (state, action) => {
             state.logReg = action.payload
