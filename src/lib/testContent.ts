@@ -13,7 +13,8 @@ const articleList: ContentData[] = [
     createdAt: "7/28/2023, 8:00:14 PM",
     tags: [{name: "nebula"}, {name: "telescope"}],
     commentList: [],
-    totalComment: 0
+    totalComment: 0,
+    parentComment:0
   },
   {
     id: 3,
@@ -27,7 +28,8 @@ const articleList: ContentData[] = [
     createdAt: "5/1/2025, 7:05:35 PM",
     tags: [{name: "comet"}],
     commentList: [],
-    totalComment: 0
+    totalComment: 0,
+    parentComment:0
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ const articleList: ContentData[] = [
     createdAt: "8/24/2012, 8:00:12 AM",
     tags: [{name: "obsevatory"}, {name: "telescope"}],
     commentList: [],
-    totalComment: 0
+    totalComment: 0,
+    parentComment:0
   }
 ]
 
