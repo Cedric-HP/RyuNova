@@ -119,7 +119,8 @@ const ImageUrl = (url: string, type: "full" | "thumbnail" ,size?: ThumbnailSizeI
     return (SERVER_URL + "/" + url).replaceAll("\\", '/')
   // If it is a thumbnail : api/full/imagename.jpg => api/thumbnail/size_imagename.webp
   const newUrl = (SERVER_URL + "/" + 
-    url.replace("full\\", `thumbnail\\${size}_`))
+    url.replace("api\\full\\", `api\\`)
+    .replace("api\\", `api\\thumbnail\\${size}_`))
     .replaceAll("\\", '/')
   return newUrl.substring(0, newUrl.lastIndexOf('.')) + ".webp"
 }
