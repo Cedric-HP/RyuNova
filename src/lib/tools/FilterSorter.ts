@@ -31,7 +31,7 @@ const userSorter = (contentList: UserData[],sortType: SorterInput) => {
             return [...contentList].sort((a: UserData, b: UserData)=> 
                 b.likes - a.likes
             )
-        case "follower":
+        case "follow":
             return [...contentList].sort((a: UserData, b: UserData)=> 
                 b.followers - a.followers
             )
