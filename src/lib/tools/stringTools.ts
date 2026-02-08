@@ -1,5 +1,5 @@
 import languageList from "../language"
-import { LanguageInput, ThumbnailSize, ThumbnailSizeInput } from "../types/utilitisesType"
+import { ImageCategoryInput, LanguageInput, ThumbnailSize, ThumbnailSizeInput } from "../types/utilitisesType"
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
 
 // String Tool Section
@@ -114,13 +114,14 @@ const formatDate = (date: Date | string | number): string =>{
 }
 
 // Image Url : Format the image paths into usable URLs
-const ImageUrl = (url: string, type: "full" | "thumbnail" ,size?: ThumbnailSizeInput) =>{
+const ImageUrl = (url: string, type: "full" | "thumbnail" , category: ImageCategoryInput, size?: ThumbnailSizeInput ) =>{
   if (type ==="full")
     return (SERVER_URL + "/" + url).replaceAll("\\", '/')
   // If it is a thumbnail : api/full/imagename.jpg => api/thumbnail/size_imagename.webp
   const newUrl = (SERVER_URL + "/" + 
-    url.replace("api\\full\\", `api\\`)
-    .replace("api\\", `api\\thumbnail\\${size}_`))
+    url
+    .replace(`api\\${category}\\full\\`, `api\\`)
+    .replace("api\\", `api\\${category}\\thumbnail\\${size}_`))
     .replaceAll("\\", '/')
   return newUrl.substring(0, newUrl.lastIndexOf('.')) + ".webp"
 }

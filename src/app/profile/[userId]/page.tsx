@@ -94,7 +94,7 @@ const LogingRegister: FC = () => {
                         ><FontAwesomeIcon icon={faPenToSquare} /></button> : <></>}
                 {userProfilData.bannerUrl !== "" ? <>
                 <div className="banner">
-                    <img src={ImageUrl(userProfilData.bannerUrl, "thumbnail", 750)} alt={`${userProfilData.name}'s banner`}/>
+                    <img src={ImageUrl(userProfilData.bannerUrl, "thumbnail", "banner", 750)} alt={`${userProfilData.name}'s banner`}/>
                     <div className="banner-filter"></div>
                 </div>
                 <div className="hero-height-1"></div>

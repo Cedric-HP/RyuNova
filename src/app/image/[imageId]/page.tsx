@@ -114,7 +114,7 @@ const LogingRegister: FC = () => {
         <> 
             { getImage.exist && <>
                 <section className="image-section">
-                    <img className="image-normal" src={ImageUrl(currentImage.url, "thumbnail", 750)} alt={`${currentImage.title}_by_${currentImage.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
+                    <img className="image-normal" src={ImageUrl(currentImage.url, "thumbnail", "image", 750)} alt={`${currentImage.title}_by_${currentImage.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
                 </section>
                 <hr className="section-separator"/>
                 <section className="description">

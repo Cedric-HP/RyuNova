@@ -19,7 +19,7 @@ const FullScreenImage: FC  = () => {
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <img 
                 className={fullScreenLimit ? "image-full image-full-limit appear" : "image-full appear"} 
-                src={ImageUrl(currentImage.url, "full")} 
+                src={ImageUrl(currentImage.url, "full", "image")} 
                 alt={`${currentImage.title}_by_${currentImage.author}`} 
                 onClick={()=>setFullScreenLimit((prevState)=>!prevState)}
             />

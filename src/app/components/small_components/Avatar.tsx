@@ -14,7 +14,7 @@ const Avatar: FC<Iprops>  = ( {url="", name= "", size=50} ) => {
     return ( (url !== "" && url !== "/") ? 
         <img 
             className="avatar" 
-            src={ImageUrl(url, "thumbnail", size)} alt={`${name}'s Avatar`} 
+            src={ImageUrl(url, "thumbnail", "avatar", size)} alt={`${name}'s Avatar`} 
             height={size}
             style={{
                 height: size,
