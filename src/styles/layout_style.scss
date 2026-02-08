@@ -79,6 +79,9 @@ main{
     flex-direction: column;
     gap: 15px;
     align-items: center;
+    .system{
+        margin-top: calc( (100vh / 2) - 200px - 160px );;
+    }
 }
 
 h1{
@@ -122,7 +125,7 @@ h1{
     p{
         font-family: "Michroma", sans-serif;
         text-align: center;
-        text-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 7px rgba(0, 0, 0, 1);
         text-decoration: none !important;
     }
 }
@@ -178,6 +181,11 @@ h1{
 
 .sort-selected{
     color: #FBA059;
+    svg{
+        path{
+            color: #FBA059;
+        }
+    }
     &::after{
         background-color: #FBA059!important;
     }
@@ -216,6 +224,14 @@ h1{
         border-color: red;
         box-shadow: 0 0 7px red;
     } 
+}
+
+.error-message-modal, .successe-message-modal{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 // Edit Button

@@ -21,11 +21,13 @@ import setGetImageFetchStateIdleAction from "@/lib/reducers/authSliceReducer/act
 import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
 import { useView } from "@/lib/tools/useView";
 import LikeButton from "@/app/components/small_components/LikeButton";
+import ValidInvalidMarkComponent from "@/app/components/small_components/ValidInvalidMarkComponent";
+import LoadingComponent from "@/app/components/small_components/LoadingComponent";
 
 const LogingRegister: FC = () => {
     
     // Reducers
-    const { currentImage, getImage, userData, currentUser, getUser, profile, authorized} = useSelector(
+    const { currentImage, getImage, userData, currentContentUser, getUser, profile, authorized} = useSelector(
         (store: RootState) => store.auth
     )
     const { currentLanguage  } = useSelector(
@@ -48,7 +50,6 @@ const LogingRegister: FC = () => {
 
     // const content = useFetch(Number(imageId), "image")
     const [authorData, setAuthorData] = useState<UserData>(defaultUser)
-    const [testLike, setTestLike] = useState<boolean>(false)
     const [isInitialize, setIsInitialize] = useState<boolean>(false)
     const [viewAdded, setViewAdded] = useState<boolean>(false)
 
@@ -74,7 +75,7 @@ const LogingRegister: FC = () => {
     },[currentImage.id, dispatch, getImage.exist, getImage.fetch.fetchState, imageID, imageId, router])
 
     useEffect(()=>{
-        if (getImage.fetch.fetchState === "done" && getImage.exist) {
+        if ( getImage.exist ) {
             if (currentImage.authorId === userData.id)
                 return setAuthorData({
                 articles: userData.articles.length,
@@ -89,12 +90,14 @@ const LogingRegister: FC = () => {
                 name: userData.name,
                 views: userData.views
             })
-            if (currentImage.authorId === currentUser.id)
-                return setAuthorData(currentUser)
+            if (currentImage.authorId === currentContentUser.id) {
+                console.log("here")
+                return setAuthorData(currentContentUser)
+            }
             if (getUser.fetch.fetchState === "idle")
-                dispatch(getUserAction(currentImage.authorId))
+                dispatch(getUserAction({id: currentImage.authorId, isProfil: false}))
         }
-    },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.exist, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, userData.articles.length, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views])
+    },[currentContentUser, currentImage.authorId, currentImage.id, dispatch, getImage.exist, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, userData.articles.length, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views])
 
     useEffect(()=>{
         if (getImage.fetch.fetchState === "done" && getImage.exist && !viewAdded && 
@@ -127,7 +130,7 @@ const LogingRegister: FC = () => {
                     </div>
                     <ImageDescription views={currentImage.views} date={currentImage.createdAt} description={currentImage.description} tags={currentImage.tags}/>
                 </section>
-                <CommentModule contentId={currentImage.id} contentType="image" size={50} />
+                <CommentModule contentType="image" size={50} />
             </>}
             {!getImage.exist && getImage.fetch.fetchState === "done" && 
             <section>
@@ -137,10 +140,11 @@ const LogingRegister: FC = () => {
             {getImage.fetch.fetchState === "error" &&
             <section>
                 <p>Error: {getImage.fetch.error}</p>
+                <ValidInvalidMarkComponent type={"invalid"}/>
             </section>} 
             {getImage.fetch.fetchState === "fetching" &&
             <section className="loading">
-                <p>Loading</p>
+                <LoadingComponent type="black-hole" size={100}/>
             </section>}
         </>
     )

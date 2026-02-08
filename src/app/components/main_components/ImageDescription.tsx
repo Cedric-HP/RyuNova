@@ -46,7 +46,7 @@ const ImageDescription: FC<Iprops>  = ( {views= 0, date = "2000-01-01", descript
                     } :</h4>
                     {tags.map((item, index)=>{
                         return (
-                        <Link className="link push-action" key={`${item.name}_${index}`} href={`/search?search=&type=image&sort=view&tag=${item}#nav`}>
+                        <Link className="link push-action" key={`${item.name}_${index}`} href={`/search?search=&type=image&sort=view&tag=${item.name}#nav`}>
                             {item.name}
                         </Link>
                         )

@@ -23,7 +23,7 @@ const FullScreenNeedToLogIn: FC  = () => {
         <>  
             <div className="full-screen-button" onClick={()=>dispatch(setFullScreenAction(""))}></div>
             <div className="full-screen-popup full-screen-need-to-login">
-                <p>You need to be conneted!</p>
+                <p>{languageList[currentLanguage].message.notification.needToBeConnected}</p>
                 <button
                     className="button-normal button-cta push-action"
                     onClick={handleLogReg}

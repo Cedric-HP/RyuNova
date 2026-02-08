@@ -4,7 +4,7 @@ import { createContext, FormEvent, useContext, useEffect, useState, type FC, typ
 import "../../styles/navbar.scss"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faChevronLeft} from '@fortawesome/free-solid-svg-icons'
 import {  usePathname, useRouter } from 'next/navigation'
 import { GlobalContextType, LogRegInput } from "@/lib/types/utilitisesType";
 import { globalContextDefaultValue } from "@/lib/tools/DefaultValues";
@@ -155,7 +155,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                                     <span id="notification-count" >99+</span>
                                 </div>
                                 <div
-                                    className="push-action"
+                                    className="push-action avatar-container"
                                     onClick={()=>dispatch(setCustomSelectorAction("user"))}
                                     onKeyDown={()=>dispatch(setCustomSelectorAction("user"))}  
                                 >
@@ -175,7 +175,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 className="push-action link" 
                                 onClick={()=>router.back()}
                             >
-                                <FontAwesomeIcon icon={faArrowLeft} />
+                                <FontAwesomeIcon icon={faChevronLeft} />
                                 {languageList[currentLanguage].button.previous}
                             </button>
                         </> : <>

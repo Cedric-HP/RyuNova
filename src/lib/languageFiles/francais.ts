@@ -135,7 +135,8 @@ const languageFrancais: LanguageData = {
         confirmPassword: "Confirmer le mot de passe",
         chooseAnImage: "Choisir une image",
         description: "Description",
-        title: "Titre"
+        title: "Titre",
+        imagePreview: "Aperçu de l'image"
     },
     alt:{
         button: "Bouton",
@@ -144,7 +145,11 @@ const languageFrancais: LanguageData = {
     },
     message: {
         notification: {
-            noTag: "Aucun Tag"
+            noTag: "Aucun Tag",
+            connected: "Connecté!",
+            imageUploaded: "Image uploadée!",
+            successfulRegistration: "Inscription réussie!",
+            needToBeConnected: "Vous devez être connecté!"
         },
         error: {
             imageNotFound: "Image introuvable",

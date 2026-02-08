@@ -47,10 +47,17 @@ nav {
             img{
                 border: 1px solid transparent;
                 border-radius: 50%;
-                transition: border 0.2s, transform 0.2s;
+                transition: border 0.2s, transform 0.2s, box-shadow 0.2s;
                 cursor: pointer;
-                &:hover{
-                    border: 1px solid #EBECFA;
+            }
+            .avatar-container{
+                .avatar{
+                    cursor: pointer;
+                    transition: box-shadow 0.2s, filter 0.2s;
+                    &:hover{
+                        box-shadow: 0 0 7px 2px #EBECFA;
+                        filter: brightness(0.8);
+                    }
                 }
             }
         }

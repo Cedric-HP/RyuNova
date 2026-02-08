@@ -19,6 +19,8 @@ import { faPenToSquare} from '@fortawesome/free-solid-svg-icons'
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { setImageUploadCategoryAction } from "@/lib/reducers/authSliceReducer/authSlice";
 import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
+import LoadingComponent from "@/app/components/small_components/LoadingComponent";
+import ValidInvalidMarkComponent from "@/app/components/small_components/ValidInvalidMarkComponent";
 const LogingRegister: FC = () => {
 
     // Reducers
@@ -37,8 +39,8 @@ const LogingRegister: FC = () => {
     const { userId } = useParams();
     const userID: number = useMemo(()=>{
         if (userId)
-            if (parseInt(userId[0]) !== undefined)
-                return parseInt(userId[0])
+            if (parseInt(String(userId)) !== undefined)
+                return parseInt(String(userId))
         return 1
     },[userId])
     const [userProfilData, setUserProfileData] = useState<UserData>(defaultUser)
@@ -66,7 +68,7 @@ const LogingRegister: FC = () => {
         if (userID === currentUser.id)
             return setUserProfileData(currentUser)
         if (userID !== currentUser.id && getUser.fetch.fetchState === "idle") {
-            dispatch(getUserAction(userID))
+            dispatch(getUserAction({id: userID, isProfil: true}))
         }  
     },[currentImage.authorId, currentImage.id, currentUser, dispatch, getImage.fetch.fetchState, getUser.exist, getUser.fetch.fetchState, router, userData.articles.length, userData.avatarUrl, userData.bannerUrl, userData.createdAt, userData.description, userData.followers, userData.id, userData.images.length, userData.likes, userData.name, userData.views, userID])
 
@@ -145,9 +147,10 @@ const LogingRegister: FC = () => {
         {getUser.fetch.fetchState === "error" ?
             <section>
                 <p>Error: {getUser.fetch.error}</p>
+                <ValidInvalidMarkComponent type={"invalid"}/>
             </section> :
             <section className="loading">
-                <p>Loading</p>
+                <LoadingComponent type="black-hole" size={100}/>
             </section>}
         </>}
         </>

@@ -1,36 +1,26 @@
-import { useState } from "react";
-import { IsTyping } from "../types/utilitisesType";
+import { useCallback, useRef, useState } from "react";
 
-let isTypingTimeOut: ReturnType<typeof setTimeout> | null = null
+const useIsTyping = (): [boolean, () => void] => {
 
-const useIsTyping = ()=> {
+    const [isTyping, setIsTyping] = useState<boolean>(false)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const [isTyping, setIsTyping] = useState<IsTyping>({state: false, type: ""})
-
-    const handleTyping = (type: string) => {
+    const handleTyping = useCallback(() => {
         // Reset the timeout if it runs
-        if (isTypingTimeOut !== null) {
-            clearTimeout(isTypingTimeOut);
-            isTypingTimeOut = null
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
         }
         // If the timeout isn't running then set isTyping to true
-        else setIsTyping((prevState)=>{
-            const newState = {...prevState}
-            newState.state = true
-            newState.type = type
-            return newState
-        })
+        else setIsTyping(true)
         // TimeOut to set IsTyping to false after 1.25 s   
-        isTypingTimeOut = setTimeout(() => {
-            setIsTyping((prevState)=>{
-            const newState = {...prevState}
-            newState.state = false
-            return newState
-        })
-            isTypingTimeOut = null
+        timeoutRef.current = setTimeout(() => {
+            setIsTyping(false)
+            timeoutRef.current = null
         }, 1250);
-    }
-    return { isTyping, handleTyping}
-}
+    },[]);
+    return [ isTyping, handleTyping];
+};
 
 export default useIsTyping
+
+

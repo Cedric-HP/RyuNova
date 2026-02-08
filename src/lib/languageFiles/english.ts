@@ -135,7 +135,8 @@ const languageEnglish: LanguageData = {
         confirmPassword: "Confirm Password",
         chooseAnImage: "Choose an image",
         description: "Description",
-        title: "Title"
+        title: "Title",
+        imagePreview: "Image Preview"
     },
     alt:{
         button: "Button",
@@ -144,7 +145,11 @@ const languageEnglish: LanguageData = {
     },
     message: {
         notification: {
-            noTag: "No Tag"
+            noTag: "No Tag",
+            connected: "Connected!",
+            imageUploaded: "Image Uploaded!",
+            successfulRegistration: "Registred!",
+            needToBeConnected: "You need to be connected!"
         },
         error: {
             imageNotFound: "Image not found",

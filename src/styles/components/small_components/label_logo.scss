@@ -21,3 +21,258 @@
         text-align: center;
     }
 }
+
+// LOADER SECTION ----------------------------------------------------------------------
+
+.loading-component{
+    position: relative;
+    .loading-ring-1, .loading-ring-2, .loading-ring-3{
+        position: absolute;
+        border-radius: 50%;
+        border-top: 3px solid #EBECFA;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid #EBECFA;
+        border-left: 3px solid transparent;
+    }
+    .loading-core-simple, .loading-core-black-hole{
+        position: absolute;
+        border-radius: 50%;
+        width: 25%;
+        height: 25%;
+        box-shadow: 0 0 7px #EBECFA;
+    }
+    .loading-ring-1{
+        height: 100%;
+        width: 100%;
+        animation: loading 0.7s linear infinite;
+    }
+    .loading-ring-2{
+        height: 90%;
+        width: 90%;
+        animation: loading 0.6s linear infinite reverse;
+    }
+    .loading-ring-3{
+        height: 80%;
+        width: 80%;
+        animation: loading 0.5s linear infinite;
+    }
+    .loading-core-black-hole{
+        border: 1px solid #EBECFA;
+        background-color: black;
+        animation: core-pulse 2s infinite both;
+    }
+    .loading-ring-simple{
+        position: absolute;
+        border-radius: 50%;
+        border-top: 2px solid #EBECFA;
+        border-right: 2px solid transparent;
+        border-bottom: 0 solid transparent;
+        border-left: 0 solid transparent;
+        height: 100%;
+        width: 100%;
+        animation: loading 0.5s linear infinite;
+    }
+    .loading-core-simple{
+        background-color: #EBECFA;
+        animation: core-pulse 1s infinite both;
+    }
+}
+
+@keyframes loading { 
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    } 
+}
+
+ @keyframes core-pulse {
+    0%{
+        box-shadow: 0 0 7px 0 #EBECFA;
+    }
+    50%{
+        box-shadow: 0 0 7px 3px #EBECFA;
+    }
+    100%{
+        box-shadow: 0 0 7px 0 #EBECFA;
+    }
+ }
+
+
+// Planet Loader
+
+.system {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    height: 400px;
+    aspect-ratio: 1;
+    rotate: 23.4392811deg;
+}
+
+.planet,
+.orbit-1,
+.orbit-2,
+.moon {
+    position: absolute;
+    transform-style: preserve-3d;
+    inset: 0;
+    height: calc(var(--size) * 1%);
+    margin: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.planet {
+    --size: 25;
+    background: 
+        radial-gradient(
+            circle at 30% 30%,
+            #EBECFA,
+            black
+        )
+    ;
+}
+
+.orbit-1, .orbit-2 {
+    border-top: 0 solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 5px solid #EBECFA;
+    border-left: 5px solid transparent;
+}
+
+.orbit-1{
+    --size: 50;
+    --duration: 1.23666s;
+    animation: orbit calc(var(--duration)) linear infinite;
+    rotate: 1 0 0 80deg;
+    .moon{
+        --moonSize: 6.825;
+        top: 150px;
+        left: 30px;
+    }
+}
+.orbit-2{
+    --size: 100;
+    --duration: 2.232002s;
+    animation: orbit calc(var(--duration)) linear infinite;
+    rotate: 1 0 0 80deg;
+    .moon{
+        --moonSize: 6.825;
+        top: 275px;
+        left: 50px;
+    }
+}
+
+.moon {
+    height: calc(var(--moonSize) * 1%);
+    margin-left: calc(var(--moonSize) * -0.5%);
+    background: 
+        radial-gradient(
+            circle at 30% 70%,
+            #EBECFA,
+            black
+        )
+    ;
+    animation: moon calc(var(--duration)) linear infinite;
+    rotate: 1 0 0 90deg;
+}
+
+@keyframes orbit  { to { transform: rotate3d(0, 0, 1,  360deg); } }
+@keyframes moon   { to { transform: rotate3d(0, 1, 0, -360deg); } }
+@keyframes system { to { transform: rotate3d(0, 1, 0, -360deg); } }
+
+// Invalid X-Cross
+
+.x-cross-invalid {
+    height: 36px;
+    width: 36px;
+    position: relative;
+    .x-cross-segment-1, .x-cross-segment-2{
+        position: absolute;
+        width: 3px;
+        background-color: red;
+        height: 0;
+        animation: x-cross 0.5s 1 both;
+        box-shadow: 0 0 7px red;
+    }
+    .x-cross-segment-1{
+        transform: rotate(-45deg);
+    }
+    .x-cross-segment-2{
+        transform: rotate(45deg);   
+    }
+}
+
+@keyframes x-cross {
+    0%{
+        top: 18px;
+        left: 16.5px;
+        height: 0;
+    }
+    100%{
+        height: 36px;
+        top: 0;
+        left: 16.5px;
+    }
+}
+
+// Valid Check Mark
+
+.check-mark-valid {
+    height: 36px;
+    width: 36px;
+    position: relative;
+    .check-mark-segment-1, .check-mark-segment-2{
+        position: absolute;
+        width: 4px;
+        background-color: greenyellow;
+        height: 0;
+        box-shadow: 0 0 7px greenyellow;
+    }
+    .check-mark-segment-1{
+        transform: rotate(-60deg);
+        animation: check-mark-1 0.5s 1 both;
+        border-radius: 4px 4px 0 0;
+    }
+    .check-mark-segment-2{
+        transform: rotate(210deg);
+        animation: check-mark-2 0.5s 1 both;
+        border-radius: 0 0 4px 4px;   
+    }
+}
+
+@keyframes check-mark-1 {
+    0%{ 
+        top: 24px;
+        left: 7px;
+        height: 0;
+    }
+    50%{
+        top: 21px;
+        left: 12px;
+        height: 12px;
+    }
+    100%{
+        top: 21px;
+        left: 12px;
+        height: 12px;
+    }
+}
+@keyframes check-mark-2 {
+    0%{
+        top: 30px;
+        left: 15px;
+        height: 0;
+    }
+    50%{
+        top: 30px;
+        left: 15px;
+        height: 0;
+    }
+    100%{
+        top: 4px;
+        left: 22px;
+        height: 28px;
+    }
+}

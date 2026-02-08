@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import getSearchAction from "@/lib/reducers/authSliceReducer/actions/content/getSearchAction";
 import setGetSearchFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/content/setGetSearchFetchStateIdleAction";
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 const Search: FC = () => {
 
@@ -278,18 +279,24 @@ const Search: FC = () => {
                         onClick={()=>handleSort("view")}
                         >
                             {languageList[currentLanguage].contentType.view.singular}
+                            {currentSort === "view" && <>
+                            {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "like" ? "sort-selected" : ""}`}
                         onClick={()=>handleSort("like")}
                         >
                             {languageList[currentLanguage].contentType.like.singular}
+                            {currentSort === "like" && <>
+                            {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                         <button 
                         className={`link push-action ${currentSort === "date" ? "sort-selected" : ""}`}
                         onClick={()=>handleSort("date")}
                         >
                             {languageList[currentLanguage].contentType.date.singular}
+                            {currentSort === "date" && <>
+                            {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                         {currentType === "user" ? <>
                         <button 
@@ -297,6 +304,8 @@ const Search: FC = () => {
                         onClick={()=>handleSort("follow")}
                         >
                             {languageList[currentLanguage].contentType.follower.singular}
+                            {currentSort === "follow" && <>
+                            {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                         </> : <></>
                         }

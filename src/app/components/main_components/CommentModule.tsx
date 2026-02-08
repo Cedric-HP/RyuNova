@@ -8,16 +8,18 @@ import languageList from "@/lib/language";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import useHandleLogRegPopUp from "@/lib/tools/handleLogRegPopUp";
-import { AvatarSizeInput, CommentContentTypeInput } from "@/lib/types/utilitisesType";
+import { AvatarSizeInput, CommentContentTypeInput, OrderInput } from "@/lib/types/utilitisesType";
 import getCommentAction from "@/lib/reducers/authSliceReducer/actions/content/getCommentAction";
 import { setCommentType, setDoPushAction } from "@/lib/reducers/authSliceReducer/authSlice";
+import LoadingComponent from "../small_components/LoadingComponent";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 type Iprops = {
-    contentId: number
     size: AvatarSizeInput,
     contentType: CommentContentTypeInput
 }
 
-const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="image" } ) => {
+const CommentModule: FC<Iprops>  = ( { size= 50, contentType="image" } ) => {
 
     // Reducers
     const { authorized, currentImage, getComment } = useSelector(
@@ -36,8 +38,8 @@ const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="im
     // Limite
     const [limit, setLimit] = useState<number>(1)
 
-    // doPush
-    const [doPush, setDoPush] = useState<boolean>(false)
+    // Order
+    const [currentOrder, setCurrentOrder] = useState<OrderInput>("DESC")
 
     // Handle LorReg Popup
     const { handleLogReg } = useHandleLogRegPopUp()
@@ -47,30 +49,41 @@ const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="im
         setSortedList(currentContent.commentList.filter((item)=> item.isReply === false))
     },[currentContent.commentList])
 
-    const handleSort = (sort: "date" | "like") => {
-        setCurrentSort(sort)
-        setDoPush(false)
+    const handleSort = (newSort: "date" | "like") => {
+        if (newSort === currentSort) {
+            setCurrentOrder((prevState)=> prevState === "DESC" ? "ASC" : "DESC")
+        }
+        else {
+            setCurrentOrder("DESC") 
+            setCurrentSort(newSort)
+        }
+        dispatch(setDoPushAction(false))
         setLimit(1)
     }
 
     const handleLimit = () => {
-        setDoPush(true)
+        dispatch(setDoPushAction(true))
         setLimit((prevState)=> prevState + 1)
     }
-
-    useEffect(()=>{
-        dispatch(setDoPushAction(doPush))
-    },[dispatch, doPush])
 
     useEffect(()=>{
         switch(contentType) {
             case"article":
                 break
             case "image":
-                dispatch(setCommentType({reducer: "get", type:"image"}))
-                dispatch(getCommentAction({sort: currentSort, id: currentContent.id, limit: limit, type: contentType}))
+                dispatch(setCommentType({
+                    reducer: "get", 
+                    type:"image"
+                }))
+                dispatch(getCommentAction({
+                    sort: currentSort, 
+                    id: currentContent.id, 
+                    limit: limit, 
+                    type: contentType,
+                    order: currentOrder
+                }))
         }
-    },[contentType, currentContent.id, currentSort, dispatch, limit])
+    },[contentType, currentContent.id, currentOrder, currentSort, dispatch, limit])
 
     return (
         <>  
@@ -85,11 +98,19 @@ const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="im
                         <p>{languageList[currentLanguage].button.sortBy} :</p>
                         <button 
                             className={`link link-button push-action ${currentSort === "like" ? "sort-selected" : ""}`} 
-                            onClick={()=>handleSort("like")}>{languageList[currentLanguage].contentType.like.singular}
+                            onClick={()=>handleSort("like")}
+                        >
+                                {languageList[currentLanguage].contentType.like.singular}
+                                {currentSort === "like" && <>
+                                {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                         <button 
                             className={`link link-button push-action ${currentSort === "date" ? "sort-selected" : ""}`} 
-                            onClick={()=>handleSort("date")}>{languageList[currentLanguage].contentType.date.singular}
+                            onClick={()=>handleSort("date")}
+                        >
+                            {languageList[currentLanguage].contentType.date.singular}
+                            {currentSort === "date" && <>
+                            {currentOrder === "DESC" ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}</>}
                         </button>
                     </div>
                 </div>
@@ -121,7 +142,7 @@ const CommentModule: FC<Iprops>  = ( { contentId = -1, size= 50, contentType="im
                     }
                 </div>
                 {getComment.fetch.fetchState === "fetching" &&
-                <p>Loading</p>}
+                <LoadingComponent type="simple" size={100}/>}
                 {(currentContent.parentComment > currentContent.commentList.filter((item)=> !item.isReply).length && getComment.fetch.fetchState !== "fetching") &&
                  <button className="push-action reply-show-button button-simple" onClick={handleLimit}>
                     {languageList[currentLanguage].button.seeMore}

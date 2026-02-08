@@ -89,12 +89,12 @@ const Footer: FC = () => {
                     <section id="social-media">
                         <ul id="social-media-list">
                             <li>
-                                <Link className="link push-action" href={"/"}>
+                                <Link className="link push-action" href={"https://github.com/Cedric-HP"}>
                                    <FontAwesomeIcon icon={faSquareGithub} />
                                 </Link>
                             </li>
                             <li>
-                                <Link className="link push-action" href={"/"}>
+                                <Link className="link push-action" href={"https://www.linkedin.com/in/c%C3%A9dric-mouchon-33072a2b3/"}>
                                    <FontAwesomeIcon icon={faLinkedin} />
                                 </Link>
                             </li>

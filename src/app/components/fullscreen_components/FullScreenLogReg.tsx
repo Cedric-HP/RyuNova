@@ -5,7 +5,6 @@ import "../../../styles/components/fullscreen_components/fullscreen-display.scss
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useGlobalContext } from "../Navbar";
 import languageList from "@/lib/language";
 import { InputStateInput } from "@/lib/types/utilitisesType";
 import checkDuplicateAction from "@/lib/reducers/authSliceReducer/actions/logReg/checkDuplicateAction";
@@ -20,6 +19,8 @@ import postLoginAction from "@/lib/reducers/authSliceReducer/actions/logReg/post
 import resetLoginStateAction from "@/lib/reducers/authSliceReducer/actions/logReg/resetLoginAction";
 import setLoginFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/logReg/setLoginFetchStateIdleAction";
 import useIsTyping from "@/lib/tools/useIsTyping";
+import ValidInvalidMarkComponent from "../small_components/ValidInvalidMarkComponent";
+import LoadingComponent from "../small_components/LoadingComponent";
 
 const regularExpression = /^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
@@ -41,7 +42,10 @@ const FullScreenLogReg: FC  = () => {
     },[accessToken, dispatch])
 
     // Use IsTyping
-    const {isTyping, handleTyping} = useIsTyping()
+    const [isTypingName, handleTypingName] = useIsTyping()
+    const [isTypingEmail, handleTypingEmail] = useIsTyping()
+    const [isTypingPassword, handleTypingPassword] = useIsTyping()
+    const [isTypingConfPassword, handleTypingConfPassword] = useIsTyping()
 
     // useStates Section
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
@@ -77,36 +81,36 @@ const FullScreenLogReg: FC  = () => {
 
     // Use Effect to reset states when changing form
     useEffect(()=>{
-        if(logReg === "reg")
+        if(logReg === "reg") {
+             resetFormInput()
+            dispatch(resetRegisterStateAction())
+        } 
+        if (logReg === "log"){
             resetFormInput()
-        if (logReg === "log")
-            resetFormInput()
-    },[logReg])
+            dispatch(resetLoginStateAction())
+        }
+    },[dispatch, logReg])
 
-
-    // Is Typing Handler
-    
-        
-
+  
     // Input handler
     const handleNameInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setNameInput(String(e.currentTarget.value))
-        handleTyping("name")
+        handleTypingName()
     }
 
     const handleEmailInput= (e: React.ChangeEvent<HTMLInputElement >) => {
         setEmailInput(String(e.currentTarget.value))
-        handleTyping("email")
+        handleTypingEmail()
     }
 
     const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setPasswordInput(String(e.currentTarget.value))
-        handleTyping("password")
+        handleTypingPassword()
     }
 
     const handleConfPasswordInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setConfPasswordInput(String(e.currentTarget.value))
-        handleTyping("confPassword")
+        handleTypingConfPassword()
     }
 
 
@@ -136,19 +140,19 @@ const FullScreenLogReg: FC  = () => {
             setNameError("")
             return
         }
-        if (nameInput.length < 3 && !isTyping.state) {
+        if (nameInput.length < 3 && !isTypingName) {
             setIsNameValid("invalid")
             setNameError(languageList[currentLanguage].message.error.nameTooShort)
             return
         }
-        if (nameInput.length > 50 && !isTyping.state) {
+        if (nameInput.length > 50 && !isTypingName) {
             setIsNameValid("invalid")
             setNameError(languageList[currentLanguage].message.error.nameTooLong)
             return
         }
         if ( 
-            (register.nameValid.valid !== "valid" && !isTyping.state && nameInput !== register.nameValid.value && register.fetch.fetchState === "idle") ||
-            (register.nameValid.valid === "valid" && !isTyping.state && nameInput !== register.nameValid.value && register.fetch.fetchState === "idle")
+            (register.nameValid.valid !== "valid" && !isTypingName && nameInput !== register.nameValid.value && register.fetch.fetchState === "idle") ||
+            (register.nameValid.valid === "valid" && !isTypingName && nameInput !== register.nameValid.value && register.fetch.fetchState === "idle")
         ) {
             setIsNameValid("idle")
             setNameError("")
@@ -164,7 +168,7 @@ const FullScreenLogReg: FC  = () => {
         if (register.nameValid.valid === "valid" && nameInput === register.nameValid.value) {
             setIsNameValid("valid")
         }
-    },[dispatch, isNameValid, isTyping, currentLanguage, nameInput, register.fetch.fetchState, register.nameValid])
+    },[dispatch, isNameValid, currentLanguage, nameInput, register.fetch.fetchState, register.nameValid, isTypingName])
 
     // Email
     useEffect(()=>{
@@ -174,7 +178,7 @@ const FullScreenLogReg: FC  = () => {
             setEmailError("")
             return
         }
-        if (!isValidatorEmail && !isTyping.state) {
+        if (!isValidatorEmail && !isTypingEmail) {
             setIsEmailValid("invalid")
             setEmailError(languageList[currentLanguage].message.error.emaiInvalid)
             return
@@ -183,8 +187,8 @@ const FullScreenLogReg: FC  = () => {
         // For Register
         if (logReg === "reg") {
             if ( 
-                (isValidatorEmail && register.emailValid.valid !== "valid" && !isTyping.state && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle") ||
-                (isValidatorEmail && register.emailValid.valid === "valid" && !isTyping.state && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle")
+                (isValidatorEmail && register.emailValid.valid !== "valid" && !isTypingEmail && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle") ||
+                (isValidatorEmail && register.emailValid.valid === "valid" && !isTypingEmail && emailInput !== register.emailValid.value && register.fetch.fetchState === "idle")
             ) {
                 setIsEmailValid("idle")
                 setEmailError("")
@@ -209,7 +213,7 @@ const FullScreenLogReg: FC  = () => {
                 setIsEmailValid("valid")
             }
         }
-    },[dispatch, emailInput, isTyping, isValidatorEmail, currentLanguage, logReg, register.emailValid.valid, register.emailValid.value, register.fetch.fetchState, register.nameValid.valid])
+    },[dispatch, emailInput, isValidatorEmail, currentLanguage, logReg, register.emailValid.valid, register.emailValid.value, register.fetch.fetchState, register.nameValid.valid, isTypingEmail])
 
     // Password
     useEffect(()=>{
@@ -221,22 +225,22 @@ const FullScreenLogReg: FC  = () => {
 
        // For Register
         if (logReg === "reg") {
-            if(passwordInput.length < 8 && !isTyping.state){
+            if(passwordInput.length < 8 && !isTypingPassword){
                 setIsPasswordValid("invalid")
                 setPasswordError(languageList[currentLanguage].message.error.passwordTooShort)
                 return
             }
-            if(passwordInput.length > 64 && !isTyping.state){
+            if(passwordInput.length > 64 && !isTypingPassword){
                 setIsPasswordValid("invalid")
                 setPasswordError(languageList[currentLanguage].message.error.passwordTooLong)
                 return
             }
-            if (!regularExpression.test(passwordInput) && !isTyping.state) {
+            if (!regularExpression.test(passwordInput) && !isTypingPassword) {
                 setIsPasswordValid("invalid")
                 setPasswordError(languageList[currentLanguage].message.error.passwordMustHaveSPCharacter)
                 return
             }
-            if(regularExpression.test(passwordInput) && !isTyping.state) {
+            if(regularExpression.test(passwordInput) && !isTypingPassword) {
                 setIsPasswordValid("valid")
                 setConfPasswordError("") 
                 return
@@ -245,29 +249,29 @@ const FullScreenLogReg: FC  = () => {
         
         // For Login
         if (logReg === "log") {
-            if(passwordInput.length > 8 && !isTyping.state){
+            if(passwordInput.length > 8 && !isTypingPassword){
                 setIsPasswordValid("valid")
                 setConfPasswordError("") 
                 return
             }
         }
-    },[isTyping, currentLanguage, logReg, passwordInput])
+    },[currentLanguage, logReg, passwordInput, isTypingPassword])
 
     // Confirm Password
     useEffect(()=>{
-        if (passwordInput === confPasswordInput && !isTyping.state && isPasswordValid === "valid") {
+        if (passwordInput === confPasswordInput && !isTypingConfPassword && isPasswordValid === "valid") {
             setIsConfPasswordValid("valid")
             setConfPasswordError("")
             return
         }
-        if (confPasswordInput !== "" && !isTyping.state && isPasswordValid === "valid") {
+        if (confPasswordInput !== "" && !isTypingConfPassword && isPasswordValid === "valid") {
             setIsConfPasswordValid("invalid")
             setConfPasswordError(languageList[currentLanguage].message.error.confPasswordNotIndentical)
         }
         else {
             setIsConfPasswordValid("idle")
         }
-    },[confPasswordInput, isPasswordValid, isTyping, currentLanguage, passwordInput])
+    },[confPasswordInput, isPasswordValid, currentLanguage, passwordInput, isTypingConfPassword])
 
 
     // Use Effect to allow submission when all inputs are valid
@@ -278,7 +282,10 @@ const FullScreenLogReg: FC  = () => {
                 isEmailValid === "valid" &&
                 isPasswordValid === "valid" &&
                 isConfPasswordValid === "valid" &&
-                !isTyping.state
+               !isTypingName &&
+               !isTypingEmail &&
+               !isTypingPassword &&
+               !isTypingConfPassword 
             )
             setCanSubmit(true)
             else setCanSubmit(false)
@@ -288,12 +295,13 @@ const FullScreenLogReg: FC  = () => {
             if (
                 isEmailValid === "valid" &&
                 isPasswordValid === "valid" &&
-                !isTyping.state
+               !isTypingEmail &&
+               !isTypingPassword 
             )
             setCanSubmit(true)
             else setCanSubmit(false)
         }
-    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid, isTyping.state, logReg])
+    },[isConfPasswordValid, isEmailValid, isNameValid, isPasswordValid, isTypingConfPassword, isTypingEmail, isTypingName, isTypingPassword, logReg])
 
 
     // Handle Register
@@ -345,21 +353,22 @@ const FullScreenLogReg: FC  = () => {
                 dispatch(setLogRegAction("log"))
             },2000)
             return
-        }
-        if (register.registerValid.state === "invalid") {
-            return
         }    
-    },[dispatch, register.registerValid, register.registerValid.state])
+    },[dispatch, register.registerValid.state])
 
     // Use Effect that handles respond Login Submit
     useEffect(()=>{
         if (login.loginValid.state === "valid") {
             setTimeout(()=>{
+                console.log("now")
                 resetFormInput()
                 dispatch(resetLoginStateAction())
                 dispatch(setFullScreenAction(""))
             },2000)
             return
+        }
+        if (login.loginValid.state === "invalid") {
+            setPasswordInput("")
         }   
     },[dispatch, login.loginValid.state])
 
@@ -375,7 +384,6 @@ const FullScreenLogReg: FC  = () => {
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
                 {logReg === "log" ? <>
-
                 {/* Login Section */}
                 <h2 className="spacing-letter-big glow">{languageList[currentLanguage].button.logIn}</h2>
                 <form action="LogIn" onSubmit={handleSubmitLogin}>
@@ -393,8 +401,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
-                            isTyping={isTyping}
-                            type="email"  
+                            isTyping={isTypingEmail}
                         />
                         <div className={`input-error-section ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{emailError}</p>
@@ -414,17 +421,19 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
-                            isTyping={isTyping}
-                            type="password"  
+                            isTyping={isTypingPassword}
                         />
                         <div className={`input-error-section ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{passwordError}</p>
                         </div>
                     </div>
                     {login.fetch.fetchState === "fetching" ?
-                    <span>Loading</span> : 
+                    <LoadingComponent type="black-hole" size={100}/> : 
                     <>{login.loginValid.state === "valid" ? 
-                    <span>DONE</span>: 
+                    <span className="successe-message-modal">
+                        <p>{languageList[currentLanguage].message.notification.connected}</p>+
+                        <ValidInvalidMarkComponent type={"valid"}/>
+                    </span>: 
                     <div className="button-container">
                         <button 
                             className="link link-button" 
@@ -440,11 +449,23 @@ const FullScreenLogReg: FC  = () => {
                     </div>}</>}
                     {login.loginValid.state === "invalid" ? 
                     <>
-                    <p>{login.loginValid.message}</p>
-                    <p>{login.loginValid.error}</p>
+                    {login.loginValid.message !== "" &&
+                    <div className="error-message-modal">
+                        <p>{login.loginValid.message}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
+                    {login.loginValid.error !== "" &&
+                    <div className="error-message-modal">
+                        <p>{login.loginValid.error}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
                     </> : 
                     <></>}
-                    <p>{login.fetch.error}</p>
+                    {login.fetch.error !== "" &&
+                    <div className="error-message-modal">
+                        <p>{login.fetch.error}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
                 </form>
                 </> : <>
 
@@ -465,8 +486,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={(register.fetch.fetchState === "fetching" && register.fetchType === "name") ? "feching" : isNameValid} 
-                            isTyping={isTyping} 
-                            type="name"                           
+                            isTyping={isTypingName}                    
                         />
                         <div className={`input-error-section ${isNameValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{nameError}</p>
@@ -486,8 +506,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={ (register.fetch.fetchState === "fetching" && register.fetchType === "email") ? "feching" : isEmailValid}
-                            isTyping={isTyping}
-                            type="email"  
+                            isTyping={isTypingEmail}
                         />
                         <div className={`input-error-section ${isEmailValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{emailError}</p>
@@ -507,8 +526,7 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={isPasswordValid}
-                            isTyping={isTyping}
-                            type="password"  
+                            isTyping={isTypingPassword}
                         />
                         <div className={`input-error-section ${isPasswordValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{passwordError}</p>
@@ -528,16 +546,19 @@ const FullScreenLogReg: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={isConfPasswordValid}
-                            isTyping={isTyping}
-                            type="confPassword"  
+                            isTyping={isTypingConfPassword} 
                         />
                         <div className={`input-error-section ${isConfPasswordValid === "invalid" ? "input-container-error" : ""}`}>
+                            <p>{confPasswordError}</p>
                         </div>
                     </div>
                     {register.fetchType === "register" && register.fetch.fetchState === "fetching" ?
-                    <span>Loading</span> : 
+                    <LoadingComponent type="black-hole" size={100}/> : 
                     <>{ register.registerValid.state === "valid" ? 
-                    <span>DONE</span>: 
+                    <span className="successe-message-modal">
+                        <p>{languageList[currentLanguage].message.notification.successfulRegistration}</p>
+                        <ValidInvalidMarkComponent type={"valid"}/>
+                    </span>: 
                     <div className="button-container">
                         <button 
                             className="link link-button" 
@@ -553,11 +574,23 @@ const FullScreenLogReg: FC  = () => {
                     </div>}</>}
                     {register.fetchType === "register" && register.registerValid.state === "invalid" ? 
                     <>
-                    <p>{register.registerValid.message}</p>
-                    <p>{register.registerValid.error}</p>
+                    {register.registerValid.message !== "" &&
+                    <div className="error-message-modal">
+                        <p>{register.registerValid.message}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
+                    {register.registerValid.error !== "" &&
+                    <div className="error-message-modal">
+                        <p>{register.registerValid.error}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
                     </> : 
                     <></>}
-                    <p>{register.fetch.error}</p>
+                    {register.fetch.error !== "" &&
+                    <div className="error-message-modal">
+                        <p>{register.fetch.error}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>}
                 </form>
                 </>}
             </div>

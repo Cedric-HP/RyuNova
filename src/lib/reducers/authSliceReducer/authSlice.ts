@@ -90,6 +90,7 @@ const initialState: AuthSliceReducerType = {
         },
     },
     getUser: {
+        isProfil: false,
         exist: false,
         fetch: {
             error: "",
@@ -147,6 +148,7 @@ const initialState: AuthSliceReducerType = {
         }
     },
     currentImage: defaultContent,
+    currentContentUser: defaultUser,
     currentUser: defaultUser,
     currentArticle: defaultContent
 }
@@ -202,6 +204,9 @@ const authSlice = createSlice({
         .addCase(postRegisterAction.pending, (state) => {
             state.register.fetch.fetchState= "fetching";
             state.register.fetch.error = "";
+            state.register.registerValid.state = "idle";
+            state.register.registerValid.message = "";
+            state.register.registerValid.error = "";
         })
         .addCase(postRegisterAction.fulfilled, (state, action) => {
             state.register.fetch.fetchState = "done";
@@ -223,10 +228,10 @@ const authSlice = createSlice({
 
         // Login Case
         .addCase(resetLoginStateAction, (state)=>{
-            state.login.loginValid.state = "idle"
-            state.login.loginValid.message = ""
-            state.login.loginValid.error = ""
-            state.login.fetch.error = ""
+            state.login.loginValid.state = "idle";
+            state.login.loginValid.message = "";
+            state.login.loginValid.error = "";
+            state.login.fetch.error = "";
         })
         .addCase(setLoginFetchStateIdleAction, (state)=>{
             state.login.fetch.fetchState = "idle"
@@ -234,6 +239,9 @@ const authSlice = createSlice({
         .addCase(postLoginAction.pending, (state) => {
             state.login.fetch.fetchState= "fetching";
             state.login.fetch.error = "";
+            state.login.loginValid.state = "idle";
+            state.login.loginValid.message = "";
+            state.login.loginValid.error = "";
         })
         .addCase(postLoginAction.fulfilled, (state, action) => {
             state.login.fetch.fetchState = "done";
@@ -333,7 +341,12 @@ const authSlice = createSlice({
             state.getUser.fetch.fetchState = "done";
             if (action.payload.state) {
                 state.getUser.exist = true;
-                state.currentUser = action.payload.data
+                if (action.payload.isProfil){
+                    state.currentUser = action.payload.data
+                }
+                else{
+                    state.currentContentUser = action.payload.data
+                }
             }
             else {
                 state.getUser.exist = false;
@@ -383,6 +396,10 @@ const authSlice = createSlice({
         })
         .addCase(postImageAction.pending, (state) => {
             state.imageUpload.fetch.fetchState= "fetching";
+            state.imageUpload.imageUploadValid.state = "idle"
+            state.imageUpload.imageUploadValid.message = ""
+            state.imageUpload.imageUploadValid.error = ""
+            state.imageUpload.fetch.error = ""
         })
         .addCase(postImageAction.fulfilled, (state, action) => {
             state.imageUpload.fetch.fetchState = "done";
@@ -540,14 +557,6 @@ const authSlice = createSlice({
                 state.getComment.fetch.fetchState = "done";
                 switch(state.getComment.type){
                     case "image":
-                        if (action.payload.results[0]){
-                            if (action.payload.results[0].targetCommentId !== 0){
-                                const targetComment = state.currentImage.commentList.find((item)=> item.id === action.payload.results[0].targetCommentId)
-                                if (targetComment) {
-                                    targetComment.totalReply = action.payload.totalcomments
-                                }
-                            }
-                        }
                         if (state.getComment.doPush){
                              action.payload.results.forEach((item)=> state.currentImage.commentList.push(item)) 
                         }
@@ -555,26 +564,21 @@ const authSlice = createSlice({
                             state.currentImage.commentList = action.payload.results
                         } 
                         break
-                    // case "article":
-                    //     if (state.getComment.targetCommentId !== 0){
-                    //         const targetComment = state.currentArticle.commentList.find((item)=> item.id === state.getComment.targetCommentId)
-                    //         if (targetComment) {
-                    //             targetComment.totalReply = action.payload.totalcomments
-                    //         }
-                    //         action.payload.results.forEach((item)=> state.currentArticle.commentList.push(item))
-                    //     }
-                    //     else {
-                    //         state.currentArticle.commentList = action.payload.results
-                    //         state.currentArticle.totalComment = action.payload.totalcomments
-                    //     } 
-                    //     break
+                    case "article":
+                        if (state.getComment.doPush){
+                             action.payload.results.forEach((item)=> state.currentArticle.commentList.push(item)) 
+                        }
+                        else {
+                            state.currentArticle.commentList = action.payload.results
+                        }   
+                        break
                 }
             }
             else {
                 state.getComment.fetch.fetchState = "error";
                 if (state.getComment.type === "image")
                     state.currentImage.commentList = []
-                // else state.currentArticle.commentList = []
+                else state.currentArticle.commentList = []
             }
         })
         .addCase(getCommentAction.rejected, (state, action) => {

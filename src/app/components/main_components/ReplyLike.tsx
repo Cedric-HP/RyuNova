@@ -9,7 +9,6 @@ import { AppDispatch, RootState } from "@/lib/reducers/store";
 import postCommentAction from "@/lib/reducers/authSliceReducer/actions/content/postCommentAction";
 import LikeButton from "../small_components/LikeButton";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-const userName = "HYPERNOVA GBX"
 type Iprops = {
     contentId: number,
     targetComment: number,
@@ -130,7 +129,7 @@ const ReplyLike: FC<Iprops>  = ( {contentId= -1, displayLike= false, like= 0, al
             {displayReply ? <>
             <div className="reply">
                 <div className="avatar-image" style={{width: imageSize, height: imageSize, maxHeight: imageSize, maxWidth: imageSize}}>
-                    <Avatar url={userData.avatarUrl} name={userName} size={imageSize}/>
+                    <Avatar url={userData.avatarUrl} name={userData.name} size={imageSize}/>
                 </div>
                 <div className="reply-main">
                     <span 

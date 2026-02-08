@@ -90,7 +90,8 @@ type LanguagePlaceHolder = {
   confirmPassword: string,
   title: string,
   description: string,
-  chooseAnImage: string
+  chooseAnImage: string,
+  imagePreview: string,
 }
 
 type LanguageImageUpload ={
@@ -112,7 +113,12 @@ type LanguageMessage = {
 
 type LanguageNotificationMessage = {
   noTag: string,
+  connected: string,
+  imageUploaded: string,
+  successfulRegistration: string,
+  needToBeConnected: string
 }
+
 
 type LanguageErrorMessage = {
   noResultFound: string,

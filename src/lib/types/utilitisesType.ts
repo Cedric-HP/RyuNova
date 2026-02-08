@@ -7,11 +7,6 @@ type WindowSize = {
   height: number,
 }
 
-type IsTyping = {
-  state: boolean,
-  type: string
-}
-
 type ThumbnailSize = {
   image: {
     400: 400
@@ -110,7 +105,8 @@ type CommentSearchInput = {
   id: number,
   type: ContentInput,
   sort: "date" | "like",
-  limit: number
+  limit: number,
+  order: OrderInput
 }
 
 type CommentPostInput = {
@@ -126,6 +122,11 @@ type LikePostInput = {
   token: string,
   id: number,
   type: ContentInput
+}
+
+type GetUserInput = {
+  isProfil: boolean,
+  id: number,
 }
 //-------------------------------------------------------------------------
 // Context Type
@@ -182,6 +183,7 @@ type AuthSliceReducerType = {
     fetch: FetchState
   },
   getUser: {
+    isProfil: boolean,
     exist: boolean,
     fetch: FetchState
   },
@@ -221,6 +223,7 @@ type AuthSliceReducerType = {
     fetch: FetchState
   },
   currentImage: ContentData,
+  currentContentUser: UserData,
   currentArticle: ContentData,
   currentUser: UserData,
 }
@@ -297,6 +300,7 @@ type GetImageRespond = {
 }
 
 type GetUserRespond = {
+  isProfil: boolean
   state: boolean,
   code: number,
   data: UserData,
@@ -417,7 +421,6 @@ export type {
   CheckDuplicateInput,
   CheckDuplicateRespond,
   RegisterFetchType,
-  IsTyping,
   LoginRespond,
   LoginInput,
   ProfilRespond,
@@ -446,5 +449,6 @@ export type {
   CommentPostInput,
   SetCommentType,
   LikePostInput,
-  PostLikeRespond
+  PostLikeRespond,
+  GetUserInput
 }

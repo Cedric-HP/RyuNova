@@ -37,10 +37,10 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
 
 
     useEffect(()=>{
-        if (displayReplies && replyList.length < commentData.totalReply)
+        if (displayReplies && replyList.length < commentData.parentReply)
             return setCanFetch(true)
         setCanFetch(false)
-    },[commentData.totalReply, displayReplies, replyList.length])
+    },[commentData.parentReply, displayReplies, replyList.length])
 
     useEffect(()=>{
         if (canFetch){
@@ -53,7 +53,8 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                 id: commentData.id,
                 limit: limit,
                 sort: "date",
-                type:"comment"
+                type:"comment",
+                order: "ASC"
             }))
         }
     },[canFetch, commentData.id, contentType, dispatch, limit])
@@ -70,7 +71,10 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                             </Link>
                         </div>
                          {commentData.parentReply > 0 ? <>
-                        <div className="reply-segment-container">
+                        <div 
+                            className="reply-segment-container"
+                            style={{width: size + "px", maxWidth: size + "px"}}
+                        >
                             <div className="reply-segment-main"></div>
                         </div>
                         </>:<></>}
@@ -94,7 +98,10 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                         return (
                             <div className="reply-comment" key={`reply_id:${item}_${index}`}>
                                 <div className="reply-aria-line">
-                                    <div className="reply-segment-container">
+                                    <div 
+                                        className="reply-segment-container" 
+                                        style={{width: size + "px", maxWidth: size + "px"}}
+                                    >
                                         <div className="reply-segment-top"></div>
                                         <div className="reply-segment-main"></div>
                                     </div>
@@ -104,14 +111,16 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                                     commentData={item}
                                     contentType={contentType}
                                     currentContent={currentContent}
-
                                 />
                             </div>
                         )
                     })}
                     </>:<></>}
                     <div className="reply-show-section">
-                        <div className="reply-segment-container">
+                        <div 
+                            className="reply-segment-container" 
+                            style={{width: size + "px", maxWidth: size + "px"}}
+                        >
                             <div className="reply-segment-top"></div>
                         </div>
                         {!displayReplies && 
@@ -125,7 +134,7 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                                 </p>
                                 <FontAwesomeIcon icon={faAngleDown} />
                         </button>}
-                        {(displayReplies && replyList.length < commentData.totalReply) &&
+                        {(displayReplies && replyList.length < commentData.parentReply) &&
                         <button className="push-action reply-show-button button-simple" onClick={()=> setLimit((prevState)=> prevState + 1)}>
 
                                 <span>{commentData.totalReply - replyList.length}</span>
@@ -137,7 +146,7 @@ const Comment: FC<Iprops>  = ( {size= 50, commentData= defaultComment, contentTy
                                 </p>
                                 <FontAwesomeIcon icon={faAngleDown} />
                         </button>}
-                        {(displayReplies && replyList.length >= commentData.totalReply) &&
+                        {(displayReplies && replyList.length >= commentData.parentReply) &&
                         <button className="push-action reply-show-button button-simple" onClick={()=> setDisplayReplies(false)}>
                             <>
                                 <p>

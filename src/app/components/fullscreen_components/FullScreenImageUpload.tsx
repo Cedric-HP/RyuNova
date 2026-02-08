@@ -15,7 +15,8 @@ import postImageAction from "@/lib/reducers/authSliceReducer/actions/image/postI
 import resetPostImageStateAction from "@/lib/reducers/authSliceReducer/actions/image/resetPostImageStateAction";
 import { tagFormat } from "@/lib/tools/stringTools";
 import { useRouter } from "next/navigation";
-import { FileUploader } from "react-drag-drop-files";
+import ValidInvalidMarkComponent from "../small_components/ValidInvalidMarkComponent";
+import LoadingComponent from "../small_components/LoadingComponent";
 
 const fileTypes = ["JPG", "PNG", "JPEG", "WEBP"];
 
@@ -40,7 +41,9 @@ const FullScreenImageUpload: FC  = () => {
     const router = useRouter()
 
     // Use IsTyping
-    const {isTyping, handleTyping} = useIsTyping()
+    const [isTypingTitle, handleTypingTitle] = useIsTyping()
+    const [isTypingDescription, handleTypingDescription] = useIsTyping()
+    const [isTypingTags, handleTypingTags] = useIsTyping()
 
     // PLACEHOLDER
     const PLACEHOLDER = useMemo(()=> languageList[currentLanguage].placeHolders.description , [currentLanguage])
@@ -49,10 +52,6 @@ const FullScreenImageUpload: FC  = () => {
     
     // useStates Section
     const [canSubmit, setCanSubmit] = useState<boolean>(false)
-
-    // File Enter
-    const [fileEnter, setFileEnter] = useState<boolean>(false);
-    const [file, setFile] = useState<string>("");
 
     // Input Valid States
     const [isTitleValid, setIsTitleValid] = useState<InputStateInput>("idle")
@@ -63,7 +62,7 @@ const FullScreenImageUpload: FC  = () => {
     // Input Data States
     const [titleInput, setTitleInput] = useState<string>("")
     const [descriptionInput, setDescriptionInput] = useState<string>("")
-    const [imageInput, setImageInput] = useState<Blob | MediaSource | null | "error">(null)
+    const [imageInput, setImageInput] = useState<Blob | MediaSource | null |"error">(null)
     const [currentTag, setCurrentTag] = useState<string>("")
     const [tagInput, setTagInput] = useState<string>("")
 
@@ -114,7 +113,7 @@ const FullScreenImageUpload: FC  = () => {
     // Title
     const handleTitleInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setTitleInput(String(e.currentTarget.value))
-        handleTyping("name")
+        handleTypingTitle()
     }
 
     // Description
@@ -122,13 +121,8 @@ const FullScreenImageUpload: FC  = () => {
         const input = String(e.target.innerHTML).replaceAll("<br>", "\n")
         if (input === "\n") setDescriptionInput("")
         else setDescriptionInput(input)
-        handleTyping("description")
+        handleTypingDescription()
     }
-
-    // Image
-    const handleChangeDrop = (uploadedFile) => {
-        setImageInput(uploadedFile)
-    };
 
     // Image
     const handleImageInput = async (e: React.ChangeEvent<HTMLInputElement >) => {
@@ -167,16 +161,16 @@ const FullScreenImageUpload: FC  = () => {
     // Handle Tag Input
     const handleTagInput = (e: React.ChangeEvent<HTMLInputElement >) => {
         setTagInput(String(e.currentTarget.value))
-        handleTyping("tag")
+        handleTypingTags()
     }
     
     useEffect(()=>{
-        if (!isTyping.state && isTyping.type === "tag") {
+        if (!isTypingTags) {
             const newTags = tagFormat(tagInput)
             setCurrentTag(newTags)
             setTagInput(newTags.replaceAll("_", " "))
         }
-    }, [isTyping.state, isTyping.type, tagInput])
+    }, [isTypingTags, tagInput])
 
     // Preview Handle
     useEffect(()=>{
@@ -203,18 +197,18 @@ const FullScreenImageUpload: FC  = () => {
             setTitleError("")
             return
         }
-        if (titleInput.length < 3 && !isTyping.state) {
+        if (titleInput.length < 3 && !isTypingTitle) {
             setIsTitleValid("invalid")
             setTitleError(languageList[currentLanguage].message.error.titleTooShort)
             return
         }
-        if (titleInput.length > 50 && !isTyping.state) {
+        if (titleInput.length > 50 && !isTypingTitle) {
             setIsTitleValid("invalid")
             setTitleError(languageList[currentLanguage].message.error.titleTooLong)
             return
         }
         setIsTitleValid("valid")
-    },[currentLanguage, isTyping.state, titleInput])
+    },[currentLanguage, isTypingTitle, titleInput])
 
     // Description
     useEffect(()=>{
@@ -261,7 +255,9 @@ const FullScreenImageUpload: FC  = () => {
                 isDescriptionValid === "idle" &&
                 isImageValid === "valid" &&
                 isTagsValid === "idle" &&
-                !isTyping.state
+                !isTypingTitle &&
+                !isTypingDescription &&
+                !isTypingTags
             )
                 setCanSubmit(true)
             else setCanSubmit(false)
@@ -272,7 +268,7 @@ const FullScreenImageUpload: FC  = () => {
                 setCanSubmit(true)
             else setCanSubmit(false)
         }
-    },[imageUpload.imageCategory, isDescriptionValid, isImageValid, isTagsValid, isTitleValid, isTyping.state])
+    },[imageUpload.imageCategory, isDescriptionValid, isImageValid, isTagsValid, isTitleValid, isTypingDescription, isTypingTags, isTypingTitle])
 
 
     // Handle Image Upload
@@ -331,14 +327,10 @@ const FullScreenImageUpload: FC  = () => {
                         <div className="image-upload-preview-corner-2"></div>
                         <div className="image-upload-preview-corner-3"></div>
                         <div className="image-upload-preview-corner-4"></div>
-                        <h3>{`Apperçu de l'image`}</h3>
+                        <h3>{languageList[currentLanguage].placeHolders.imagePreview}</h3>
                     </div>}
                 </div>
                 <form action="Image-Upload" onSubmit={handleSubmitImage}>
-                    <FileUploader 
-            	        handleChange={handleChangeDrop} 
-                        name="file" 
-                        types={fileTypes} />
                     <div className="input-container">
                         <input 
                             name="image" 
@@ -353,8 +345,7 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={isImageValid}
-                            isTyping={isTyping}
-                            type="password"  
+                            isTyping={false}
                         />
                         <div className={`input-error-section ${isImageValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{imageError}</p>
@@ -369,14 +360,13 @@ const FullScreenImageUpload: FC  = () => {
                                 ${isTitleValid === "valid" ? "input-valid" : 
                                 isTitleValid === "invalid" ? "input-invalid" : ""}`} 
                             type="text" 
-                            placeholder="Title"
+                            placeholder={languageList[currentLanguage].placeHolders.title}
                             onChange={handleTitleInput}
                             disabled={(imageUpload.fetch.fetchState === "fetching" || imageUpload.imageUploadValid.state === "valid")}
                         />
                         <SpanInputFetchState 
                             state={isTitleValid} 
-                            isTyping={isTyping} 
-                            type="text"                           
+                            isTyping={isTypingTitle}                  
                         />
                         <div className={`input-error-section ${isTitleValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{titleError}</p>
@@ -398,8 +388,7 @@ const FullScreenImageUpload: FC  = () => {
                         </span>
                         <SpanInputFetchState 
                             state={isDescriptionValid}
-                            isTyping={isTyping}
-                            type="email"  
+                            isTyping={isTypingDescription}
                         />
                         <div className={`input-error-section ${isDescriptionValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{descriptionError}</p>
@@ -419,8 +408,7 @@ const FullScreenImageUpload: FC  = () => {
                         />
                         <SpanInputFetchState 
                             state={isTagsValid}
-                            isTyping={isTyping}
-                            type="email"  
+                            isTyping={isTypingTags}
                         />
                         <div className={`input-error-section ${isTagsValid === "invalid" ? "input-container-error" : ""}`}>
                             <p>{tagsError}</p>
@@ -429,9 +417,9 @@ const FullScreenImageUpload: FC  = () => {
                     </> : <></>}
                     
                     {imageUpload.fetch.fetchState === "fetching" ?
-                    <span>Loading</span> : 
+                    <LoadingComponent type="black-hole" size={100}/> : 
                     <>{ imageUpload.imageUploadValid.state === "valid" ? 
-                    <span>DONE</span>: 
+                    <span className="successe-message-modal"><p>{languageList[currentLanguage].message.notification.imageUploaded}</p><ValidInvalidMarkComponent type={"valid"}/></span>: 
                     <div className="button-container">
                         <button 
                             type="submit" 
@@ -442,8 +430,8 @@ const FullScreenImageUpload: FC  = () => {
                     </div>}</>}
                     {imageUpload.imageUploadValid.state === "invalid" ? 
                     <>
-                    <p>{imageUpload.imageUploadValid.message}</p>
-                    <p>{imageUpload.imageUploadValid.error}</p>
+                    <p>{imageUpload.imageUploadValid.message}<ValidInvalidMarkComponent type={"invalid"}/></p>
+                    <p>{imageUpload.imageUploadValid.error}<ValidInvalidMarkComponent type={"invalid"}/></p>
                     </> : 
                     <></>}
                     <p>{imageUpload.fetch.error}</p>
