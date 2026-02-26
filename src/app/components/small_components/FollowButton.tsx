@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "@/lib/reducers/store";
 import { useDispatch, useSelector } from "react-redux";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { setFollowTargetUserId } from "@/lib/reducers/authSliceReducer/authSlice";
-import getFollowAction from "@/lib/reducers/authSliceReducer/actions/user/getFollowAction";
+import getFollowAction from "@/lib/reducers/authSliceReducer/actions/interaction/getFollowAction";
 type Iprops = {
     userId: number,
 }

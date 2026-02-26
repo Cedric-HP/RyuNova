@@ -27,7 +27,7 @@ const CommentInfo: FC<Iprops>  = ( {commentId= -1, contentId= -1, name = "delete
     
     return (
         <>  
-            <div className="user-tile comment-user">
+            <div className="comment-user">
                 <div className="user-info-row">
                     <h3>{name}</h3>
                     <span>{timeAgo(date, currentLanguage)}</span>

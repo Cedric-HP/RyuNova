@@ -4,12 +4,13 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
 
 const postImageAction = createAsyncThunk<ImageUploadRespond, ImageUploadInput>(
   "AUTH_SLICE/postImage",
-  async ({token, formData}) => {
+  async ({token, formData, imageCategory }) => {
     try {
       const res = await fetch(`${SERVER_URL}/image/upload`, {
         method: "POST",
         headers: {
           'Authorization': 'Bearer ' + token,
+          "x-image-category": imageCategory,
         },
         body: formData,
       });
@@ -23,3 +24,4 @@ const postImageAction = createAsyncThunk<ImageUploadRespond, ImageUploadInput>(
   }
 );
 export default postImageAction;
+

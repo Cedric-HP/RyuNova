@@ -6,7 +6,7 @@ import Avatar from "../small_components/Avatar";
 import languageList from "@/lib/language";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
-import postCommentAction from "@/lib/reducers/authSliceReducer/actions/content/postCommentAction";
+import postCommentAction from "@/lib/reducers/authSliceReducer/actions/interaction/postCommentAction";
 import LikeButton from "../small_components/LikeButton";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 type Iprops = {
@@ -128,9 +128,7 @@ const ReplyLike: FC<Iprops>  = ( {contentId= -1, displayLike= false, like= 0, al
             {/* Reply / Add Comment Section*/}
             {displayReply ? <>
             <div className="reply">
-                <div className="avatar-image" style={{width: imageSize, height: imageSize, maxHeight: imageSize, maxWidth: imageSize}}>
-                    <Avatar url={userData.avatarUrl} name={userData.name} size={imageSize}/>
-                </div>
+                <Avatar url={userData.avatarUrl} name={userData.name} size={imageSize}/>
                 <div className="reply-main">
                     <span 
                         ref={textareaElement}

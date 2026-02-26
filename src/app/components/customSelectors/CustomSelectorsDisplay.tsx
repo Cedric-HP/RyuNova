@@ -6,6 +6,8 @@ import { AppDispatch, RootState } from "@/lib/reducers/store";
 import setCustomSelectorAction from "@/lib/reducers/utilitisesReducer/actions/setCustomSelectorAction";
 import CustomSelectorUserComponent from "./CustomSelectorUser";
 
+
+
 const CustomSelectorsDisplayComponent: FC  = () => {
 
     // Reducers
@@ -23,7 +25,7 @@ const CustomSelectorsDisplayComponent: FC  = () => {
 //       if (ref.current &&
 //         event.target instanceof Node &&
 //         !ref.current.contains(event.target)) {
-//         dispatch(setCustomSelectorAction(""))
+//         dispatch(setCustomSelectorAction("closeAll"))
 //       }
 //     };
 
@@ -41,7 +43,7 @@ const CustomSelectorsDisplayComponent: FC  = () => {
     }, []);
     return (
         <div  ref={ref} className="custom-selectors-display" style={{opacity: isMounted ? "1" : "0"}}>
-            <div className="custom-selectors-button" onClick={()=>dispatch(setCustomSelectorAction(""))}></div>
+            <div className="custom-selectors-button" onClick={()=>dispatch(setCustomSelectorAction("closeAll"))}></div>
             <CustomSelectorLanguageComponent/>
             <CustomSelectorUserComponent/>
             <div className={`custom-selectors-heigth ${customSelectorDisplayed === "language" ? "custom-select-appear" : "custom-select-disappear"}`}></div>

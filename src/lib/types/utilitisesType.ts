@@ -27,6 +27,10 @@ type ThumbnailSize = {
 //-------------------------------------------------------------------------
 // Input types
 
+type NavBarShowInput = "show" | "hide" | "unfixed" | "first-hide"
+
+type ResponsiveInput = "desktop" | "tablet" | "mobile"
+
 type ThumbnailSizeInput = 30 | 50 | 55 | 75 | 200 | 400 | 500 | 750
 
 type AvatarSizeInput = 30 | 50 | 55 | 75 | 200
@@ -48,8 +52,6 @@ type LogRegInput = "log" | "reg"
 type InputStateInput = "idle" | "valid" | "invalid"
 
 type ImageCategoryInput = "image" | "avatar" | "banner"
-
-type CustomSelectorsInput = "" | "language" | "user"
 
 type CommentContentTypeInput = "image" | "article"
 
@@ -78,7 +80,8 @@ type CheckDuplicateInput = {
 
 type ImageUploadInput = {
   token: string,
-  formData: FormData
+  formData: FormData,
+  imageCategory: ImageCategoryInput
 }
 
 type FollowInput = {
@@ -132,8 +135,8 @@ type GetUserInput = {
 // Context Type
 
 type GlobalContextType = {
-  language: LanguageInput,
   windowSize: WindowSize,
+  responsive: ResponsiveInput
 }
 //-------------------------------------------------------------------------
 // Reducer
@@ -142,7 +145,8 @@ type UtilitisesReducerType = {
     fullScreenDisplayed: FullScreenInput,
     logReg: LogRegInput,
     currentLanguage: LanguageInput,
-    customSelectorDisplayed: CustomSelectorsInput
+    customSelectorDisplayed: string,
+    displayParticles: boolean,
 }
 
 type AuthSliceReducerType = {
@@ -428,7 +432,6 @@ export type {
   ImageUploadRespond,
   ThumbnailSize,
   ThumbnailSizeInput,
-  CustomSelectorsInput,
   GetImageRespond,
   GetUserRespond,
   ImageCategoryInput,
@@ -450,5 +453,7 @@ export type {
   SetCommentType,
   LikePostInput,
   PostLikeRespond,
-  GetUserInput
+  GetUserInput,
+  NavBarShowInput,
+  ResponsiveInput
 }

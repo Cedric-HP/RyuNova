@@ -1,14 +1,12 @@
 /* eslint-disable @next/next/no-page-custom-font */
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/layout_style.scss";
-import Particle from "./components/particules"
-import Navbar from "./components/Navbar";
-import { useMemo } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import ClientLayout from "./ClientLayoute";
 import { Providers } from "./components/Provider";
+
 config.autoAddCss = false
 
 const geistSans = Geist({
@@ -26,13 +24,8 @@ export const metadata: Metadata = {
   description: "Connect to infinity",
 };
 
-export default function RootLayout({
-  
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const particlesElement = useMemo(()=> <Particle/> ,[])
+export default function RootLayout({  children,}: Readonly<{children: React.ReactNode;}>) {
+
   return (
     <html lang="en">
       <head>
@@ -44,15 +37,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div id="body" >
-           <Providers>
-              <div id= "filter"></div>
-              {particlesElement}
-              <Navbar>
-                {children}
-              </Navbar>
-           </Providers>
-        </div>
+        <Providers>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </Providers>
       </body>
     </html>
   );

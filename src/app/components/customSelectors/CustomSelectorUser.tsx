@@ -5,25 +5,30 @@ import "../../../styles/components/custom_selectors_components/custom-selectors-
 import setCustomSelectorAction from "@/lib/reducers/utilitisesReducer/actions/setCustomSelectorAction";
 import { useRouter } from "next/navigation";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-import getLogoutAction from "@/lib/reducers/authSliceReducer/actions/logReg/getLogoutAction";
+import getLogoutAction from "@/lib/reducers/authSliceReducer/actions/user/getLogoutAction";
 import languageList from "@/lib/language";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightFromBracket, faUpload, faUser} from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket, faStar, faUpload, faUser} from '@fortawesome/free-solid-svg-icons'
 import { setImageUploadCategoryAction } from "@/lib/reducers/authSliceReducer/authSlice";
+import SwitchComponent from "../small_components/SwitchComponent";
+import { CircleFlag } from "react-circle-flags";
+import useDisplayParticles from "@/lib/tools/useDisplayParticles";
 
 const CustomSelectorUserComponent: FC  = () => {
 
     // Reducers
-    const { userData, accessToken } = useSelector(
+    const { userData, accessToken, authorized } = useSelector(
         (store: RootState) => store.auth
     )
-    const { customSelectorDisplayed, currentLanguage } = useSelector(
+    const { customSelectorDisplayed, currentLanguage, displayParticles } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
     const dispatch: AppDispatch = useDispatch()
 
     // Router
     const router = useRouter()
+
+    const {handleDisplayParticles} = useDisplayParticles()
 
     // Handlers
     const handleProfile = () => {
@@ -40,7 +45,7 @@ const CustomSelectorUserComponent: FC  = () => {
         dispatch(getLogoutAction(accessToken))
     }
     return (
-        <div className={`select-container select-user ${customSelectorDisplayed === "user" ? "custom-select-appear" : "custom-select-disappear"}`}>
+        <div className={`select-container select-user ${customSelectorDisplayed.includes("user") && !customSelectorDisplayed.includes("hide") && authorized === true ? "custom-select-appear" : "custom-select-disappear"}`}>
             <ul>
                 <li 
                     onClick={handleProfile}
@@ -64,6 +69,26 @@ const CustomSelectorUserComponent: FC  = () => {
                     <p>{languageList[currentLanguage].button.logOut}</p>
                 </li>
             </ul>
+            <div className="select-user-utils">
+                <button
+                    className="button-none"
+                    onClick={()=> handleDisplayParticles(displayParticles)}
+                >
+                    <SwitchComponent state={displayParticles}>
+                        <FontAwesomeIcon icon={faStar} />
+                    </SwitchComponent>
+                </button>
+                <div id="language-selector" aria-roledescription="listbox">
+                    <button 
+                        className="link push-action"
+                        onClick={()=>dispatch(setCustomSelectorAction("language"))}
+                        onKeyDownCapture={()=>dispatch(setCustomSelectorAction("language"))}
+                    >   
+                        <p>{languageList[currentLanguage].utilities.uniCode}</p>
+                        <CircleFlag countryCode={languageList[currentLanguage].utilities.flagKey} height={20}/>
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

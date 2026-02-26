@@ -3,7 +3,7 @@ import { type FC } from "react";
 import ViewLikeComponent from "./ViewLikeComponent";
 type Iprops = {
     view: number,
-    like: number,
+    like: number
 }
 
 const ViewLikeBundle: FC<Iprops>  = ( {view=0, like=0} ) => {

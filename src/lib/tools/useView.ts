@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import { LocalView, LocalViewList } from "../types/utilitisesType"
 import useLocalViewStorage from "./useLocalViewStorage"
 import { AppDispatch } from "../reducers/store"
-import getAddContentViewAction from "../reducers/authSliceReducer/actions/content/getAddContentView"
+import getAddContentViewAction from "../reducers/authSliceReducer/actions/interaction/getAddContentView"
 
 export const useView = () => {
     const [localViewList, setLocalViewList] = useLocalViewStorage("localViewList", [])

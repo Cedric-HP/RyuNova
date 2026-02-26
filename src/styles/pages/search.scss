@@ -1,3 +1,4 @@
+@use '../variables' as *;
 #search-tool-section{
     display: flex;
     flex-direction: column;
@@ -5,6 +6,7 @@
     width: 75vw;
     margin: 25.5px 0 20px 0;
 }
+
 #tag-search{
     display: flex;
     justify-content: space-between;
@@ -68,4 +70,12 @@
     text-align: center;
     font-size: 2rem;
     font-family: "Michroma", sans-serif;
+}
+.pagination-container{
+    margin-top: 30px;
+}
+@media (max-width: $mobile) {
+    #search-tool-section, #result-section{
+        width: calc(100vw - 40px);
+    }
 }

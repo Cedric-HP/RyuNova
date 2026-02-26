@@ -23,7 +23,7 @@ const ViewLikeComponent: FC<Iprops>  = ( {type="view", ammout=0} ) => {
                     <path d="M9 9V4a2 2 0 1 1 4 0v5h5.5a2 2 0 0 1 2 2.4l-1.3 6.5a2 2 0 0 1-2 1.6H9V9z"/>
                 </svg>
                 </> : <>
-                    <FontAwesomeIcon icon={faEye} />
+                    <FontAwesomeIcon icon={faEye}/>
                 </>}
             </div>
         </>

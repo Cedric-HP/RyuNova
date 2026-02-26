@@ -25,11 +25,11 @@ const FullScreenComponent: FC  = () => {
     
     return (
         <div className={`full-screen ${appear}`} >
-            {fullScreenDisplayed === "image" ? <FullScreenImage/> : <></>}
-            {fullScreenDisplayed === "log-reg" ? <FullScreenLogReg/> : <></>}
-            {fullScreenDisplayed === "user-description" ? <></> : <></>}
-            {fullScreenDisplayed === "image-upload" ? <FullScreenImageUpload/>  : <></>}
-            {fullScreenDisplayed === "need-to-login" ? <FullScreenNeedToLogIn/>  : <></>}
+            {fullScreenDisplayed === "image" && <FullScreenImage/> }
+            {fullScreenDisplayed === "log-reg" && <FullScreenLogReg/> }
+            {fullScreenDisplayed === "user-description" && <></> }
+            {fullScreenDisplayed === "image-upload" && <FullScreenImageUpload/>  }
+            {fullScreenDisplayed === "need-to-login" && <FullScreenNeedToLogIn/>  }
             {/* {fullScreenDisplayed === "user-update" ? <FullScreenUserUpdate/>  : <></>} */}
             {/* {fullScreenDisplayed === "user-delete" ? <FullScreenUserDelete/>  : <></>} */}
             {/* {fullScreenDisplayed === "image-update" ? <FullScreenImageUpdate/>  : <></>} */}

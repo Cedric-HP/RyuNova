@@ -7,12 +7,12 @@ import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFul
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import languageList from "@/lib/language";
-import { InputStateInput } from "@/lib/types/utilitisesType";
+import { ImageCategoryInput, InputStateInput } from "@/lib/types/utilitisesType";
 import SpanInputFetchState from "../small_components/SpanInputFetchState";
 import { setRegisterFetchTypeAction } from "@/lib/reducers/authSliceReducer/authSlice";
 import useIsTyping from "@/lib/tools/useIsTyping";
 import postImageAction from "@/lib/reducers/authSliceReducer/actions/image/postImageAction";
-import resetPostImageStateAction from "@/lib/reducers/authSliceReducer/actions/image/resetPostImageStateAction";
+import resetPostImageStateAction from "@/lib/reducers/authSliceReducer/actions/utilitises/resetPostImageStateAction";
 import { tagFormat } from "@/lib/tools/stringTools";
 import { useRouter } from "next/navigation";
 import ValidInvalidMarkComponent from "../small_components/ValidInvalidMarkComponent";
@@ -272,12 +272,13 @@ const FullScreenImageUpload: FC  = () => {
 
 
     // Handle Image Upload
-    const handleImageUpload = useCallback( async (formdata: FormData) => {
+    const handleImageUpload = useCallback( async (formData: FormData, imageCategory: ImageCategoryInput) => {
         dispatch(setRegisterFetchTypeAction("register"))
         dispatch(
             postImageAction({
-                formData: formdata,
+                formData,
                 token: accessToken,
+                imageCategory
             })
         );
     },[accessToken, dispatch]);
@@ -289,7 +290,7 @@ const FullScreenImageUpload: FC  = () => {
         formData.append("description", descriptionInput)
         formData.append("imageCategory", imageUpload.imageCategory)
         formData.set("tags", currentTag)
-        handleImageUpload(formData);
+        handleImageUpload(formData, imageUpload.imageCategory);
     },[currentTag, descriptionInput, handleImageUpload, imageUpload.imageCategory])
 
     // Use Effect that handles respond
@@ -430,8 +431,15 @@ const FullScreenImageUpload: FC  = () => {
                     </div>}</>}
                     {imageUpload.imageUploadValid.state === "invalid" ? 
                     <>
-                    <p>{imageUpload.imageUploadValid.message}<ValidInvalidMarkComponent type={"invalid"}/></p>
-                    <p>{imageUpload.imageUploadValid.error}<ValidInvalidMarkComponent type={"invalid"}/></p>
+                    <div>
+                        <p>{imageUpload.imageUploadValid.message}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>
+                    <div>
+                        <p>{imageUpload.imageUploadValid.error}</p>
+                        <ValidInvalidMarkComponent type={"invalid"}/>
+                    </div>
+                    
                     </> : 
                     <></>}
                     <p>{imageUpload.fetch.error}</p>

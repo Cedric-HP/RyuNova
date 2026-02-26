@@ -6,7 +6,7 @@ const getUserAction = createAsyncThunk<GetUserRespond, GetUserInput>(
   "AUTH_SLICE/getUser",
   async ({id, isProfil}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/profile/${id}`, {
+      const res = await fetch(`${SERVER_URL}/content/profile/${id}`, {
         method: "GET",
       });
       const data: GetUserRespond = await res.json();

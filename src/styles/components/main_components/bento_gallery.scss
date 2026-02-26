@@ -1,3 +1,4 @@
+@use '../../variables' as *;
 .bento-gallery{
     display: flex;
     flex-flow: row wrap;
@@ -20,9 +21,20 @@
         img{
             flex: 1;
             object-fit: cover;
-            height: 300px;
             width: auto;
+            max-width: 75vw;
             transition: 0.5s;
+            height: 300px;
+        }
+        @media (max-width: $desktop) {
+            img {
+                height: 200px;
+            }
+        }
+        @media (max-width: $mobile) {
+            img {
+                max-width: calc(100vw - 40px);
+            }
         }
         &:before {
             content: ' ';
@@ -53,14 +65,24 @@
             width: calc(100% - 40px);
             font-family: "Montserrat", sans-serif;
             font-weight: normal;
-            font-size: 24px;
             text-shadow: 0 0 7px black;
+            font-size: 24px;
         }
         p{
             margin-bottom: 20px;
             font-weight: 200;
             font-size: 15px;
             text-shadow: 0 0 7px black;
+        }
+    }
+    @media (max-width: $desktop) {
+        .bento-text-and-filter{
+            h3{
+                font-size: 18px;
+            }
+            p{
+                font-size: 13px;
+            }
         }
     }
     .view-like-bundle{

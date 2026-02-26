@@ -3,6 +3,8 @@ $slide-size-unselected: 350px;
 $carousel-width: 75vw;
 $slide-spacing: 30px;
 $carousel-button-size: 75px;
+$desktop: 1007px;
+$mobile: 655px;
 
 :root{
     --slide-selected: #{$slide-selected};
@@ -10,4 +12,6 @@ $carousel-button-size: 75px;
     --carousel-width: #{$carousel-width};
     --slide-spacing: #{$slide-spacing};
     --carousel-button-size: #{$carousel-button-size};
+    --desktop: #{$desktop};
+    --mobile: #{$mobile};
 }

@@ -15,6 +15,8 @@ import languageList from "@/lib/language";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/reducers/store";
 import useHandleLogRegPopUp from "@/lib/tools/handleLogRegPopUp";
+import { GlobalContext } from "./components/Navbar";
+import { useContext, useMemo } from "react";
 
 const eventListPast: EventList[] = [
   {
@@ -53,8 +55,6 @@ const eventListFutur: EventList[] = [
   }
 ]
 
-const iconSize = 75;
-
 export default function Home() {
 
   // Reducer
@@ -70,6 +70,11 @@ export default function Home() {
 
   // Handle LorReg Popup
   const { handleLogReg } = useHandleLogRegPopUp()
+
+  // Responsive Context
+  const { responsive } = useContext(GlobalContext)
+
+  const iconSize = useMemo(()=> responsive === "desktop" ? 75 : responsive === "tablet" ? 50 : 40,[responsive])
 
   return (
     <>
@@ -95,48 +100,48 @@ export default function Home() {
 
       {/* Tag Section */}
       <section id="tags-list">
-        <Link href={"/search?search=&type=image&sort=view&tag=stars#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=stars&order=DESC&page=1#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-stars-7127150.svg" alt="Stars" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=galaxy#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=galaxy&order=DESC&page=1#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-galaxy-3544621.svg" alt="Gallaxy" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=planet#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=planet&order=DESC&page=1#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-planet-792.svg" alt="Planet" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=nebula#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=nebula&order=DESC&page=1#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-nebula-1578521.svg" alt="Nebula" height={iconSize} width={iconSize} />
         </Link>
-        <Link href={"/search?search=&type=image&sort=view&tag=iss#nav"} className="tag-logo push-action">
+        <Link href={"/search?search=&type=image&sort=view&tag=iss&order=DESC&page=1#nav"} className="tag-logo push-action">
           <Image src="/image/icons/noun-space-station-1219999.svg" alt="ISS" height={iconSize} width={iconSize} />
         </Link>
       </section>
       <hr className="section-separator"/>
 
       {/* Gallery Section */}
-      <section id="gallery">
+      <section id="gallery" className="home-section">
         <h2 className="glow spacing-letter-big">{languageList[currentLanguage].titles.featuredPicturesGallery}</h2>
         <BentoGallery elementList={getSearch.respond.results.image}/>
         <button 
           className="button-cta-reverse button-normal push-action" 
-          onClick={()=>router.push(`search?search=&type=image&sort=view&tag=#nav`)}
+          onClick={()=>router.push(`search?search=&type=image&sort=view&tag=&order=DESC&page=1#nav`)}
         >{languageList[currentLanguage].button.seeMore}...</button>
       </section>
       <hr className="section-separator"/>
 
       {/* Article Section */}
-      <section id="article">
+      <section id="article" className="home-section">
         <h2 className="glow spacing-letter-big">{languageList[currentLanguage].titles.featuredArticles}</h2>
         <ArticlePreview elementList={contentSorter(articleList, "date")}/>
         <button 
         className="button-cta-reverse button-normal push-action"
-        onClick={()=>router.push(`search?search=&type=article&sort=view&tag=#nav`)}
+        onClick={()=>router.push(`search?search=&type=article&sort=view&tag=&order=DESC&page=1#nav`)}
         >{languageList[currentLanguage].button.seeMore}...</button>
       </section>
       <hr className="section-separator"/>
 
       {/* Event Section */}
-      <section id="event">
+      <section id="event" className="home-section">
         <h2 className="glow spacing-letter-big">{languageList[currentLanguage].titles.upcommingAstronomicalEvents}</h2>
         <CarouselEvent slidesPast={eventListPast} slidesFutur={eventListFutur}/>
         <button className="button-cta-reverse button-normal push-action">{languageList[currentLanguage].button.seeMore}...</button>

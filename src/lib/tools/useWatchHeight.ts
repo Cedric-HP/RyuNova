@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from "react"
 
-export const useWatchHeight= (observedEltRef: RefObject<HTMLDivElement | null>) => {
+export const useWatchHeight= (observedEltRef: RefObject<HTMLDivElement | HTMLHeadingElement | null>) => {
 
   const [height, setHeight] = useState<number>()
 

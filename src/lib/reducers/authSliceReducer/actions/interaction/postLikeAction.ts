@@ -6,7 +6,7 @@ const postLikeAction = createAsyncThunk<PostLikeRespond, LikePostInput>(
   "AUTH_SLICE/postLike",
   async ({token, id, type}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/content`, {
+      const res = await fetch(`${SERVER_URL}/interaction/like`, {
         method: "POST",
         headers: {
           'Authorization': 'Bearer ' + token,

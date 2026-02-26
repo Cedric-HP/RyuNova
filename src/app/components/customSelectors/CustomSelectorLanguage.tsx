@@ -1,13 +1,10 @@
-import { AppDispatch, RootState } from "@/lib/reducers/store";
-import { useEffect, useState, type FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/reducers/store";
+import { type FC } from "react";
+import { useSelector } from "react-redux";
 import "../../../styles/components/custom_selectors_components/custom-selectors-display.scss"
 import languageList from "@/lib/language";
-import { LanguageInput } from "@/lib/types/utilitisesType";
-import useLocalStorage from "@/lib/tools/useLocalStorage";
-import setCurrentLanguageAction from "@/lib/reducers/utilitisesReducer/actions/setCurrentLanguageAction";
-import setCustomSelectorAction from "@/lib/reducers/utilitisesReducer/actions/setCustomSelectorAction";
 import { CircleFlag } from "react-circle-flags";
+import useHandleLanguage from "@/lib/tools/useHandleLanguage";
 
 const CustomSelectorLanguageComponent: FC  = () => {
 
@@ -15,33 +12,12 @@ const CustomSelectorLanguageComponent: FC  = () => {
     const { customSelectorDisplayed, currentLanguage } = useSelector(
         (store: RootState) => store.utilitisesReducer
     )
-    const dispatch: AppDispatch = useDispatch()
 
-    // Local Language Seter
-    const [localLanguage, setLocalLanguage] = useLocalStorage("ryunovaLanguage", "")
+    const {handleLanguage} = useHandleLanguage()
+    
 
-    const handleLanguage = (lang: LanguageInput) => {
-        dispatch(setCustomSelectorAction(""))
-        setLocalLanguage(lang)
-        dispatch(setCurrentLanguageAction(lang))
-    }
-
-    // isMounted
-        const [isMounted, setIsMounted] = useState(false);
-        
-
-    // Use Effect to Handle Local Language
-    useEffect(()=>{
-        if (isMounted && (localLanguage === "en" || localLanguage === "fr"))
-            if (localLanguage !== currentLanguage)
-                dispatch(setCurrentLanguageAction(localLanguage))
-    },[currentLanguage, dispatch, isMounted, localLanguage])
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
     return (
-        <div className={`select-container select-language ${customSelectorDisplayed === "language" ? "custom-select-appear" : "custom-select-disappear"}`}>
+        <div className={`select-container select-language ${customSelectorDisplayed.includes("language") && !customSelectorDisplayed.includes("hide") ? "custom-select-appear" : "custom-select-disappear"}`}>
                 <ul>
                     <li 
                         className={currentLanguage === "en" ? "option-selected" : ""}

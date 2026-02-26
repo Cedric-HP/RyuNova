@@ -1,22 +1,23 @@
-import { LoginInput, LoginRespond } from "@/lib/types/utilitisesType";
+import { RegisterInput, RegisterRespond } from "@/lib/types/utilitisesType";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:4000'
 
-const postRegisterAction = createAsyncThunk<LoginRespond, LoginInput>(
-  "AUTH_SLICE/postLogin",
-  async ({ email, password }) => {
+const postRegisterAction = createAsyncThunk<RegisterRespond, RegisterInput>(
+  "AUTH_SLICE/postRegister",
+  async ({ name, email, password }) => {
     try {
-      const res = await fetch(`${SERVER_URL}/login`, {
+      const res = await fetch(`${SERVER_URL}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name,
           email,
           password,
         }),
       });
-      const data: LoginRespond = await res.json();
+      const data: RegisterRespond = await res.json();
       data.code = res.status
       return data;
     } catch (err) {

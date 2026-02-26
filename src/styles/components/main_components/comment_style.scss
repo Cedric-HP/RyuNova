@@ -1,55 +1,5 @@
-// Author / User MiniProfil-section Style
-.user-tile{
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    .user-tile-main{
-        display: flex;
-        flex-flow: row nowrap;
-        gap: 20px;
-        align-items: center;
-        .user-info{
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            h3{
-                font-weight: 500;
-            }
-            p, span{
-                color: #9f9fa7;
-            }
-        }
-    }
-    button{
-        margin: 0;
-        min-width: fit-content;
-    }
-}
-
-// Avatar Link Style
-
-.avatar-image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    a{
-        height: 100%;
-        width: 100%;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        img{
-            height: 100%; 
-        }
-    }
-}
-
+@use '../../variables' as *;
 // Comment Section
-
 .comment-section{
     margin: 50px 0;
     width: 75vw;
@@ -81,9 +31,30 @@
         }
     } 
 }
+@media (max-width: $mobile) {
+    .comment-section{
+        margin: 30px 0;
+        width: calc(100vw - 40px);
+        max-width: calc(100vw - 40px);
+        gap: 16px;
+        .info-sort-button{
+            gap: 20px;
+            h3{
+                gap: 8px;
+                font-size: 16px;
+            }
+            .comment-sort-button{
+                gap: 10px;
+                font-size: 16px;
+                button{
+                    font-size: 16px;
+                }
+            }
+        } 
+    }
+}
 
 // Reply / Comment and Comment's Like Section
-
 .like-reply-section{
     width: 100%;
     padding: 10px 0;
@@ -160,12 +131,23 @@
                 justify-content: flex-end;
                 gap: 20px;
             }
+            @media (max-width: 700px) {
+                .button-reply{
+                     button{
+                        height: fit-content;
+                        font-size: 12px;
+                        max-width: fit-content;
+                        min-width: fit-content;
+                        width: fit-content;
+                        padding: 5px 6px;
+                    }
+                }
+            }
         }
     }
 }
 
-// Comment Section
-
+// Comment Component
 .comment-list{
      display: flex;
      flex-direction: column;
@@ -195,6 +177,7 @@
 }
 
 .comment-user{
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -202,6 +185,17 @@
         background-color: transparent;
         border: 0;
         font-size: 1rem;
+    }
+}
+@media (max-width: $mobile) {
+    .comment-user{
+        gap: 6px;
+        .comment-button{
+            font-size: 14px;
+        }
+        .text-section{
+            font-size: 13px;
+        }
     }
 }
 
@@ -221,11 +215,21 @@
         color: #9f9fa7;
     }
 }
+@media (max-width: $mobile) {
+    .user-info-row{
+        gap: 6px;
+        h3{
+            font-size: 14px;
+        }
+        span{
+            font-size: 12px;
+        }
+    }
+}
 
 // Reply Display Section
 
 //  Arian Line Section
-
 .reply-segment-container{
     height: 100%;
     position: relative;
@@ -248,7 +252,6 @@
 }
 
 // Reply Button Section
-
 .reply-show-section{
     width: 100%;
     display: flex;
@@ -274,7 +277,6 @@
 }
 
 // Reply Comment
-
 .reply-comment{
     display: flex;
     flex-flow: row nowrap;

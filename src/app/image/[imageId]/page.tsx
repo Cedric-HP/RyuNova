@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useMemo, useState, type FC } from "react";
+import { useContext, useEffect, useMemo, useState, type FC } from "react";
 // import Link from "next/link";
 /* eslint-disable @next/next/no-img-element */
 import { useParams, useRouter } from "next/navigation";
@@ -9,20 +9,20 @@ import UserTile from "@/app/components/small_components/UserTile";
 import ImageDescription from "@/app/components/main_components/ImageDescription";
 import CommentModule from "@/app/components/main_components/CommentModule";
 import { defaultUser } from "@/lib/tools/DefaultValues";
-import { ImageUrl, numberReducerFormat } from "@/lib/tools/stringTools";
+import { ImageUrl } from "@/lib/tools/stringTools";
 import languageList from "@/lib/language";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
-import setCurrentImageAction from "@/lib/reducers/utilitisesReducer/actions/setCurrentImageAction";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-import getImageAction from "@/lib/reducers/authSliceReducer/actions/image/getImageAction";
-import getUserAction from "@/lib/reducers/authSliceReducer/actions/user/getUserAction";
-import setGetImageFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/image/setGetImageFetchStateIdleAction";
-import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
+import getImageAction from "@/lib/reducers/authSliceReducer/actions/content/getImageAction";
+import getUserAction from "@/lib/reducers/authSliceReducer/actions/content/getUserAction";
+import setGetImageFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/utilitises/setGetImageFetchStateIdleAction";
+import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/utilitises/setGetUserFetchStateIdleAction";
 import { useView } from "@/lib/tools/useView";
 import LikeButton from "@/app/components/small_components/LikeButton";
 import ValidInvalidMarkComponent from "@/app/components/small_components/ValidInvalidMarkComponent";
 import LoadingComponent from "@/app/components/small_components/LoadingComponent";
+import { GlobalContext } from "@/app/components/Navbar";
 
 const LogingRegister: FC = () => {
     
@@ -35,6 +35,9 @@ const LogingRegister: FC = () => {
     )
     const dispatch: AppDispatch = useDispatch()
     const {addView} = useView()
+
+    // Responsive Context
+    const { responsive } = useContext(GlobalContext)
 
     // Router
     const router = useRouter()
@@ -114,19 +117,30 @@ const LogingRegister: FC = () => {
         <> 
             { getImage.exist && <>
                 <section className="image-section">
-                    <img className="image-normal" src={ImageUrl(currentImage.url, "thumbnail", "image", 750)} alt={`${currentImage.title}_by_${currentImage.author}`} onClick={()=>dispatch(setFullScreenAction("image"))}/>
+                    <img 
+                        className="image-normal" 
+                        src={ImageUrl(currentImage.url, "thumbnail", "image", 750)} 
+                        alt={`${currentImage.title}_by_${currentImage.author}`} 
+                        onClick={()=>dispatch(setFullScreenAction("image"))}
+                    />
                 </section>
                 <hr className="section-separator"/>
                 <section className="description">
-                    <h1>{currentImage.title}</h1>
+                    <div className="image-title-section">
+                        <h1>{currentImage.title}</h1>
+                        {responsive !== "desktop" &&
+                        <LikeButton likeNumber={currentImage.likes} targetId={currentImage.id} type="image"/>}
+                    </div>
                     <div className="author-section">
                         <UserTile 
                             userId={authorData.id} 
                             name={authorData.name} 
                             followers={authorData.followers} 
-                            url={authorData.avatarUrl} size={75}
+                            url={authorData.avatarUrl} 
+                            size={responsive === "mobile" ? 50 : 75}
                         />
-                        <LikeButton likeNumber={currentImage.likes} targetId={currentImage.id} type="image"/>
+                        {responsive === "desktop" &&
+                        <LikeButton likeNumber={currentImage.likes} targetId={currentImage.id} type="image"/>}
                     </div>
                     <ImageDescription views={currentImage.views} date={currentImage.createdAt} description={currentImage.description} tags={currentImage.tags}/>
                 </section>
@@ -151,8 +165,3 @@ const LogingRegister: FC = () => {
 }
 
 export default LogingRegister
-
-
-
-
-

@@ -6,7 +6,7 @@ const getAddContentViewAction = createAsyncThunk<StantarRespond, ViewInput>(
   "AUTH_SLICE/getAddContentView",
   async ({contentId, contentType}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/content/${contentType}/${contentId}`, {
+      const res = await fetch(`${SERVER_URL}/interaction/view/${contentType}/${contentId}`, {
         method: "GET",
       });
       const data: StantarRespond = await res.json();

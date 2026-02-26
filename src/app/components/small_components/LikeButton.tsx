@@ -2,7 +2,7 @@ import { useEffect, useState, type FC } from "react";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import { useDispatch, useSelector } from "react-redux";
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
-import postLikeAction from "@/lib/reducers/authSliceReducer/actions/content/postLikeAction";
+import postLikeAction from "@/lib/reducers/authSliceReducer/actions/interaction/postLikeAction";
 import { numberReducerFormat } from "@/lib/tools/stringTools";
 type Iprops = {
     targetId: number,

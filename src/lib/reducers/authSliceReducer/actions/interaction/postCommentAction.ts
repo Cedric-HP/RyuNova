@@ -6,7 +6,7 @@ const postCommentAction = createAsyncThunk<PostCommentRespond, CommentPostInput>
   "AUTH_SLICE/postComment",
   async ({token, contentId, targetCommentId, comment, contentType, isReply}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/comment`, {
+      const res = await fetch(`${SERVER_URL}/interaction/comment`, {
         method: "POST",
         headers: {
           'Authorization': 'Bearer ' + token,

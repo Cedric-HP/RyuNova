@@ -6,7 +6,7 @@ const getCommentAction = createAsyncThunk<GetCommentRespond, CommentSearchInput>
   "AUTH_SLICE/getComment",
   async ({id, limit, sort, type, order}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/comment/search?id=${id}&type=${type}&sort=${sort}&limit=${limit}&order=${order}`, {
+      const res = await fetch(`${SERVER_URL}/content/comment/search?id=${id}&type=${type}&sort=${sort}&limit=${limit}&order=${order}`, {
         method: "GET",
       });
       const data: GetCommentRespond = await res.json();

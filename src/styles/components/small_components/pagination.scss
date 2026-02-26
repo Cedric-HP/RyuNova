@@ -1,0 +1,81 @@
+.pagination-container{
+    display: flex;
+    ul{
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        li{
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 36px;
+            .pagination-link{
+                margin: 0;
+                text-align: center;
+                padding: 6px 10px;
+                width: 100%;
+                border-radius: 6px;
+                border: 1px solid #9f9fa7;
+                color: #9f9fa7;
+                text-decoration: none;
+                transition: color 0.2s, border 0.2s, box-shadow 0.2s, border-color 0.2s;
+                &:hover{
+                    box-shadow: 0 0 7px #EBECFA;
+                    color: #EBECFA;
+                    border: 1px solid #EBECFA
+                }
+            }
+            .current-page{
+                color: #FBA059;
+                border-color: #FBA059 ;
+                cursor: default;
+                &:hover{
+                    box-shadow: 0 0 0 transparent;
+                    color: #FBA059;
+                    border-color: #FBA059 ;
+                }
+            }
+        }
+        .hidden-page{
+            align-items: end;
+            span{
+                color: #9f9fa7;
+                letter-spacing: 4px;
+                cursor: default;
+            }
+        }
+        .page-chevron{
+            .pagination-link{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                padding: 0;
+                svg{
+                    height: 30px;
+                    path{
+                        color:#9f9fa7;
+                        transition: color 0.2s;
+                    }
+                }
+                &:hover{
+                    box-shadow: 0 0 0 transparent;
+                    color: #EBECFA;
+                    border: none;
+                    svg{
+                        filter: drop-shadow(0 0 7px #EBECFA);
+                        path{
+                            color:#EBECFA;
+                        }
+                    }
+                }
+            }
+            .current-page{
+                display: none;
+            }
+        }
+    }
+}

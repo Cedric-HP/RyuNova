@@ -6,7 +6,7 @@ const getFollowAction = createAsyncThunk<GetFollowRespond, FollowInput>(
   "AUTH_SLICE/getFollow",
   async ({token, targetUserId}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/follow/${targetUserId}`, {
+      const res = await fetch(`${SERVER_URL}/interaction/follow/${targetUserId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

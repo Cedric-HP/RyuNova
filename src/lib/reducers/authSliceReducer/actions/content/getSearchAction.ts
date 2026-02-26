@@ -6,7 +6,7 @@ const getSearchAction = createAsyncThunk<GetSearchRespond, SearchInput>(
   "AUTH_SLICE/getSearch",
   async ({order, page, search, sort, tag, type, user}) => {
     try {
-      const res = await fetch(`${SERVER_URL}/search?search=${search}&type=${type}&tag=${tag}&sort=${sort}&order=${order}&user=${user}&page=${page}`, {
+      const res = await fetch(`${SERVER_URL}/content/search?search=${search}&type=${type}&tag=${tag}&sort=${sort}&order=${order}&user=${user}&page=${page}`, {
         method: "GET",
       });
       const data: GetSearchRespond = await res.json();

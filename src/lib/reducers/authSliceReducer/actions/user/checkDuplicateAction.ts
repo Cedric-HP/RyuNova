@@ -6,7 +6,7 @@ const checkDuplicateAction = createAsyncThunk<CheckDuplicateRespond, CheckDuplic
   "AUTH_SLICE/checkDuplicate",
   async ({ type, value }) => {
     try {
-      const res = await fetch(`${SERVER_URL}/checkduplicate?type=${type}&value=${value}`, {
+      const res = await fetch(`${SERVER_URL}/user/checkduplicate?type=${type}&value=${value}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

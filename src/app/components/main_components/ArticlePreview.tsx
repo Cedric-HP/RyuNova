@@ -14,10 +14,10 @@ const ArticlePreview: FC<Iprops>  = ({elementList = []}) => {
 
     const router = useRouter()
 
-    const [articleListElement, setArticleistElement] = useState<JSX.Element[]>([])
+    const [articleListElement, setArticleListElement] = useState<JSX.Element[]>([])
 
     useEffect(()=>{
-        setArticleistElement(
+        setArticleListElement(
             elementList.map((item, index)=>{
                 return (
                     <li 

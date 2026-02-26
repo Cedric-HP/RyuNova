@@ -1,5 +1,5 @@
 import { numberReducerFormat } from "@/lib/tools/stringTools";
-import "../../../styles/components/main_components/comment_style.scss"
+import "../../../styles/components/small_components/user-tile.scss"
 import Link from "next/link";
 import { type FC } from "react";
 import Avatar from "./Avatar";

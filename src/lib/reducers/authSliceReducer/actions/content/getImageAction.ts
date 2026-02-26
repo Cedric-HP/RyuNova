@@ -6,7 +6,7 @@ const getImageAction = createAsyncThunk<GetImageRespond, number>(
   "AUTH_SLICE/getImage",
   async (id) => {
     try {
-      const res = await fetch(`${SERVER_URL}/image/${id}`, {
+      const res = await fetch(`${SERVER_URL}/content/image/${id}`, {
         method: "GET",
       });
       const data: GetImageRespond = await res.json();

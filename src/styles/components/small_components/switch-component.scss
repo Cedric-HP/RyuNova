@@ -1,0 +1,88 @@
+.switch{
+    border: 1px solid #EBECFA;
+    border-radius: 20px;
+    padding: 5px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 5px;
+    transition: border-color 0.2s;
+    p, svg>path{
+        color:#EBECFA;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+    }
+    svg{
+        max-height: 20px;
+    }
+    .switch-slider-container{
+        border: 1px solid #EBECFA;
+        border-radius: 20px;
+        width: 40px;
+        height: 20px;
+        min-width: 40px;
+        min-height: 20px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+        .switch-slider{
+            width: 40px;
+            height: 20px;
+            min-width: 40px;
+            min-height: 20px;
+            position: relative;
+            border-radius: 20px;
+            transition: transform 0.3s, background-color 0.2s;
+            transform: translateX(-20px);
+            .switch-sphere{
+                position: absolute;
+                border: 1px solid #EBECFA;
+                top: 0;
+                right: 0;
+                height: 19px;
+                width: 19px;
+                border-radius: 50%;
+                background-color: #EBECFA;
+                transition: border-color 0.2s, background-color 0.2s;
+            }
+        }
+    }
+    &:hover{
+        border-color: #FBA059;
+        p, svg>path{
+            color:#FBA059;
+        }
+        .switch-slider-container{
+            border-color: #FBA059;
+            .switch-slider{
+                .switch-sphere{
+                    border-color: #FBA059;
+                    background-color: #FBA059;
+                }
+            }
+        }
+    }
+}
+
+.switch.on{
+    .switch-slider-container{
+        .switch-slider{
+            transform: translateX(0);
+            background-color: #EBECFA;
+            .switch-sphere{
+                border: 1px solid #EBECFA;
+                background-color: #070D27;
+            }
+        }
+    }
+    &:hover{
+        .switch-slider-container{
+            .switch-slider{
+                background-color: #FBA059;
+                .switch-sphere{
+                    border-color: #FBA059;
+                    background-color: #070D27;
+                }
+            }
+        }
+    }
+}

@@ -1,8 +1,7 @@
 "use client"
-
 import "../../styles/pages/search.scss"
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState, FormEvent, type FC } from "react";
+import { useCallback, useEffect, useMemo, useState, FormEvent, type FC, useContext } from "react";
 import {  OrderInput, SorterInput, TypeInput } from "@/lib/types/utilitisesType";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
@@ -14,8 +13,10 @@ import languageList from "@/lib/language";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import getSearchAction from "@/lib/reducers/authSliceReducer/actions/content/getSearchAction";
-import setGetSearchFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/content/setGetSearchFetchStateIdleAction";
+import setGetSearchFetchStateIdleAction from "@/lib/reducers/authSliceReducer/actions/utilitises/setGetSearchFetchStateIdleAction";
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import Pagination from "../components/small_components/Pagination";
+import { GlobalContext } from "../components/Navbar";
 
 const Search: FC = () => {
 
@@ -27,6 +28,9 @@ const Search: FC = () => {
         (store: RootState) => store.auth
     )
     const dispatch: AppDispatch = useDispatch()
+
+    // Responsive Context
+    const { responsive } = useContext(GlobalContext)
 
     // Router
     const router = useRouter()
@@ -47,9 +51,9 @@ const Search: FC = () => {
 
     // Page Param
     const page = useMemo(() => {
-        if (pathname !== "/search") return 0
+        if (pathname !== "/search") return 1
         const rawPage = searchParams.get("page")
-        return rawPage ? Number.parseInt(rawPage) || 0 : 0
+        return rawPage ? Number.parseInt(rawPage) || 1 : 1
     }, [pathname, searchParams])
 
     // Type Param
@@ -119,7 +123,10 @@ const Search: FC = () => {
     const [currentSort, setCurrentSort] = useState<SorterInput>(sort)
     const [currentTag, setCurrentTag] = useState<string>(tag || "")
     const [currentOrder, setCurrentOrder] = useState<OrderInput>(order)
-    const [currentPage, setCurrentPage] = useState<number>(page || 0)
+    const [currentPage, setCurrentPage] = useState<number>(page || 1)
+
+    const [testPage, setTestPage] = useState<number>(1)
+
 
     // Inputs
     const [searchInput, setSearchInput] = useState<string>(search || "")
@@ -339,7 +346,6 @@ const Search: FC = () => {
 
             {/* Result Section */}
             <section id="result-section">
-
                 {/* Result Info */}
                 <div id="result-info">
                     <span>{ currentType === "user" ? 
@@ -380,9 +386,19 @@ const Search: FC = () => {
                 {/* Error */}
                 {getSearch.fetch.fetchState === "error" && 
                 <p>{getSearch.fetch.error}</p>}
+                {getSearch.respond.totalResults > 0 &&
+                <Pagination 
+                    totalPages={getSearch.respond.totalPages} 
+                    currentPage={currentPage}  
+                    siblingCount={2} 
+                    boundaryCount={2} 
+                    onChange={setCurrentPage}
+                    getHref={(p) => `/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}&order=${currentOrder}&page=${p}`}
+                />}
             </section>
         </>
     )
 }
 
 export default Search
+

@@ -13,12 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/reducers/store";
 import { defaultUser } from "@/lib/tools/DefaultValues";
 import { UserData } from "@/lib/types/contenteType";
-import getUserAction from "@/lib/reducers/authSliceReducer/actions/user/getUserAction";
+import getUserAction from "@/lib/reducers/authSliceReducer/actions/content/getUserAction";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare} from '@fortawesome/free-solid-svg-icons'
 import setFullScreenAction from "@/lib/reducers/utilitisesReducer/actions/setFullScreenAction";
 import { setImageUploadCategoryAction } from "@/lib/reducers/authSliceReducer/authSlice";
-import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/user/setGetUserFetchStateIdleAction";
+import setGetUserFetchStateIdleActionAction from "@/lib/reducers/authSliceReducer/actions/utilitises/setGetUserFetchStateIdleAction";
 import LoadingComponent from "@/app/components/small_components/LoadingComponent";
 import ValidInvalidMarkComponent from "@/app/components/small_components/ValidInvalidMarkComponent";
 const LogingRegister: FC = () => {
