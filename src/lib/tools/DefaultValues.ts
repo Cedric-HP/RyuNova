@@ -46,7 +46,7 @@ const defaultContent: ContentData = {
 }
 
 const globalContextDefaultValue: GlobalContextType = {
-    language: "en",
+    responsive: "mobile",
     windowSize:  {
         height: 0,
         width: 0

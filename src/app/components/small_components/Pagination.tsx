@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faChevronLeft} from '@fortawesome/free-solid-svg-icons'
 
 type Iprops = {
+    customClassName?: string,
     totalPages: number,
     currentPage: number;
     siblingCount?: number;
@@ -18,7 +19,7 @@ const range = (start: number, end: number) => {
   return arr;
 };
 
-const Pagination: FC<Iprops> = ({totalPages=1, currentPage=1, siblingCount = 1, boundaryCount = 1, onChange, getHref}) => {
+const Pagination: FC<Iprops> = ({customClassName= "", totalPages=1, currentPage=1, siblingCount = 1, boundaryCount = 1, onChange, getHref}) => {
     const createPages = (): (number | "...")[] => {
         const startPages = range(1, Math.min(boundaryCount, totalPages));
         const endPages = range(
@@ -101,7 +102,7 @@ const Pagination: FC<Iprops> = ({totalPages=1, currentPage=1, siblingCount = 1, 
     };
 
     return (
-        <nav aria-label="Pagination Navigation" className="pagination-container">
+        <nav aria-label="Pagination Navigation" className={`pagination-container ${customClassName}`}>
             <ul>
                 <li className="page-chevron">
                     {renderLink(

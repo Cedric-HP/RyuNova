@@ -364,10 +364,20 @@ const Search: FC = () => {
                     <span>{currentTag.split("_").length > 1 ? 
                         languageList[currentLanguage].contentType.tag.plural :
                         languageList[currentLanguage].contentType.tag.singular
-                        } : {String(currentTag).replaceAll("_", " ")}
+                        } : {currentTag.split("_").length}
                     </span>
                     </> : <></>}
                 </div>
+                {getSearch.respond.totalResults > 0 &&
+                <Pagination
+                    customClassName="top" 
+                    totalPages={getSearch.respond.totalPages} 
+                    currentPage={currentPage}  
+                    siblingCount={2} 
+                    boundaryCount={2} 
+                    onChange={setCurrentPage}
+                    getHref={(p) => `/search?search=${currentSearch}&type=${currentType}&sort=${currentSort}&tag=${currentTag}&order=${currentOrder}&page=${p}`}
+                />}
 
                 {/* Result list */}
                 {currentType === "image" ? <>
@@ -387,7 +397,8 @@ const Search: FC = () => {
                 {getSearch.fetch.fetchState === "error" && 
                 <p>{getSearch.fetch.error}</p>}
                 {getSearch.respond.totalResults > 0 &&
-                <Pagination 
+                <Pagination
+                    customClassName="bottom"  
                     totalPages={getSearch.respond.totalPages} 
                     currentPage={currentPage}  
                     siblingCount={2} 

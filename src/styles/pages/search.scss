@@ -9,9 +9,10 @@
 
 #tag-search{
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     .search-bar{
-        width: 420px;
+        width: 100%;
     }
     #tags{
         button{
@@ -21,9 +22,26 @@
         }
     }
 }
+@media (max-width: $desktop) {
+    #search-tool-section{
+        margin: 0 0 20px 0;
+    }
+    #tag-search {
+        flex-flow: column-reverse;
+    }
+}
+
+@media (max-width: $mobile) {
+    #tags{
+        button{
+            padding: 0 6px!important;
+            font-size: 16px!important;
+        }
+    }
+}
 #sorter-type{
     display: flex;
-    height: 65px;
+    height: fit-content;
     justify-content: space-between;
     flex-flow: row nowrap;
     align-items: flex-end;
@@ -53,17 +71,45 @@
         }
     }
 }
+@media (max-width: $desktop) {
+    #sorter-type{
+        flex-flow: column;
+        align-items: flex-start;
+    }
+}
+@media (max-width: $mobile) {
+    #sorter-type{
+        #sorter, #type{
+            height: 65px;
+            gap: 15px;
+            p{
+                font-size: 1.15rem;
+            }
+            button{
+                font-size: 1.15rem;
+            }
+        }
+    }
+}
 #result-info{
     width: 75vw;
     display: flex;
     flex-flow: row nowrap;
     gap: 20px;
-    margin: 20px 0 50px 0;
+    margin: 20px 0 30px 0;
+}
+@media (max-width: $mobile) {
+    #result-info{
+        flex-direction: column;
+    }
 }
 #result-section{
     width: 75vw;
     margin-bottom: 100px;
     min-height: calc(100vh - 95px - 40px - 65px - 44px - 90px - 20px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 #no-result{
     width: 100%;
@@ -71,11 +117,14 @@
     font-size: 2rem;
     font-family: "Michroma", sans-serif;
 }
-.pagination-container{
+.pagination-container.top{
+    margin-bottom: 30px;
+}
+.pagination-container.bottom{
     margin-top: 30px;
 }
 @media (max-width: $mobile) {
-    #search-tool-section, #result-section{
+    #search-tool-section, #result-section, #result-info{
         width: calc(100vw - 40px);
     }
 }

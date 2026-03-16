@@ -353,7 +353,6 @@ const Navbar: FC<IProps> = ({ children }) => {
                                 {languageList[currentLanguage].button.previous}
                             </button>
                         </> : <>
-                            <div></div>
                         </>
                         }
                         <form className="search-bar" onSubmit={handleSearch}>
@@ -371,6 +370,7 @@ const Navbar: FC<IProps> = ({ children }) => {
                      </>}
                     </section>
                 </nav>
+                <hr className="section-separator"/>
             </header>
             {windowSize.width < navBreakPoint &&
             <nav id="nav-mobile">
@@ -441,8 +441,6 @@ const Navbar: FC<IProps> = ({ children }) => {
 }
 
 export default Navbar
-
-
 
 
 
