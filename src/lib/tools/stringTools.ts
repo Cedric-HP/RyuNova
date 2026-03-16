@@ -120,8 +120,7 @@ const ImageUrl = (url: string, type: "full" | "thumbnail" , category: ImageCateg
   // If it is a thumbnail : api/full/imagename.jpg => api/thumbnail/size_imagename.webp
   const newUrl = (SERVER_URL + "/" + 
     url
-    .replace(`api\\${category}\\full\\`, `api\\`)
-    .replace("api\\", `api\\${category}\\thumbnail\\${size}_`))
+    .replace("full\\", `thumbnail\\${size}_`))
     .replaceAll("\\", '/')
   return newUrl.substring(0, newUrl.lastIndexOf('.')) + ".webp"
 }
